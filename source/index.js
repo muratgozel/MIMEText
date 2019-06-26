@@ -72,6 +72,8 @@ MIMEMessage.prototype.setSender = function setSender(inputs) {
   }
 
   this.senders = mailboxes
+
+  return this.senders
 }
 
 MIMEMessage.prototype.setRecipient = function setRecipient(inputs) {
@@ -82,6 +84,8 @@ MIMEMessage.prototype.setRecipient = function setRecipient(inputs) {
   }
 
   this.recipients = mailboxes
+
+  return this.recipients
 }
 
 MIMEMessage.prototype.setSubject = function setSubject(value) {
@@ -91,6 +95,8 @@ MIMEMessage.prototype.setSubject = function setSubject(value) {
 
   this.subject = value
   this.encodedSubject = '=?utf-8?B?' + Buffer.from(value).toString('base64') + '?='
+
+  return this.subject
 }
 
 MIMEMessage.prototype.createDateStr = function createDateStr() {
@@ -146,6 +152,8 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
   if (!this.utility.isEmpty(lines)) {
     this.attachments = lines.join('\n')
   }
+
+  return this.attachments
 }
 
 MIMEMessage.prototype.setMessage = function setMessage(msg) {
@@ -160,6 +168,8 @@ MIMEMessage.prototype.setMessage = function setMessage(msg) {
     '',
     msg
   ].join('\n')
+
+  return this.rawMessage
 }
 
 MIMEMessage.prototype.asRaw = function asRaw() {
@@ -184,8 +194,6 @@ MIMEMessage.prototype.asRaw = function asRaw() {
     lines.push(this.attachments)
     lines.push('--' + this.boundaryMixed + '--')
   }
-
-  console.log(lines.join('\n'))
 
   return lines.join('\n')
 }
