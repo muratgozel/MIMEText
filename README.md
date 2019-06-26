@@ -1,6 +1,8 @@
 # MIMEText
 
-RFC 2822 compliant email message generator written in node.js
+[RFC 2822][45367a6f] compliant email message generator written in node.js
+
+  [45367a6f]: https://www.ietf.org/rfc/rfc2822.txt "RFC 2822 Internet Message Format"
 
 ## Install
 
@@ -125,7 +127,7 @@ const sampleBillAttachment = {
   type: 'application/pdf',
   filename: 'sample-bill.pdf',
   base64Data: '' /* Base64 encoded value of the file content.
-  fs.readFileSync('./edk-logo.jpg').toString('base64') for example. */
+  fs.readFileSync('./sample-bill.pdf').toString('base64') for example. */
 }
 ```
 
@@ -162,6 +164,31 @@ Returns `undefined` or the value you set.
 ### .asRaw()
 
 Generates and returns the RFC-2822 compliant email message. This message can be used to send an email.
+
+Looks like:
+
+```txt
+From: sender@email.com
+To: person1@email.com, person2@email.com
+Subject: =?utf-8?B?SGVsbG8g8J+WkA==?=
+MIME-Version: 1.0
+Date: Wed, 26 Jun 2019 13:52:58 +0000
+Message-ID: <t0zh6k2srir-1561557178826@email.com>
+Content-Type: multipart/mixed; boundary=1dfkwsmmm6os1561557178826
+
+--1dfkwsmmm6os1561557178826
+Content-Type: text/plain; charset="utf-8"
+
+Hello John.
+
+--1dfkwsmmm6os1561557178826
+Content-Type: image/jpeg
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;filename="another-bill.jpg"
+
+/9j/4AAQSkZJRgAB......pX2NKUaUo0pX/2Q==
+--1dfkwsmmm6os1561557178826--
+```
 
 ### .asEncoded()
 
@@ -210,6 +237,7 @@ ses.sendRawEmail(params, function(err, result) {
 const {google} = require('googleapis')
 
 // create email message
+const MIMEText = require('mimetext')
 const message = new MIMEText()
 message.setSender('sender@email.com')
 message.setRecipient('person1@email.com')
