@@ -1,0 +1,28 @@
+{
+  "name": "mimetext",
+  "version": "0.1.1",
+  "description": "RFC 2822 compliant email message generator written in node.js",
+  "main": "dist/index.js",
+  "scripts": {
+    "release": "bash release/release.sh",
+    "build": "cp -a ./source/. ./dist/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muratgozel/MIMEText.git"
+  },
+  "keywords": [
+    "rfc-2822",
+    "mime-message"
+  ],
+  "author": "Murat Gözel <murat@gozel.com.tr>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muratgozel/MIMEText/issues"
+  },
+  "homepage": "https://github.com/muratgozel/MIMEText#readme",
+  "dependencies": {
+    "my-little-lodash": "^1.5.0"
+  }
+}
