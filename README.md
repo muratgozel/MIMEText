@@ -64,6 +64,10 @@ Returns `undefined` or senders as formatted:
 ]
 ```
 
+### .getSenders()
+
+Returns `null` or senders as formatted.
+
 ### .setRecipient(value)
 
 Possible values of the `value` are:
@@ -108,6 +112,10 @@ Returns `undefined` or recipients as formatted:
 ]
 ```
 
+### .getRecipients()
+
+Returns `null` or recipients as formatted.
+
 ### .setSubject(value)
 
 `value` must be `string`. Returns `undefined` or value.
@@ -117,6 +125,10 @@ const value = 'Weekly Newsletter 49 Ready 🚀'
 
 message.setSubject(value)
 ```
+
+### .getSubject()
+
+Returns `null` or subject as string.
 
 ### .setAttachments(value)
 
@@ -145,6 +157,10 @@ message.setAttachments([sampleBillAttachment, anotherBillAttachment])
 
 Returns empty array or attachments added into the message.
 
+### .getAttachments()
+
+Returns `[]` (empty array) or attachments.
+
 ### .setMessage(value)
 
 `value` is the content of the email. It can be plain text or html.
@@ -160,6 +176,10 @@ message.setMessage(htmlContent)
 ```
 
 Returns `undefined` or the value you set.
+
+### .getMessage()
+
+Returns `null` or message as you set.
 
 ### .asRaw()
 
