@@ -1,4 +1,4 @@
-const utility = require('my-little-lodash/source')
+const utility = require('my-little-lodash/dist/object')
 
 function MIMEMessage() {
   this.senders = null
@@ -8,6 +8,7 @@ function MIMEMessage() {
   this.rawMessage = null
   this.message = null
   this.attachments = null
+  this.headers = null
 
   this.boundaryNumber = 0
   this.boundaryMixed = null
@@ -54,7 +55,7 @@ MIMEMessage.prototype.createMailboxes = function createMailboxes(inputs) {
 
 MIMEMessage.prototype.createMailboxStr = function createMailboxStr(mailboxes) {
   if (this.utility.isEmpty(mailboxes)) {
-    return '';
+    return ''
   }
 
   return mailboxes.reduce(function(memo, obj, ind) {
@@ -64,11 +65,25 @@ MIMEMessage.prototype.createMailboxStr = function createMailboxStr(mailboxes) {
   }, '')
 }
 
+MIMEMessage.prototype.setHeaders = function setHeaders(headers) {
+  if (this.utility.isEmpty(headers)) {
+    return undefined
+  }
+
+  const lines = []
+  for (key in headers) {
+    const value = this.utility.getProp(headers, key)
+    lines.push(key + ": " + value)
+  }
+
+  this.headers = lines.join('\r\n')
+}
+
 MIMEMessage.prototype.setSender = function setSender(inputs) {
   const mailboxes = this.createMailboxes(inputs)
 
   if (this.utility.isEmpty(mailboxes)) {
-    return undefined;
+    return undefined
   }
 
   this.senders = mailboxes
@@ -80,7 +95,7 @@ MIMEMessage.prototype.setRecipient = function setRecipient(inputs) {
   const mailboxes = this.createMailboxes(inputs)
 
   if (this.utility.isEmpty(mailboxes)) {
-    return undefined;
+    return undefined
   }
 
   this.recipients = mailboxes
@@ -90,7 +105,7 @@ MIMEMessage.prototype.setRecipient = function setRecipient(inputs) {
 
 MIMEMessage.prototype.setSubject = function setSubject(value) {
   if (this.utility.isEmpty(value) || !this.utility.isString(value)) {
-    return undefined;
+    return undefined
   }
 
   this.subject = value
@@ -122,7 +137,7 @@ MIMEMessage.prototype.guessMessageType = function guessMessageType(msg) {
 
 MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
   if (this.utility.isEmpty(attachments)) {
-    return undefined;
+    return undefined
   }
 
   this.boundaryMixed = this.genNewBoundary()
@@ -150,7 +165,7 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
   }
 
   if (!this.utility.isEmpty(lines)) {
-    this.attachments = lines.join('\n')
+    this.attachments = lines.join('\r\n')
   }
 
   return this.attachments
@@ -167,7 +182,7 @@ MIMEMessage.prototype.setMessage = function setMessage(msg) {
     'Content-Type: ' + msgType + '; charset="utf-8"',
     '',
     msg
-  ].join('\n')
+  ].join('\r\n')
 
   return this.rawMessage
 }
@@ -181,6 +196,7 @@ MIMEMessage.prototype.asRaw = function asRaw() {
   lines.push('MIME-Version: 1.0')
   lines.push('Date: ' + this.createDateStr())
   lines.push('Message-ID: ' + this.createMsgID())
+  lines.push(this.headers)
 
   if (!this.utility.isEmpty(this.attachments)) {
     lines.push('Content-Type: multipart/mixed; boundary=' + this.boundaryMixed)
@@ -192,10 +208,11 @@ MIMEMessage.prototype.asRaw = function asRaw() {
 
   if (!this.utility.isEmpty(this.attachments)) {
     lines.push(this.attachments)
+    lines.push('')
     lines.push('--' + this.boundaryMixed + '--')
   }
 
-  return lines.join('\n')
+  return lines.join('\r\n') + '\r\n'
 }
 
 MIMEMessage.prototype.asEncoded = function asEncoded() {
@@ -235,6 +252,10 @@ MIMEMessage.prototype.getSenders = function getSenders() {
 
 MIMEMessage.prototype.getAttachments = function getAttachments() {
   return this.attachments
+}
+
+MIMEMessage.prototype.getHeaders = function getHeaders() {
+  return this.headers
 }
 
 module.exports = MIMEMessage

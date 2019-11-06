@@ -161,6 +161,22 @@ Returns empty array or attachments added into the message.
 
 Returns `[]` (empty array) or attachments.
 
+### .setHeaders()
+
+Insert extra headers to the message.
+
+```js
+const customHeaders = {
+  'X-Custom-Header': 'Value',
+  'X-Another-Header', 'Another Value'
+}
+message.setHeaders(customHeaders)
+```
+
+### .getHeaders()
+
+Returns `null` or headers as string.
+
 ### .setMessage(value)
 
 `value` is the content of the email. It can be plain text or html.

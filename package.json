@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "RFC 2822 compliant email message generator written in node.js",
   "main": "dist/index.js",
   "scripts": {
@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/muratgozel/MIMEText#readme",
   "dependencies": {
-    "my-little-lodash": "^1.5.0"
+    "my-little-lodash": "^2.2.0"
   }
 }
