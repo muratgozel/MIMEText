@@ -8,6 +8,7 @@ function MIMEMessage() {
   this.rawMessage = null
   this.message = null
   this.attachments = null
+  this.headers = null;
 
   this.boundaryNumber = 0
   this.boundaryMixed = null
@@ -62,6 +63,23 @@ MIMEMessage.prototype.createMailboxStr = function createMailboxStr(mailboxes) {
     if (mailboxes.length !== ind + 1) memo += ', '
     return memo
   }, '')
+}
+
+
+
+MIMEMessage.prototype.setHeaders = function setHeaders(headers) {
+  if (this.utility.isEmpty(headers)) {
+    return undefined;
+  }
+
+  const lines = [];
+  for (key in headers) {
+    const value = this.utility.getProp(headers, key);
+    lines.push(key + ": " + value);
+  }
+
+  this.headers = lines.join('\r\n');
+
 }
 
 MIMEMessage.prototype.setSender = function setSender(inputs) {
@@ -150,7 +168,7 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
   }
 
   if (!this.utility.isEmpty(lines)) {
-    this.attachments = lines.join('\n')
+    this.attachments = lines.join('\r\n')
   }
 
   return this.attachments
@@ -167,7 +185,7 @@ MIMEMessage.prototype.setMessage = function setMessage(msg) {
     'Content-Type: ' + msgType + '; charset="utf-8"',
     '',
     msg
-  ].join('\n')
+  ].join('\r\n')
 
   return this.rawMessage
 }
@@ -181,6 +199,7 @@ MIMEMessage.prototype.asRaw = function asRaw() {
   lines.push('MIME-Version: 1.0')
   lines.push('Date: ' + this.createDateStr())
   lines.push('Message-ID: ' + this.createMsgID())
+  lines.push(this.headers);
 
   if (!this.utility.isEmpty(this.attachments)) {
     lines.push('Content-Type: multipart/mixed; boundary=' + this.boundaryMixed)
@@ -192,10 +211,11 @@ MIMEMessage.prototype.asRaw = function asRaw() {
 
   if (!this.utility.isEmpty(this.attachments)) {
     lines.push(this.attachments)
+    lines.push('')
     lines.push('--' + this.boundaryMixed + '--')
   }
 
-  return lines.join('\n')
+  return lines.join('\r\n') + '\r\n';
 }
 
 MIMEMessage.prototype.asEncoded = function asEncoded() {
