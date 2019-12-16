@@ -196,7 +196,9 @@ MIMEMessage.prototype.asRaw = function asRaw() {
   lines.push('MIME-Version: 1.0')
   lines.push('Date: ' + this.createDateStr())
   lines.push('Message-ID: ' + this.createMsgID())
-  lines.push(this.headers)
+  if (this.headers) {
+    lines.push(this.headers)
+  }
 
   if (!this.utility.isEmpty(this.attachments)) {
     lines.push('Content-Type: multipart/mixed; boundary=' + this.boundaryMixed)
