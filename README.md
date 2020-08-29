@@ -12,7 +12,7 @@ npm install mimetext
 
 ## Import
 
-This package exports only one build which is `dist/index.js`
+This package exports only one build which is `src/index.js`
 
 ```js
 const MIMEText = require('mimetext')

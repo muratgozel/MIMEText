@@ -1,4 +1,4 @@
-const utility = require('my-little-lodash/dist/object')
+const {typekit, objectkit, validationkit} = require('basekits')
 
 function MIMEMessage() {
   this.senders = null
@@ -15,34 +15,32 @@ function MIMEMessage() {
   this.timestamp = Date.now()
 }
 
-MIMEMessage.prototype.utility = utility
-
 MIMEMessage.prototype.createMailboxes = function createMailboxes(inputs) {
   const mailboxes = []
-  if (this.utility.isObject(inputs)) {
-    const name = this.utility.getProp(inputs, 'name')
-    const addr = this.utility.getProp(inputs, 'addr')
-    if (this.utility.isEmpty(addr)) {
+  if (typekit.isObject(inputs)) {
+    const name = objectkit.getProp(inputs, 'name')
+    const addr = objectkit.getProp(inputs, 'addr')
+    if (validationkit.isEmpty(addr)) {
       return undefined
     }
 
     const obj = {addr: addr}
-    if (!this.utility.isEmpty(name)) obj.name = name
+    if (!validationkit.isEmpty(name)) obj.name = name
 
     mailboxes.push(obj)
 
     return mailboxes
   }
-  else if (this.utility.isString(inputs)) {
+  else if (typekit.isString(inputs)) {
     mailboxes.push({addr: inputs})
 
     return mailboxes
   }
-  else if (this.utility.isArray(inputs)) {
+  else if (typekit.isArray(inputs)) {
     let result = []
     for (let i = 0; i < inputs.length; i++) {
       const one = this.createMailboxes(inputs[i])
-      if (!this.utility.isEmpty(one)) {
+      if (!validationkit.isEmpty(one)) {
         result = result.concat(one)
       }
     }
@@ -54,7 +52,7 @@ MIMEMessage.prototype.createMailboxes = function createMailboxes(inputs) {
 }
 
 MIMEMessage.prototype.createMailboxStr = function createMailboxStr(mailboxes) {
-  if (this.utility.isEmpty(mailboxes)) {
+  if (validationkit.isEmpty(mailboxes)) {
     return ''
   }
 
@@ -66,13 +64,13 @@ MIMEMessage.prototype.createMailboxStr = function createMailboxStr(mailboxes) {
 }
 
 MIMEMessage.prototype.setHeaders = function setHeaders(headers) {
-  if (this.utility.isEmpty(headers)) {
+  if (validationkit.isEmpty(headers)) {
     return undefined
   }
 
   const lines = []
   for (key in headers) {
-    const value = this.utility.getProp(headers, key)
+    const value = objectkit.getProp(headers, key)
     lines.push(key + ": " + value)
   }
 
@@ -82,7 +80,7 @@ MIMEMessage.prototype.setHeaders = function setHeaders(headers) {
 MIMEMessage.prototype.setSender = function setSender(inputs) {
   const mailboxes = this.createMailboxes(inputs)
 
-  if (this.utility.isEmpty(mailboxes)) {
+  if (validationkit.isEmpty(mailboxes)) {
     return undefined
   }
 
@@ -94,7 +92,7 @@ MIMEMessage.prototype.setSender = function setSender(inputs) {
 MIMEMessage.prototype.setRecipient = function setRecipient(inputs) {
   const mailboxes = this.createMailboxes(inputs)
 
-  if (this.utility.isEmpty(mailboxes)) {
+  if (validationkit.isEmpty(mailboxes)) {
     return undefined
   }
 
@@ -104,7 +102,7 @@ MIMEMessage.prototype.setRecipient = function setRecipient(inputs) {
 }
 
 MIMEMessage.prototype.setSubject = function setSubject(value) {
-  if (this.utility.isEmpty(value) || !this.utility.isString(value)) {
+  if (validationkit.isEmpty(value) || !typekit.isString(value)) {
     return undefined
   }
 
@@ -136,7 +134,7 @@ MIMEMessage.prototype.guessMessageType = function guessMessageType(msg) {
 }
 
 MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
-  if (this.utility.isEmpty(attachments)) {
+  if (validationkit.isEmpty(attachments)) {
     return undefined
   }
 
@@ -146,13 +144,13 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
   for (let i = 0; i < attachments.length; i++) {
     const attachment = attachments[i]
 
-    const type = this.utility.getProp(attachment, 'type')
-    const filename = this.utility.getProp(attachment, 'filename')
-    const base64Data = this.utility.getProp(attachment, 'base64Data')
+    const type = objectkit.getProp(attachment, 'type')
+    const filename = objectkit.getProp(attachment, 'filename')
+    const base64Data = objectkit.getProp(attachment, 'base64Data')
 
-    if (!this.utility.isEmpty(type)
-      && !this.utility.isEmpty(filename)
-      && !this.utility.isEmpty(base64Data)
+    if (!validationkit.isEmpty(type)
+      && !validationkit.isEmpty(filename)
+      && !validationkit.isEmpty(base64Data)
     ) {
       lines.push('')
       lines.push('--' + this.boundaryMixed)
@@ -164,7 +162,7 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
     }
   }
 
-  if (!this.utility.isEmpty(lines)) {
+  if (!validationkit.isEmpty(lines)) {
     this.attachments = lines.join('\r\n')
   }
 
@@ -172,7 +170,7 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
 }
 
 MIMEMessage.prototype.setMessage = function setMessage(msg) {
-  if (!this.utility.isString(msg)) {
+  if (!typekit.isString(msg)) {
     return undefined
   }
 
@@ -200,7 +198,7 @@ MIMEMessage.prototype.asRaw = function asRaw() {
     lines.push(this.headers)
   }
 
-  if (!this.utility.isEmpty(this.attachments)) {
+  if (!validationkit.isEmpty(this.attachments)) {
     lines.push('Content-Type: multipart/mixed; boundary=' + this.boundaryMixed)
     lines.push('')
     lines.push('--' + this.boundaryMixed)
@@ -208,7 +206,7 @@ MIMEMessage.prototype.asRaw = function asRaw() {
 
   lines.push(this.message)
 
-  if (!this.utility.isEmpty(this.attachments)) {
+  if (!validationkit.isEmpty(this.attachments)) {
     lines.push(this.attachments)
     lines.push('')
     lines.push('--' + this.boundaryMixed + '--')
