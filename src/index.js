@@ -147,6 +147,7 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
     const type = objectkit.getProp(attachment, 'type')
     const filename = objectkit.getProp(attachment, 'filename')
     const base64Data = objectkit.getProp(attachment, 'base64Data')
+    const contentId = objectkit.getProp(attachment, 'contentId')
 
     if (!validationkit.isEmpty(type)
       && !validationkit.isEmpty(filename)
@@ -156,6 +157,9 @@ MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
       lines.push('--' + this.boundaryMixed)
       lines.push('Content-Type: ' + attachment.type)
       lines.push('Content-Transfer-Encoding: base64')
+      if(contentId) {
+        lines.push('Content-Id: <' + contentId + '>')
+      }
       lines.push('Content-Disposition: attachment;filename="' + attachment.filename + '"')
       lines.push('')
       lines.push(attachment.base64Data)

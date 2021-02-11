@@ -138,6 +138,7 @@ Returns `null` or subject as string.
 const sampleBillAttachment = {
   type: 'application/pdf',
   filename: 'sample-bill.pdf',
+  contentId: 'abc123', // optional, can be used in case you need to show an image in email body like: <img src="cid:abc123">
   base64Data: '' /* Base64 encoded value of the file content.
   fs.readFileSync('./sample-bill.pdf').toString('base64') for example. */
 }
