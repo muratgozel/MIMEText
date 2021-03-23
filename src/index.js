@@ -1,261 +1,266 @@
-const {typekit, objectkit, validationkit} = require('basekits')
+const { typekit, objectkit, validationkit } = require("basekits");
 
 function MIMEMessage() {
-  this.senders = null
-  this.recipients = null
-  this.subject = null
-  this.encodedSubject = null
-  this.rawMessage = null
-  this.message = null
-  this.attachments = null
-  this.headers = null
+  this.senders = null;
+  this.recipients = null;
+  this.subject = null;
+  this.encodedSubject = null;
+  this.htmlMessage = null;
+  this.plainTextMessage = null;
+  this.attachments = null;
+  this.headers = null;
 
-  this.boundaryNumber = 0
-  this.boundaryMixed = null
-  this.timestamp = Date.now()
+  this.boundaryNumber = 0;
+  this.boundaryMixed = null;
+  this.timestamp = Date.now();
 }
 
 MIMEMessage.prototype.createMailboxes = function createMailboxes(inputs) {
-  const mailboxes = []
+  const mailboxes = [];
   if (typekit.isObject(inputs)) {
-    const name = objectkit.getProp(inputs, 'name')
-    const addr = objectkit.getProp(inputs, 'addr')
+    const name = objectkit.getProp(inputs, "name");
+    const addr = objectkit.getProp(inputs, "addr");
     if (validationkit.isEmpty(addr)) {
-      return undefined
+      return undefined;
     }
 
-    const obj = {addr: addr}
-    if (!validationkit.isEmpty(name)) obj.name = name
+    const obj = { addr: addr };
+    if (!validationkit.isEmpty(name)) obj.name = name;
 
-    mailboxes.push(obj)
+    mailboxes.push(obj);
 
-    return mailboxes
-  }
-  else if (typekit.isString(inputs)) {
-    mailboxes.push({addr: inputs})
+    return mailboxes;
+  } else if (typekit.isString(inputs)) {
+    mailboxes.push({ addr: inputs });
 
-    return mailboxes
-  }
-  else if (typekit.isArray(inputs)) {
-    let result = []
+    return mailboxes;
+  } else if (typekit.isArray(inputs)) {
+    let result = [];
     for (let i = 0; i < inputs.length; i++) {
-      const one = this.createMailboxes(inputs[i])
+      const one = this.createMailboxes(inputs[i]);
       if (!validationkit.isEmpty(one)) {
-        result = result.concat(one)
+        result = result.concat(one);
       }
     }
-    return result
+    return result;
+  } else {
+    return mailboxes;
   }
-  else {
-    return mailboxes
-  }
-}
+};
 
 MIMEMessage.prototype.createMailboxStr = function createMailboxStr(mailboxes) {
   if (validationkit.isEmpty(mailboxes)) {
-    return ''
+    return "";
   }
 
-  return mailboxes.reduce(function(memo, obj, ind) {
-    memo += obj.name ? '"' + obj.name + '" <' + obj.addr + '>' : obj.addr
-    if (mailboxes.length !== ind + 1) memo += ', '
-    return memo
-  }, '')
-}
+  return mailboxes.reduce(function (memo, obj, ind) {
+    memo += obj.name ? '"' + obj.name + '" <' + obj.addr + ">" : obj.addr;
+    if (mailboxes.length !== ind + 1) memo += ", ";
+    return memo;
+  }, "");
+};
 
 MIMEMessage.prototype.setHeaders = function setHeaders(headers) {
   if (validationkit.isEmpty(headers)) {
-    return undefined
+    return undefined;
   }
 
-  const lines = []
+  const lines = [];
   for (key in headers) {
-    const value = objectkit.getProp(headers, key)
-    lines.push(key + ": " + value)
+    const value = objectkit.getProp(headers, key);
+    lines.push(key + ": " + value);
   }
 
-  this.headers = lines.join('\r\n')
-}
+  this.headers = lines.join("\r\n");
+};
 
 MIMEMessage.prototype.setSender = function setSender(inputs) {
-  const mailboxes = this.createMailboxes(inputs)
+  const mailboxes = this.createMailboxes(inputs);
 
   if (validationkit.isEmpty(mailboxes)) {
-    return undefined
+    return undefined;
   }
 
-  this.senders = mailboxes
+  this.senders = mailboxes;
 
-  return this.senders
-}
+  return this.senders;
+};
 
 MIMEMessage.prototype.setRecipient = function setRecipient(inputs) {
-  const mailboxes = this.createMailboxes(inputs)
+  const mailboxes = this.createMailboxes(inputs);
 
   if (validationkit.isEmpty(mailboxes)) {
-    return undefined
+    return undefined;
   }
 
-  this.recipients = mailboxes
+  this.recipients = mailboxes;
 
-  return this.recipients
-}
+  return this.recipients;
+};
 
 MIMEMessage.prototype.setSubject = function setSubject(value) {
   if (validationkit.isEmpty(value) || !typekit.isString(value)) {
-    return undefined
+    return undefined;
   }
 
-  this.subject = value
-  this.encodedSubject = '=?utf-8?B?' + Buffer.from(value).toString('base64') + '?='
+  this.subject = value;
+  this.encodedSubject =
+    "=?utf-8?B?" + Buffer.from(value).toString("base64") + "?=";
 
-  return this.subject
-}
+  return this.subject;
+};
 
 MIMEMessage.prototype.createDateStr = function createDateStr() {
-  return (new Date().toGMTString()).replace(/GMT|UTC/gi, '+0000')
-}
+  return new Date().toGMTString().replace(/GMT|UTC/gi, "+0000");
+};
 
 MIMEMessage.prototype.createMsgID = function createMsgID() {
-  const randomStr = Math.random().toString(36).slice(2)
-  const timestamp = this.timestamp.toString()
-  const senderHost = this.senders[0].addr.split('@')[1]
+  const randomStr = Math.random().toString(36).slice(2);
+  const timestamp = this.timestamp.toString();
+  const senderHost = this.senders[0].addr.split("@")[1];
 
-  return '<' + randomStr + '-' + timestamp + '@' + senderHost + '>'
-}
-
-MIMEMessage.prototype.guessMessageType = function guessMessageType(msg) {
-  if (msg.indexOf('<') !== -1 && msg.indexOf('>') !== -1) {
-    return 'text/html'
-  }
-  else {
-    return 'text/plain'
-  }
-}
+  return "<" + randomStr + "-" + timestamp + "@" + senderHost + ">";
+};
 
 MIMEMessage.prototype.setAttachments = function setAttachments(attachments) {
   if (validationkit.isEmpty(attachments)) {
-    return undefined
+    return undefined;
   }
 
-  this.boundaryMixed = this.genNewBoundary()
+  this.boundaryMixed = this.genNewBoundary();
 
-  const lines = []
+  const lines = [];
   for (let i = 0; i < attachments.length; i++) {
-    const attachment = attachments[i]
+    const attachment = attachments[i];
 
-    const type = objectkit.getProp(attachment, 'type')
-    const filename = objectkit.getProp(attachment, 'filename')
-    const base64Data = objectkit.getProp(attachment, 'base64Data')
+    const type = objectkit.getProp(attachment, "type");
+    const filename = objectkit.getProp(attachment, "filename");
+    const base64Data = objectkit.getProp(attachment, "base64Data");
 
-    if (!validationkit.isEmpty(type)
-      && !validationkit.isEmpty(filename)
-      && !validationkit.isEmpty(base64Data)
+    if (
+      !validationkit.isEmpty(type) &&
+      !validationkit.isEmpty(filename) &&
+      !validationkit.isEmpty(base64Data)
     ) {
-      lines.push('')
-      lines.push('--' + this.boundaryMixed)
-      lines.push('Content-Type: ' + attachment.type)
-      lines.push('Content-Transfer-Encoding: base64')
-      lines.push('Content-Disposition: attachment;filename="' + attachment.filename + '"')
-      lines.push('')
-      lines.push(attachment.base64Data)
+      lines.push("");
+      lines.push("--" + this.boundaryMixed);
+      lines.push("Content-Type: " + attachment.type);
+      lines.push("Content-Transfer-Encoding: base64");
+      lines.push(
+        'Content-Disposition: attachment;filename="' + attachment.filename + '"'
+      );
+      lines.push("");
+      lines.push(attachment.base64Data);
     }
   }
 
   if (!validationkit.isEmpty(lines)) {
-    this.attachments = lines.join('\r\n')
+    this.attachments = lines.join("\r\n");
   }
 
-  return this.attachments
-}
+  return this.attachments;
+};
 
-MIMEMessage.prototype.setMessage = function setMessage(msg) {
+MIMEMessage.prototype.setHtmlMessage = function setHtmlMessage(msg) {
   if (!typekit.isString(msg)) {
-    return undefined
+    return undefined;
   }
 
-  const msgType = this.guessMessageType(msg)
-  this.rawMessage = msg
-  this.message = [
-    'Content-Type: ' + msgType + '; charset="utf-8"',
-    '',
-    msg
-  ].join('\r\n')
+  this.htmlMessage = ['Content-Type: text/html; charset="utf-8"', "", msg].join(
+    "\r\n"
+  );
 
-  return this.rawMessage
-}
+  return msg;
+};
+
+MIMEMessage.prototype.setTextMessage = function setTextMessage(msg) {
+  if (!typekit.isString(msg)) {
+    return undefined;
+  }
+
+  this.plainTextMessage = ["Content-Type: text/plain", "", msg].join("\r\n");
+
+  return msg;
+};
 
 MIMEMessage.prototype.asRaw = function asRaw() {
-  let lines = []
+  let lines = [];
 
-  lines.push('From: ' + this.createMailboxStr(this.senders))
-  lines.push('To: ' + this.createMailboxStr(this.recipients))
-  lines.push('Subject: ' + this.encodedSubject)
-  lines.push('MIME-Version: 1.0')
-  lines.push('Date: ' + this.createDateStr())
-  lines.push('Message-ID: ' + this.createMsgID())
+  lines.push("From: " + this.createMailboxStr(this.senders));
+  lines.push("To: " + this.createMailboxStr(this.recipients));
+  lines.push("Subject: " + this.encodedSubject);
+  lines.push("MIME-Version: 1.0");
+  lines.push("Date: " + this.createDateStr());
+  lines.push("Message-ID: " + this.createMsgID());
   if (this.headers) {
-    lines.push(this.headers)
+    lines.push(this.headers);
   }
 
   if (!validationkit.isEmpty(this.attachments)) {
-    lines.push('Content-Type: multipart/mixed; boundary=' + this.boundaryMixed)
-    lines.push('')
-    lines.push('--' + this.boundaryMixed)
+    lines.push("Content-Type: multipart/mixed; boundary=" + this.boundaryMixed);
+    lines.push("");
+    lines.push("--" + this.boundaryMixed);
   }
 
-  lines.push(this.message)
+  if (this.htmlMessage) {
+    lines.push(this.htmlMessage);
+  }
+
+  if (this.plainTextMessage) {
+    lines.push(this.plainTextMessage);
+  }
 
   if (!validationkit.isEmpty(this.attachments)) {
-    lines.push(this.attachments)
-    lines.push('')
-    lines.push('--' + this.boundaryMixed + '--')
+    lines.push(this.attachments);
+    lines.push("");
+    lines.push("--" + this.boundaryMixed + "--");
   }
 
-  return lines.join('\r\n') + '\r\n'
-}
+  return lines.join("\r\n") + "\r\n";
+};
 
 MIMEMessage.prototype.asEncoded = function asEncoded() {
-  return Buffer
-    .from(this.asRaw())
-    .toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '')
-}
+  return Buffer.from(this.asRaw())
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+};
 
 MIMEMessage.prototype.genNewBoundary = function genNewBoundary() {
-  this.boundaryNumber += 1
+  this.boundaryNumber += 1;
 
-  const randomStr = Math.random().toString(36).slice(2)
+  const randomStr = Math.random().toString(36).slice(2);
 
-  return this.boundaryNumber.toString()
-    + randomStr
-    + this.timestamp.toString()
-}
+  return this.boundaryNumber.toString() + randomStr + this.timestamp.toString();
+};
 
-MIMEMessage.prototype.getMessage = function getMessage() {
-  return this.message
-}
+MIMEMessage.prototype.getMessage = function getHtmlMessage() {
+  return this.htmlMessage;
+};
+
+MIMEMessage.prototype.getMessage = function getTextMessage() {
+  return this.plainTextMessage;
+};
 
 MIMEMessage.prototype.getRecipients = function getRecipients() {
-  return this.recipients
-}
+  return this.recipients;
+};
 
 MIMEMessage.prototype.getSubject = function getSubject() {
-  return this.subject
-}
+  return this.subject;
+};
 
 MIMEMessage.prototype.getSenders = function getSenders() {
-  return this.senders
-}
+  return this.senders;
+};
 
 MIMEMessage.prototype.getAttachments = function getAttachments() {
-  return this.attachments
-}
+  return this.attachments;
+};
 
 MIMEMessage.prototype.getHeaders = function getHeaders() {
-  return this.headers
-}
+  return this.headers;
+};
 
-module.exports = MIMEMessage
+module.exports = MIMEMessage;
