@@ -198,10 +198,9 @@ const AWS = require('aws-sdk')
 const ses = new AWS.SES({region: ''})
 
 // init mimetext
-const MIMEText = require('mimetext')
+const message = require('mimetext')
 
 // create email message
-const message = new MIMEText()
 message.setSender('sender@email.com')
 message.setRecipient('person1@email.com')
 message.setSubject('Weekly Newsletter 49 Ready 🚀')
@@ -229,8 +228,7 @@ ses.sendRawEmail(params, function(err, result) {
 const {google} = require('googleapis')
 
 // create email message
-const MIMEText = require('mimetext')
-const message = new MIMEText()
+const message = require('mimetext')
 message.setSender('sender@email.com')
 message.setRecipient('person1@email.com')
 message.setSubject('Weekly Newsletter 49 Ready 🚀')
