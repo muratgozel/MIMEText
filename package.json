@@ -1,11 +1,10 @@
 {
   "name": "mimetext",
-  "version": "0.2.2",
-  "description": "RFC 2822 compliant email message generator written in node.js",
+  "version": "1.0.0",
+  "description": "RFC 2822 compliant raw email message generator written in node.js",
   "main": "src/index.js",
   "scripts": {
-    "commit": "node dev/commit.js commit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "for i in tests/*.js; do node \"$i\"; done"
   },
   "repository": {
     "type": "git",
@@ -16,6 +15,10 @@
     "mime-message"
   ],
   "author": "Murat Gözel <murat@gozel.com.tr>",
+  "funding": {
+    "type": "ko-fi",
+    "url": "https://ko-fi.com/muratgozel"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/muratgozel/MIMEText/issues"
@@ -23,9 +26,5 @@
   "homepage": "https://github.com/muratgozel/MIMEText#readme",
   "dependencies": {
     "basekits": "^1.1.1"
-  },
-  "devDependencies": {
-    "semver": "^7.3.2",
-    "yargs": "^15.4.1"
   }
 }

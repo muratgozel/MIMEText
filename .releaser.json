@@ -1,0 +1,14 @@
+{
+  "versioning": {
+    "scheme": "semver"
+  },
+  "npm": {
+    "enable": true,
+    "updatePkgJson": true,
+    "publish": true
+  },
+  "github": {
+    "enable": true,
+    "release": true
+  }
+}
