@@ -266,16 +266,16 @@ function MIMEMessage() {
   }
 
   function toBase64(value) {
-    return isGas ? Utilities.base64Encode(value, Utilities.Charset.UTF_8) : Buffer.from(asRaw()).toString('base64')
+    return isGas ? Utilities.base64Encode(value, Utilities.Charset.UTF_8) : Buffer.from(value).toString('base64')
   }
 
   function toBase64WebSafe(value) {
-    return isGas 
-      ? Utilities.base64EncodeWebSafe(value) 
+    return isGas
+      ? Utilities.base64EncodeWebSafe(value)
         .replace(/\+/g, '-')
         .replace(/\//g, '_')
         .replace(/=+$/, '')
-      : Buffer.from(asRaw()).toString('base64')
+      : Buffer.from(value).toString('base64')
         .replace(/\+/g, '-')
         .replace(/\//g, '_')
         .replace(/=+$/, '')
