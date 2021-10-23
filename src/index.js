@@ -1,4 +1,5 @@
-const {typekit, objectkit, validationkit} = require('basekits')
+const {typekit, objectkit, validationkit} = require('basekits');
+const isGas = 'undefined' !== typeof ScriptApp;
 
 function MIMEMessage() {
   const memory = {
@@ -58,7 +59,7 @@ function MIMEMessage() {
     }
 
     memory.subject = value
-    memory.encodedSubject = '=?utf-8?B?' + Buffer.from(value).toString('base64') + '?='
+    memory.encodedSubject = '=?utf-8?B?' + toBase64(value) + '?='
 
     return memory.subject
   }
@@ -68,7 +69,7 @@ function MIMEMessage() {
       return undefined
     }
 
-    const msgtype = typeof type == 'string' && ['text/html', 'text/plaintext'].indexOf(type) !== -1
+    const msgtype = typeof type == 'string' && ['text/html', 'text/plain'].indexOf(type) !== -1
       ? type
       : guessMessageType(msg)
     const rawProp = msgtype == 'text/html' ? 'rawHTML' : 'rawMessage'
@@ -76,9 +77,10 @@ function MIMEMessage() {
 
     memory[rawProp] = msg
     memory[prop] = [
-      'Content-Type: ' + msgtype + '; charset="utf-8"',
+      'Content-Type: ' + msgtype + '; charset=UTF-8',
+      'Content-Transfer-Encoding: base64',
       '',
-      msg
+      toBase64(msg)
     ].join('\r\n')
 
     if (memory.message && memory.html) {
@@ -88,10 +90,24 @@ function MIMEMessage() {
     return memory[rawProp]
   }
 
+  function toGasAttachments(attachments) {
+    if(!isGas) return attachments
+    const isArray = Array.isArray(attachments)
+    const toAttachmentObject = file => ({
+      type: file.getMimeType(),
+      filename: file.getName(),
+      base64Data: Utilities.base64Encode(file.getBlob().getBytes()),
+    })
+    if(!isArray) return toAttachmentObject(attachments)
+    return attachments.map(toAttachmentObject)
+  };
+
   function setAttachments(attachments) {
     if (validationkit.isEmpty(attachments)) {
       return undefined
     }
+
+    attachments = toGasAttachments(attachments)
 
     memory.boundaryMixed = genNewBoundary()
 
@@ -249,13 +265,24 @@ function MIMEMessage() {
     return lines.join('\r\n') + '\r\n'
   }
 
+  function toBase64(value) {
+    return isGas ? Utilities.base64Encode(value, Utilities.Charset.UTF_8) : Buffer.from(asRaw()).toString('base64')
+  }
+
+  function toBase64WebSafe(value) {
+    return isGas 
+      ? Utilities.base64EncodeWebSafe(value) 
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '')
+      : Buffer.from(asRaw()).toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '')
+  }
+
   function asEncoded() {
-    return Buffer
-      .from(asRaw())
-      .toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '')
+    return toBase64WebSafe(asRaw())
   }
 
   function getMessage() {
