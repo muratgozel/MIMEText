@@ -1,4 +1,7 @@
 # MIMEText
+
+[![Join the chat at https://gitter.im/MIMEText/community](https://badges.gitter.im/MIMEText/community.svg)](https://gitter.im/MIMEText/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [RFC 2822][45367a6f] compliant raw email message generator written in node.js
 
   [45367a6f]: https://www.ietf.org/rfc/rfc2822.txt "RFC 2822 Internet Message Format"
