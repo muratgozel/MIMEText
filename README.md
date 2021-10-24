@@ -288,3 +288,9 @@ try {
 ---
 
 Version management of this repository done by [releaser](https://github.com/muratgozel/node-releaser) 🚀
+
+---
+
+Thanks for watching 🐬
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/F1F1RFO7)
