@@ -66,9 +66,9 @@ I'm <strong>a bold</strong> text.`)
 msg.setMessage('text/plain', `Hi,
 I'm a simple text.`)
 // set custom header
-msg.setHeader('X-ABC', 'asdildffdişfsdi')
+msg.setHeader('X-Abc', 'asdildffdişfsdi')
 // add an attachment
-msg1.setAttachment('test.jpg', 'image/jpg', msg.toBase64( fs.readFileSync('./tests/test.jpg') ))
+msg.setAttachment('test.jpg', 'image/jpg', msg.toBase64( fs.readFileSync('./tests/test.jpg') ))
 ```
 
 Here is the output of the `.asRaw`:
@@ -81,6 +81,7 @@ Bcc: <fgh@jkl.com>, <test2@test.com>, "Name" <test3@test.com>
 Message-ID: <56y7xuld2n9-1635051603230@ipsum.com>
 Subject: =?utf-8?B?8J+agCBJc3N1ZSA0OSE=?=
 MIME-Version: 1.0
+X-Abc: asdildffdişfsdi
 Content-Type: multipart/mixed; boundary=tdplbi0e8pj
 
 --tdplbi0e8pj

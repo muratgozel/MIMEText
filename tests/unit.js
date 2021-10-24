@@ -43,7 +43,7 @@ msg1.setMessage('text/plain', 'Hi!')
 const plainTextMessage = msg1.getMessageByType('text/plain')
 const plainTextMessageDump = `${plainTextMessage.headers.dump(msg1.envctx)}\r\n\r\n${plainTextMessage.data}`
 assert.strictEqual(plainTextMessage.data, 'Hi!')
-assert.strictEqual(plainTextMessage.headers.get('content-type'), 'text/plain')
+assert.strictEqual(plainTextMessage.headers.get('content-type'), 'text/plain; charset=UTF-8')
 assert.strictEqual(plainTextMessage.isAttachment(), false)
 assert.strictEqual(plainTextMessage.dump(msg1.envctx, msg1.boundaries), plainTextMessageDump)
 

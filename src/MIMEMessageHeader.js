@@ -138,8 +138,12 @@ export default class MIMEMessageHeader {
 
     const newHeader = {
       custom: true,
+      placement: this.placement,
       name: name,
-      value: value
+      value: value,
+      dump: (v) => {
+        return v
+      }
     }
 
     this.store.push(newHeader)
