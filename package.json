@@ -2,9 +2,33 @@
   "name": "mimetext",
   "version": "1.0.1",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
-  "main": "src/index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "node": {
+        "import": "./dist/node/es/index.js",
+        "require": "./dist/node/cjs/index.js"
+      },
+      "import": "./dist/browser/es/index.js",
+      "require": "./dist/browser/cjs/index.js"
+    },
+    "./browser": {
+      "import": "./dist/browser/es/index.js",
+      "require": "./dist/browser/cjs/index.js"
+    },
+    "./node": {
+      "import": "./dist/node/es/index.js",
+      "require": "./dist/node/cjs/index.js"
+    },
+    "./gas": {
+      "import": "./dist/gas/es/index.js",
+      "require": "./dist/node/cjs/index.js"
+    }
+  },
+  "main": "src/entrypoints/node.js",
   "scripts": {
-    "test": "for i in tests/*.js; do node \"$i\"; done"
+    "test": "for i in tests/*.js; do node \"$i\"; done",
+    "build": "rollup --config rollup.config.js"
   },
   "repository": {
     "type": "git",
@@ -12,7 +36,8 @@
   },
   "keywords": [
     "rfc-2822",
-    "mime-message"
+    "mime-message",
+    "email-message"
   ],
   "author": "Murat Gözel <murat@gozel.com.tr>",
   "funding": {
@@ -24,7 +49,21 @@
     "url": "https://github.com/muratgozel/MIMEText/issues"
   },
   "homepage": "https://github.com/muratgozel/MIMEText#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.6",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
+    "core-js": "^3.18.3",
+    "rollup": "^2.57.0",
+    "rollup-plugin-terser": "^7.0.2"
+  },
   "dependencies": {
-    "basekits": "^1.1.1"
+    "@babel/runtime": "^7.15.4",
+    "@babel/runtime-corejs3": "^7.15.4"
   }
 }

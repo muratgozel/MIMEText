@@ -3,183 +3,195 @@
 
   [45367a6f]: https://www.ietf.org/rfc/rfc2822.txt "RFC 2822 Internet Message Format"
 
+![NPM](https://img.shields.io/npm/l/mimetext)
+[![npm version](https://badge.fury.io/js/mimetext.svg)](https://badge.fury.io/js/mimetext)
+![npm bundle size](https://img.shields.io/bundlephobia/min/mimetext)
+![npm](https://img.shields.io/npm/dm/mimetext)
+[![Join the chat at https://gitter.im/MIMEText/community](https://badges.gitter.im/MIMEText/community.svg)](https://gitter.im/MIMEText/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Install
 ```sh
 npm i mimetext
 ```
 
-## Import
+## Use
 ```js
-const message = require('mimetext')
+const {createMimeMessage} = require('mimetext')
+// or
+import {createMimeMessage} from 'mimetext'
+```
+
+Create a simple **plain text** email:
+```js
+const msg = createMimeMessage()
+msg.setSender({name: 'Lorem Ipsum', addr: 'lorem@ipsum.com'})
+msg.setRecipient('foobor@test.com')
+msg.setSubject('🚀 Issue 49!')
+msg.setMessage('text/plain', `Hi,
+I'm a simple text.`)
+```
+
+That's it. Now get the raw email message:
+```js
+const raw = msg.asRaw()
+```
+
+Output:
+```txt
+Date: Sun, 24 Oct 2021 04:50:32 +0000
+From: "Lorem Ipsum" <lorem@ipsum.com>
+To: <foobor@test.com>
+Message-ID: <is6jcakaj6p-1635051032602@ipsum.com>
+Subject: =?utf-8?B?8J+agCBJc3N1ZSA0OSE=?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Hi,
+I'm a simple text.
+```
+
+### More Sophisticated Example
+Here is more complex email message which contains **html** with **plaintext** version and has an **attachment**.
+```js
+const msg = createMimeMessage()
+msg.setSender('Lorem Ipsum <lorem@ipsum.com>')
+msg.setTo({name: 'Foo Bar', addr: 'foobor@test.com'})
+msg.setCc('Abc Def <abc@def.com>')
+msg.setBcc(['fgh@jkl.com', 'test2@test.com', {name: 'Name', addr: 'test3@test.com'}])
+msg.setSubject('🚀 Issue 49!')
+// add html version
+msg.setMessage('text/html', `Hi,
+I'm <strong>a bold</strong> text.`)
+// add alternative plain text version
+msg.setMessage('text/plain', `Hi,
+I'm a simple text.`)
+// set custom header
+msg.setHeader('X-ABC', 'asdildffdişfsdi')
+// add an attachment
+msg1.setAttachment('test.jpg', 'image/jpg', msg.toBase64( fs.readFileSync('./tests/test.jpg') ))
+```
+
+Here is the output of the `.asRaw`:
+```txt
+Date: Sun, 24 Oct 2021 05:00:03 +0000
+From: "Lorem Ipsum" <lorem@ipsum.com>
+To: "Foo Bar" <foobor@test.com>
+Cc: "Abc Def" <abc@def.com>
+Bcc: <fgh@jkl.com>, <test2@test.com>, "Name" <test3@test.com>
+Message-ID: <56y7xuld2n9-1635051603230@ipsum.com>
+Subject: =?utf-8?B?8J+agCBJc3N1ZSA0OSE=?=
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=tdplbi0e8pj
+
+--tdplbi0e8pj
+Content-Type: multipart/alternative; boundary=oagdypniyp
+
+--oagdypniyp
+Content-Type: text/plain; charset=UTF-8
+
+Hi,
+I'm a simple text.
+
+--oagdypniyp
+Content-Type: text/html; charset=UTF-8
+
+Hi,
+I'm <strong>a bold</strong> text.
+
+--oagdypniyp--
+--tdplbi0e8pj
+Content-Type: image/jpg; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;filename="test.jpg"
+
+/9j/4AAQSkZJRgABAgAAZABkAAD/7AARR....................Oc2YO5LuFLMxUeBjH5//2Q==
+
+--tdplbi0e8pj--
 ```
 
 ## API
 ### .setSender(value)
-Sets the From field.
+Sender can be specified in multiple ways:
 ```js
-// single sender, only email address known
 message.setSender('sender@email.com')
-
-// single sender, name and email known
+message.setSender('"Sender Fullname" <sender@email.com>')
 message.setSender({name: 'Sender Name', addr: 'sender@email.com'})
-
-// multiple senders, only email addresses known
 message.setSender(['sender@email.com', 'sender2@email.com'])
-
-// multiple senders, name and emails known
-message.setSender([
-  {name: 'Sender Name', addr: 'sender@email.com'},
-  {name: 'Another Sender', addr: 'sender2@email.com'}
-])
 ```
-Returns `undefined` or senders as formatted:
+Returns [`Mailbox`](https://github.com/muratgozel/MIMEText/blob/master/src/Mailbox.js) instance.
+
+### .getSender()
+Returns [`Mailbox`](https://github.com/muratgozel/MIMEText/blob/master/src/Mailbox.js) instance.
+
+### .setTo(value), .setCc(value), .setBcc(value), .setRecipient(value, opts)
+All of the `.setTo`, `.setCc` and `.setBcc` methods maps their input to `.setRecipient`. Returns array of [`Mailbox`](https://github.com/muratgozel/MIMEText/blob/master/src/Mailbox.js) instances.
 ```js
-[
-  {
-    addr: 'sender@email.com'
-  }
-]
-
-// or
-
-[
-  {
-    name: 'Sender Name',
-    addr: 'sender@email.com'
-  },
-  {
-    name: 'Another Sender',
-    addr: 'sender2@email.com'
-  }
-]
-```
-
-### .getSenders()
-Returns `null` or senders as formatted.
-
-### .setRecipient(value, opts)
-Sets To, Cc or Bcc field depending on the opts.
-```js
-// single recipient, only email address known
-message.setRecipient('person1@email.com')
-
-// single recipient, name and email known
-message.setRecipient({name: 'Person Name', addr: 'person1@email.com'})
-
-// multiple recipients, only email addresses known
-message.setRecipient(['person1@email.com', 'person2@email.com'])
-
-// multiple recipients, name and emails known
-message.setRecipient([
-  {name: 'Person Name', addr: 'person1@email.com'},
-  {name: 'Another Person', addr: 'person2@email.com'}
+message.setTo('person1@email.com')
+message.setTo('"Person Fullname" <person@email.com>')
+message.setTo({name: 'Person Name', addr: 'person2@email.com'})
+message.setTo([
+  'person3@email.com',
+  {name: 'Person Name', addr: 'person4@email.com'}
 ])
 
-// add to cc
-message.setRecipient('person3@email.com', {cc: true})
-
-// add to bcc
-message.setRecipient([
-  {name: 'Person Name', addr: 'person4@email.com'},
-  {name: 'Another Person', addr: 'person5@email.com'}
-], {bcc: true})
-```
-Returns `undefined` or recipients as formatted:
-```js
-[
-  {
-    addr: 'person1@email.com'
-  }
-]
-
-// or
-
-[
-  {
-    name: 'Person Name',
-    addr: 'person1@email.com'
-  },
-  {
-    name: 'Another Person',
-    addr: 'person2@email.com'
-  }
-]
+message.setRecipient('person5@email.com', {type: 'to'}) // to is default
 ```
 
-### .getRecipients()
-Returns `null` or recipients as formatted.
+### .getRecipients(opts={type: 'to'})
+Returns array of [`Mailbox`](https://github.com/muratgozel/MIMEText/blob/master/src/Mailbox.js) instances.
 
 ### .setSubject(value)
-Sets subject. `value` must be `string`. Returns `undefined` or value.
+Returns the `value`.
 ```js
 const value = 'Weekly Newsletter 49 Ready 🚀'
-
 message.setSubject(value)
 ```
 
 ### .getSubject()
-Returns `null` or subject as string.
+Returns the `value`.
 
-### .setAttachments(value)
-Sets one or more attachments. `value` is an attachment object or array of attachment objects. An attachment object is something like:
+### .setHeader()
+Inserts a header to the message.
 ```js
-const sampleBillAttachment = {
-  type: 'application/pdf',
-  filename: 'sample-bill.pdf',
-  contentId: 'sb123', // optional, can be used in case you need to show an image in email body like: <img src="cid:abc123">
-  base64Data: '' /* Base64 encoded value of the file content.
-  fs.readFileSync('./sample-bill.pdf').toString('base64') for example. */
-}
+message.setHeader('X-Custom-Header', 'value')
 ```
-Let's add more attachments into our email message:
 
+### .getHeader(name)
+Returns the value of the header.
+
+### .setMessage(type, data, moreHeaders={})
+Adds a content to the email. Valid values for `type` are `text/plain` and `text/html`. `data` is the content. Headers for this content can be specified with `moreHeaders`. Returns [`MIMEMessageContent`](https://github.com/muratgozel/MIMEText/blob/master/src/MIMEMessageContent.js) instance.
 ```js
-const anotherBillAttachment = {
-  type: 'image/jpeg',
-  filename: 'another-bill.jpg',
-  contentId: 'ab123',
-  base64Data: ''
-}
+// plain text
+message.setMessage('text/plain', 'This is plain text.')
 
-message.setAttachments([sampleBillAttachment, anotherBillAttachment])
+// or/and html
+message.setMessage('text/html', 'This is <strong>html</strong>.')
+
+// or in base64 encoded format
+const encoded = message.toBase64('This is <strong>html</strong>.')
+const headers = {'Content-Transfer-Encoding': 'base64'}
+message.setMessage('text/html', encoded, headers)
 ```
-Returns empty array or attachments added into the message.
+
+### .getMessageByType(type)
+Returns [`MIMEMessageContent`](https://github.com/muratgozel/MIMEText/blob/master/src/MIMEMessageContent.js) instance.
+
+### .setAttachment(filename, type, data, moreHeaders={})
+Adds an attachment to the email. `type` is the mime type of the file. `data` should be base64 encoded content of the file. Headers for this attachment can be specified with `moreHeaders`. Returns [`MIMEMessageContent`](https://github.com/muratgozel/MIMEText/blob/master/src/MIMEMessageContent.js) instance.
+```js
+const encoded = message.toBase64( fs.readFileSync('./tests/test.jpg') )
+message.setAttachment('test.jpg', 'image/jpg', encoded)
+
+// add content id header to use the attachment inside email body
+// <img src="cid:abc123">
+message.setAttachment('test.jpg', 'image/jpg', encoded, {
+  'Content-ID': 'abc123'
+})
+```
 
 ### .getAttachments()
-Returns `[]` (empty array) or attachments.
-
-### .setHeaders()
-Insert extra headers to the message.
-
-```js
-const customHeaders = {
-  'X-Custom-Header': 'Value',
-  'X-Another-Header', 'Another Value'
-}
-message.setHeaders(customHeaders)
-```
-
-### .getHeaders()
-Returns `null` or headers as string.
-
-### .setMessage(value, type=undefined)
-Set content. Either plaintext or html. If you don't specify type, it will be detected automatically by looking the `value`.
-```js
-const plaintextContent = 'Hello John.'
-message.setMessage(plaintextContent, 'text/plain')
-
-// or
-
-const htmlContent = 'Hello <b>John</b>.'
-message.setMessage(htmlContent, 'text/html')
-```
-Returns `undefined` or the value you set.
-
-### .getMessage()
-Returns `null` or content of the message. Either plaintext or html. If both contents exist it returns **plaintext** version.
-
-### .getHTML()
-Returns `null` or **html** content of the message.
+Returns an array of [`MIMEMessageContent`](https://github.com/muratgozel/MIMEText/blob/master/src/MIMEMessageContent.js) instances.
 
 ### .asRaw()
 Generates and returns the RFC-2822 compliant email message. This message can be used to send an email.
@@ -198,22 +210,23 @@ const AWS = require('aws-sdk')
 const ses = new AWS.SES({region: ''})
 
 // init mimetext
-const message = require('mimetext')
+const {createMimeMessage} = require('mimetext')
+const message = createMimeMessage()
 
 // create email message
 message.setSender('sender@email.com')
-message.setRecipient('person1@email.com')
+message.setTo('person1@email.com')
 message.setSubject('Weekly Newsletter 49 Ready 🚀')
-message.setAttachments([sampleBillAttachment, anotherBillAttachment])
-message.setMessage('Hello <b>John</b>.')
+message.setAttachment('bill.pdf', 'application/pdf', data)
+message.setMessage('text/html', 'Hello <b>John</b>.')
 
 // send email with aws sdk
 const params = {
-  Destinations: message.getRecipients().map(r => r.addr),
+  Destinations: message.getRecipients({type: 'to'}).map(mailbox => mailbox.addr),
   RawMessage: {
     Data: message.asRaw() // aws-sdk does the base64 encoding
   },
-  Source: message.getSenders()[0].addr
+  Source: message.getSender().addr
 }
 
 ses.sendRawEmail(params, function(err, result) {
@@ -228,12 +241,13 @@ ses.sendRawEmail(params, function(err, result) {
 const {google} = require('googleapis')
 
 // create email message
-const message = require('mimetext')
+const {createMimeMessage} = require('mimetext')
+const message = createMimeMessage()
 message.setSender('sender@email.com')
-message.setRecipient('person1@email.com')
+message.setTo('person1@email.com')
 message.setSubject('Weekly Newsletter 49 Ready 🚀')
-message.setAttachments([sampleBillAttachment, anotherBillAttachment])
-message.setMessage('Hello <b>John</b>.')
+message.setAttachment('bill.pdf', 'application/pdf', data)
+message.setMessage('text/html', 'Hello <b>John</b>.')
 
 // send email
 google.auth
@@ -259,137 +273,16 @@ google.auth
   })
 ```
 
-## Sample Raw Email Messages
-The messages below are the result of the `asRaw` method. You can find the parameters inside tests folder.
-
-Simple **plaintext** email:
-```txt
-From: person@test.com
-To: person2@test.com
-Cc: "Person3 Name" <person3@test.com>
-Bcc: "Person4 Name" <person4@test.com>
-Subject: =?utf-8?B?U2VsYW0h?=
-MIME-Version: 1.0
-Date: Fri, 24 Sep 2021 18:14:19 +0000
-Message-ID: <3butp7cl9dc-1632507259142@test.com>
-Content-Type: text/plain; charset="utf-8"
-
-Lorem ipsum.
-
-```
-
-Simple **html** email:
-```txt
-From: person@test.com
-To: person2@test.com
-Cc: "Person3 Name" <person3@test.com>
-Bcc: "Person4 Name" <person4@test.com>
-Subject: =?utf-8?B?U2VsYW0h?=
-MIME-Version: 1.0
-Date: Fri, 24 Sep 2021 18:17:27 +0000
-Message-ID: <i4xpl26o54-1632507447927@test.com>
-Content-Type: text/html; charset="utf-8"
-
-Lorem ipsum <b>me!</b>.
-
-```
-
-An **html** email with **plaintext** alternative:
-```txt
-From: person@test.com
-To: person2@test.com
-Cc: "Person3 Name" <person3@test.com>
-Bcc: "Person4 Name" <person4@test.com>
-Subject: =?utf-8?B?U2VsYW0h?=
-MIME-Version: 1.0
-Date: Fri, 24 Sep 2021 18:20:34 +0000
-Message-ID: <p8w1vcnzc6s-1632507634977@test.com>
-Content-Type: multipart/alternative; boundary=1mzb8trdm7rh1632507634977
-
---1mzb8trdm7rh1632507634977
-Content-Type: text/plain; charset="utf-8"
-
-Lorem ipsum.
-
---1mzb8trdm7rh1632507634977
-Content-Type: text/html; charset="utf-8"
-
-Lorem ipsum <b>me!</b>.
-
---1mzb8trdm7rh1632507634977--
-
-```
-
-A **plaintext** email with an **attachment**:
-```txt
-From: person@test.com
-To: person2@test.com
-Cc: "Person3 Name" <person3@test.com>
-Bcc: "Person4 Name" <person4@test.com>
-Subject: =?utf-8?B?U2VsYW0h?=
-MIME-Version: 1.0
-Date: Fri, 24 Sep 2021 18:33:37 +0000
-Message-ID: <gglbwvsyp0q-1632508417475@test.com>
-Content-Type: multipart/mixed; boundary=1tcsw3nouuu81632508417475
-
---1tcsw3nouuu81632508417475
-Content-Type: text/plain; charset="utf-8"
-
-Lorem ipsum.
-
---1tcsw3nouuu81632508417475
-Content-Type: image/jpeg
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;filename="a1.jpg"
-
-/9j/4AAQSkZJRgABAgEACQAJAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAgICAgICAgICAgMDAwMDAwMDAwMBAQEBAQEBAgEBAgICAQICAwMDAw..............AnF5QTo3rnGKav0p//9k=
-
---1tcsw3nouuu81632508417475--
-
-```
-
-An **html** message with **plaintext** alternative and two **attachments**:
-```txt
-From: person@test.com
-To: person2@test.com
-Cc: "Person3 Name" <person3@test.com>
-Bcc: "Person4 Name" <person4@test.com>
-Subject: =?utf-8?B?U2VsYW0h?=
-MIME-Version: 1.0
-Date: Fri, 24 Sep 2021 18:43:29 +0000
-Message-ID: <0bwsb8p3fr18-1632509009196@test.com>
-Content-Type: multipart/mixed; boundary=2sdohqqalp5e1632509009196
-
---2sdohqqalp5e1632509009196
-Content-Type: multipart/alternative; boundary=1aa3wr0fq0r1632509009196
-
---1aa3wr0fq0r1632509009196
-Content-Type: text/plain; charset="utf-8"
-
-Lorem ipsum.
-
---1aa3wr0fq0r1632509009196
-Content-Type: text/html; charset="utf-8"
-
-Lorem ipsum <b>me!</b>.
-
---1aa3wr0fq0r1632509009196--
---2sdohqqalp5e1632509009196
-Content-Type: image/jpeg
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;filename="a1.jpg"
-
-/9j/4AAQSkZJRgABAgEACQAJAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAgICAgICAgICAgMDAwMDAwMDAwMBAQEBAQEBAgEBAgICAQICAwMDAw..............AnF5QTo3rnGKav0p//9k=
-
---2sdohqqalp5e1632509009196
-Content-Type: image/jpeg
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;filename="a2.jpeg"
-
-/9j/4AAQSkZJRgABAQAASABIAAD/4QBYRXhpZgAATU0AKgAAAAgAAgESAAMAAAABAAEAAIdpAAQAAAABAAAAJgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAsqADAAQAAAABAAAAZAAAAAD.............UzR6tvEtchEDMLGP/wByf//Z
-
---2sdohqqalp5e1632509009196--
-
+## Error Handling
+Setter methods raise an instance [`MIMETextError`](https://github.com/muratgozel/MIMEText/blob/master/src/MIMETextError.js) on bad input.
+```js
+try {
+  message.setTo({prop: 'invalid'})
+} catch (e) {
+  e instanceof MIMETextError === true
+  e.name === 'MIMETextError'
+  e.description === 'The input should have an "addr" property that specifies ...'
+}
 ```
 
 ---
