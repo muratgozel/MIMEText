@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "exports": {
     ".": {
@@ -24,7 +24,7 @@
       "require": "./dist/node/cjs/index.js"
     }
   },
-  "main": "src/entrypoints/node.js",
+  "main": "./dist/node/cjs/index.js",
   "scripts": {
     "test": "for i in tests/*.js; do node \"$i\"; done",
     "build": "rollup --config rollup.config.js"
