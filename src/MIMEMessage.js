@@ -47,7 +47,7 @@ export default class MIMEMessage {
   }
 
   getRecipients(opts={type: 'to'}) {
-    return this.getHeader(opts.type)
+    return this.getHeader(opts.type) || []
   }
 
   setRecipient(input) {

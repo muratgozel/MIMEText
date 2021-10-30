@@ -148,8 +148,12 @@ class MIMEMessageHeader {
 
     const newHeader = {
       custom: true,
+      placement: this.placement,
       name: name,
-      value: value
+      value: value,
+      dump: (v) => {
+        return v
+      }
     };
 
     this.store.push(newHeader);
@@ -387,7 +391,7 @@ class MIMEMessage {
   }
 
   getRecipients(opts={type: 'to'}) {
-    return this.getHeader(opts.type)
+    return this.getHeader(opts.type) || []
   }
 
   setRecipient(input) {
@@ -417,7 +421,7 @@ class MIMEMessage {
 
   setHeader() {
     this.headers.set(arguments[0], arguments[1]);
-    return this
+    return arguments[0]
   }
 
   getHeader(name) {

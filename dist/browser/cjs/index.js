@@ -227,8 +227,12 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
 
       var newHeader = {
         custom: true,
+        placement: this.placement,
         name: name,
-        value: value
+        value: value,
+        dump: function dump(v) {
+          return v;
+        }
       };
       this.store.push(newHeader);
       return newHeader;
@@ -539,7 +543,7 @@ var MIMEMessage = /*#__PURE__*/function () {
       var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {
         type: 'to'
       };
-      return this.getHeader(opts.type);
+      return this.getHeader(opts.type) || [];
     }
   }, {
     key: "setRecipient",
@@ -584,7 +588,7 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "setHeader",
     value: function setHeader() {
       this.headers.set(arguments[0], arguments[1]);
-      return this;
+      return arguments[0];
     }
   }, {
     key: "getHeader",
