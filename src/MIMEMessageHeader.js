@@ -40,13 +40,6 @@ export default class MIMEMessageHeader {
       },
       {
         placement: 'header',
-        name: 'Reply-To',
-        dump: (v) => {
-          return v.dump()
-        }
-      },
-      {
-        placement: 'header',
         name: 'To',
         required: true,
         dump: (vs) => {
