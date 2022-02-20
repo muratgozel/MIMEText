@@ -52,7 +52,7 @@ class MIMEMessageHeader {
         placement: 'header',
         name: 'Reply-To',
         dump: (v) => {
-          return v.dump()
+          return v
         }
       },
       {

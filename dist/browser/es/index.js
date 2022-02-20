@@ -88,7 +88,7 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
       placement: 'header',
       name: 'Reply-To',
       dump: function dump(v) {
-        return v.dump();
+        return v;
       }
     }, {
       placement: 'header',
