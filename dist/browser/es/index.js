@@ -590,7 +590,7 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "setMessage",
     value: function setMessage(type, data) {
       var moreHeaders = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      var validTypes = ['text/html', 'text/plain'];
+      var validTypes = ['text/html', 'text/plain', 'text/x-amp-html'];
 
       if (_indexOfInstanceProperty(validTypes).call(validTypes, type) === -1) {
         var _context4;
@@ -655,13 +655,17 @@ var MIMEMessage = /*#__PURE__*/function () {
       var lines = this.headers.dump(this.envctx);
       var plainTextMessage = this.getMessageByType('text/plain');
       var htmlMessage = this.getMessageByType('text/html');
+      var ampMessage = this.getMessageByType('text/x-amp-html');
       var hasAttachments = this.getAttachments().length > 0;
       var hasPlainTextAlt = plainTextMessage instanceof MIMEMessageContent && htmlMessage instanceof MIMEMessageContent;
+      var hasAmpAlt = plainTextMessage instanceof MIMEMessageContent && htmlMessage instanceof MIMEMessageContent && ampMessage instanceof MIMEMessageContent;
 
       if (hasAttachments && hasPlainTextAlt) {
         return this.asRawMixedAlt(lines);
       } else if (hasAttachments) {
         return this.asRawMixed(lines);
+      } else if (hasAmpAlt) {
+        return this.asRawAmp(lines);
       } else if (hasPlainTextAlt) {
         return this.asRawAlt(lines);
       } else {
@@ -695,51 +699,62 @@ var MIMEMessage = /*#__PURE__*/function () {
       return lines;
     }
   }, {
+    key: "asRawAmp",
+    value: function asRawAmp(lines) {
+      var _context15, _context16, _context17, _context18, _context19, _context20, _context21, _context22;
+
+      var plainTextMessage = this.getMessageByType('text/plain');
+      var htmlMessage = this.getMessageByType('text/html');
+      var ampMessage = this.getMessageByType('text/x-amp-html');
+      lines = _concatInstanceProperty(_context15 = _concatInstanceProperty(_context16 = _concatInstanceProperty(_context17 = _concatInstanceProperty(_context18 = _concatInstanceProperty(_context19 = _concatInstanceProperty(_context20 = _concatInstanceProperty(_context21 = _concatInstanceProperty(_context22 = "".concat(lines, "\nContent-Type: multipart/alternative; boundary=")).call(_context22, this.boundaries.alt, "\n\n--")).call(_context21, this.boundaries.alt, "\n")).call(_context20, plainTextMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context19, this.boundaries.alt, "\n")).call(_context18, ampMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context17, this.boundaries.alt, "\n")).call(_context16, htmlMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context15, this.boundaries.alt, "--");
+      return lines;
+    }
+  }, {
     key: "asRawMixed",
     value: function asRawMixed(lines) {
-      var _context15,
+      var _context23,
           _this2 = this,
-          _context16,
-          _context17,
-          _context18,
-          _context19,
-          _context20;
+          _context24,
+          _context25,
+          _context26,
+          _context27,
+          _context28;
 
       var plainTextMessage = this.getMessageByType('text/plain');
       var htmlMessage = this.getMessageByType('text/html');
       var message = htmlMessage || plainTextMessage;
 
-      var attachments = _mapInstanceProperty(_context15 = this.getAttachments()).call(_context15, function (a) {
+      var attachments = _mapInstanceProperty(_context23 = this.getAttachments()).call(_context23, function (a) {
         return a.dump(_this2.envctx, _this2.boundaries);
       }).join('').replace(/[\r\n]$/g, '');
 
-      lines = _concatInstanceProperty(_context16 = _concatInstanceProperty(_context17 = _concatInstanceProperty(_context18 = _concatInstanceProperty(_context19 = _concatInstanceProperty(_context20 = "".concat(lines, "\nContent-Type: multipart/mixed; boundary=")).call(_context20, this.boundaries.mixed, "\n\n--")).call(_context19, this.boundaries.mixed, "\n")).call(_context18, message.dump(this.envctx, this.boundaries), "\n\n")).call(_context17, attachments, "\n\n--")).call(_context16, this.boundaries.mixed, "--");
+      lines = _concatInstanceProperty(_context24 = _concatInstanceProperty(_context25 = _concatInstanceProperty(_context26 = _concatInstanceProperty(_context27 = _concatInstanceProperty(_context28 = "".concat(lines, "\nContent-Type: multipart/mixed; boundary=")).call(_context28, this.boundaries.mixed, "\n\n--")).call(_context27, this.boundaries.mixed, "\n")).call(_context26, message.dump(this.envctx, this.boundaries), "\n\n")).call(_context25, attachments, "\n\n--")).call(_context24, this.boundaries.mixed, "--");
       return lines;
     }
   }, {
     key: "asRawMixedAlt",
     value: function asRawMixedAlt(lines) {
-      var _context21,
+      var _context29,
           _this3 = this,
-          _context22,
-          _context23,
-          _context24,
-          _context25,
-          _context26,
-          _context27,
-          _context28,
-          _context29,
           _context30,
-          _context31;
+          _context31,
+          _context32,
+          _context33,
+          _context34,
+          _context35,
+          _context36,
+          _context37,
+          _context38,
+          _context39;
 
       var plainTextMessage = this.getMessageByType('text/plain');
       var htmlMessage = this.getMessageByType('text/html');
 
-      var attachments = _mapInstanceProperty(_context21 = this.getAttachments()).call(_context21, function (a) {
+      var attachments = _mapInstanceProperty(_context29 = this.getAttachments()).call(_context29, function (a) {
         return a.dump(_this3.envctx, _this3.boundaries);
       }).join('').replace(/[\r\n]$/g, '');
 
-      lines = _concatInstanceProperty(_context22 = _concatInstanceProperty(_context23 = _concatInstanceProperty(_context24 = _concatInstanceProperty(_context25 = _concatInstanceProperty(_context26 = _concatInstanceProperty(_context27 = _concatInstanceProperty(_context28 = _concatInstanceProperty(_context29 = _concatInstanceProperty(_context30 = _concatInstanceProperty(_context31 = "".concat(lines, "\nContent-Type: multipart/mixed; boundary=")).call(_context31, this.boundaries.mixed, "\n\n--")).call(_context30, this.boundaries.mixed, "\nContent-Type: multipart/alternative; boundary=")).call(_context29, this.boundaries.alt, "\n\n--")).call(_context28, this.boundaries.alt, "\n")).call(_context27, plainTextMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context26, this.boundaries.alt, "\n")).call(_context25, htmlMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context24, this.boundaries.alt, "--\n")).call(_context23, attachments, "\n\n--")).call(_context22, this.boundaries.mixed, "--");
+      lines = _concatInstanceProperty(_context30 = _concatInstanceProperty(_context31 = _concatInstanceProperty(_context32 = _concatInstanceProperty(_context33 = _concatInstanceProperty(_context34 = _concatInstanceProperty(_context35 = _concatInstanceProperty(_context36 = _concatInstanceProperty(_context37 = _concatInstanceProperty(_context38 = _concatInstanceProperty(_context39 = "".concat(lines, "\nContent-Type: multipart/mixed; boundary=")).call(_context39, this.boundaries.mixed, "\n\n--")).call(_context38, this.boundaries.mixed, "\nContent-Type: multipart/alternative; boundary=")).call(_context37, this.boundaries.alt, "\n\n--")).call(_context36, this.boundaries.alt, "\n")).call(_context35, plainTextMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context34, this.boundaries.alt, "\n")).call(_context33, htmlMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context32, this.boundaries.alt, "--\n")).call(_context31, attachments, "\n\n--")).call(_context30, this.boundaries.mixed, "--");
       return lines;
     }
   }, {
