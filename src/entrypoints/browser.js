@@ -1,6 +1,6 @@
 import MIMEMessage from '../MIMEMessage.js'
 
-const envctx = {
+const defaultBrowserEnvCtx = {
   toBase64: function toBase64(data) {
     return btoa(data)
   },
@@ -13,11 +13,11 @@ const envctx = {
 }
 
 class NodeMIMEMessage extends MIMEMessage {
-  constructor() {
-    super(envctx)
+  constructor(envctx) {
+    super({...defaultBrowserEnvCtx, ...envctx})
   }
 }
 
-export function createMimeMessage() {
-  return new NodeMIMEMessage()
+export function createMimeMessage(envctx) {
+  return new NodeMIMEMessage(envctx)
 }

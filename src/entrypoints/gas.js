@@ -1,6 +1,6 @@
 import MIMEMessage from '../MIMEMessage.js'
 
-const envctx = {
+const defaultGasEnvCtx = {
   toBase64: function toBase64(data) {
     return Utilities.base64Encode(data, Utilities.Charset.UTF_8)
   },
@@ -10,11 +10,11 @@ const envctx = {
 }
 
 class GasMIMEMessage extends MIMEMessage {
-  constructor() {
-    super(envctx)
+  constructor(envctx) {
+    super({...defaultGasEnvCtx, ...envctx})
   }
 }
 
-export function createMimeMessage() {
-  return new GasMIMEMessage()
+export function createMimeMessage(envctx) {
+  return new GasMIMEMessage(envctx)
 }
