@@ -434,7 +434,7 @@ class MIMEMessage {
   }
 
   setMessage(type, data, moreHeaders={}) {
-    const validTypes = ['text/html', 'text/plain'];
+    const validTypes = ['text/html', 'text/plain', 'text/x-amp-html'];
 
     if (validTypes.indexOf(type) === -1) {
       throw new MIMETextError('INVALID_MESSAGE_TYPE', `
@@ -489,14 +489,19 @@ class MIMEMessage {
 
     const plainTextMessage = this.getMessageByType('text/plain');
     const htmlMessage = this.getMessageByType('text/html');
+    const ampMessage = this.getMessageByType('text/x-amp-html');
     const hasAttachments = this.getAttachments().length > 0;
     const hasPlainTextAlt = plainTextMessage instanceof MIMEMessageContent && htmlMessage instanceof MIMEMessageContent;
+    const hasAmpAlt = plainTextMessage instanceof MIMEMessageContent && htmlMessage instanceof MIMEMessageContent && ampMessage instanceof MIMEMessageContent;
 
     if (hasAttachments && hasPlainTextAlt) {
       return this.asRawMixedAlt(lines)
     }
     else if (hasAttachments) {
       return this.asRawMixed(lines)
+    }
+    else if(hasAmpAlt) {
+      return this.asRawAmp(lines)
     }
     else if (hasPlainTextAlt) {
       return this.asRawAlt(lines)
@@ -530,6 +535,28 @@ Content-Type: multipart/alternative; boundary=${this.boundaries.alt}
 
 --${this.boundaries.alt}
 ${plainTextMessage.dump(this.envctx, this.boundaries)}
+
+--${this.boundaries.alt}
+${htmlMessage.dump(this.envctx, this.boundaries)}
+
+--${this.boundaries.alt}--`;
+
+    return lines
+  }
+
+  asRawAmp(lines) {
+    const plainTextMessage = this.getMessageByType('text/plain');
+    const htmlMessage = this.getMessageByType('text/html');
+    const ampMessage = this.getMessageByType('text/x-amp-html');
+
+    lines = `${lines}
+Content-Type: multipart/alternative; boundary=${this.boundaries.alt}
+
+--${this.boundaries.alt}
+${plainTextMessage.dump(this.envctx, this.boundaries)}
+
+--${this.boundaries.alt}
+${ampMessage.dump(this.envctx, this.boundaries)}
 
 --${this.boundaries.alt}
 ${htmlMessage.dump(this.envctx, this.boundaries)}
