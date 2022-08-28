@@ -18,6 +18,10 @@ assert.strictEqual(msg1.getSender().name, 'Lorem Ipsum')
 assert.strictEqual(msg1.getSender().addr, 'lorem@ipsum.com')
 assert.strictEqual(msg1.getSender().type.toLowerCase(), 'from')
 
+msg1.setSender(' Lorem Ipsum Trimmus <lorem@ipsum.trimmus.com> ')
+assert.strictEqual(msg1.getSender().name, 'Lorem Ipsum Trimmus')
+assert.strictEqual(msg1.getSender().addr, 'lorem@ipsum.trimmus.com')
+
 msg1.setTo({name: 'Foo Bör', addr: 'foobor@test.com'})
 assert.strictEqual(msg1.getRecipients({type: 'to'}).length > 0, true)
 assert.strictEqual(msg1.getRecipients({type: 'to'})[0].name, 'Foo Bör')
