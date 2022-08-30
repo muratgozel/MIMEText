@@ -286,7 +286,7 @@ class Mailbox {
   }
 
   parseSpecCompliantText(text) {
-    text.trim();
+    text = text.trim();
 
     if (text.slice(0, 1) == '<' && text.slice(-1) == '>') {
       return {addr: text.slice(1, -1)}

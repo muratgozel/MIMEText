@@ -3,11 +3,11 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var _Reflect$construct = require('@babel/runtime-corejs3/core-js/reflect/construct');
+var _createClass = require('@babel/runtime-corejs3/helpers/createClass');
 var _classCallCheck = require('@babel/runtime-corejs3/helpers/classCallCheck');
 var _inherits = require('@babel/runtime-corejs3/helpers/inherits');
 var _possibleConstructorReturn = require('@babel/runtime-corejs3/helpers/possibleConstructorReturn');
 var _getPrototypeOf = require('@babel/runtime-corejs3/helpers/getPrototypeOf');
-var _createClass = require('@babel/runtime-corejs3/helpers/createClass');
 var _sliceInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/slice');
 var _mapInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/map');
 var _Object$keys = require('@babel/runtime-corejs3/core-js/object/keys');
@@ -25,11 +25,11 @@ var _trimInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/tri
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var _Reflect$construct__default = /*#__PURE__*/_interopDefaultLegacy(_Reflect$construct);
+var _createClass__default = /*#__PURE__*/_interopDefaultLegacy(_createClass);
 var _classCallCheck__default = /*#__PURE__*/_interopDefaultLegacy(_classCallCheck);
 var _inherits__default = /*#__PURE__*/_interopDefaultLegacy(_inherits);
 var _possibleConstructorReturn__default = /*#__PURE__*/_interopDefaultLegacy(_possibleConstructorReturn);
 var _getPrototypeOf__default = /*#__PURE__*/_interopDefaultLegacy(_getPrototypeOf);
-var _createClass__default = /*#__PURE__*/_interopDefaultLegacy(_createClass);
 var _sliceInstanceProperty__default = /*#__PURE__*/_interopDefaultLegacy(_sliceInstanceProperty);
 var _mapInstanceProperty__default = /*#__PURE__*/_interopDefaultLegacy(_mapInstanceProperty);
 var _Object$keys__default = /*#__PURE__*/_interopDefaultLegacy(_Object$keys);
@@ -64,7 +64,7 @@ var MIMETextError = /*#__PURE__*/function (_Error) {
     return _this;
   }
 
-  return MIMETextError;
+  return _createClass__default["default"](MIMETextError);
 }( /*#__PURE__*/_wrapNativeSuper__default["default"](Error));
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof _Symbol__default["default"] !== "undefined" && _getIteratorMethod__default["default"](o) || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
@@ -410,7 +410,7 @@ var Mailbox = /*#__PURE__*/function () {
     value: function parseSpecCompliantText(text) {
       var _context, _context2, _context3;
 
-      _trimInstanceProperty__default["default"](text).call(text);
+      text = _trimInstanceProperty__default["default"](text).call(text);
 
       if (_sliceInstanceProperty__default["default"](text).call(text, 0, 1) == '<' && _sliceInstanceProperty__default["default"](text).call(text, -1) == '>') {
         return {
@@ -801,7 +801,7 @@ var NodeMIMEMessage = /*#__PURE__*/function (_MIMEMessage) {
     return _super.call(this, envctx);
   }
 
-  return NodeMIMEMessage;
+  return _createClass__default["default"](NodeMIMEMessage);
 }(MIMEMessage);
 
 function createMimeMessage() {

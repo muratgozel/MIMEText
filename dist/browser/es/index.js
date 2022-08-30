@@ -1,9 +1,9 @@
 import _Reflect$construct from '@babel/runtime-corejs3/core-js/reflect/construct';
+import _createClass from '@babel/runtime-corejs3/helpers/createClass';
 import _classCallCheck from '@babel/runtime-corejs3/helpers/classCallCheck';
 import _inherits from '@babel/runtime-corejs3/helpers/inherits';
 import _possibleConstructorReturn from '@babel/runtime-corejs3/helpers/possibleConstructorReturn';
 import _getPrototypeOf from '@babel/runtime-corejs3/helpers/getPrototypeOf';
-import _createClass from '@babel/runtime-corejs3/helpers/createClass';
 import _sliceInstanceProperty from '@babel/runtime-corejs3/core-js/instance/slice';
 import _mapInstanceProperty from '@babel/runtime-corejs3/core-js/instance/map';
 import _Object$keys from '@babel/runtime-corejs3/core-js/object/keys';
@@ -38,7 +38,7 @@ var MIMETextError = /*#__PURE__*/function (_Error) {
     return _this;
   }
 
-  return MIMETextError;
+  return _createClass(MIMETextError);
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof _Symbol !== "undefined" && _getIteratorMethod(o) || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
@@ -384,7 +384,7 @@ var Mailbox = /*#__PURE__*/function () {
     value: function parseSpecCompliantText(text) {
       var _context, _context2, _context3;
 
-      _trimInstanceProperty(text).call(text);
+      text = _trimInstanceProperty(text).call(text);
 
       if (_sliceInstanceProperty(text).call(text, 0, 1) == '<' && _sliceInstanceProperty(text).call(text, -1) == '>') {
         return {
@@ -775,7 +775,7 @@ var NodeMIMEMessage = /*#__PURE__*/function (_MIMEMessage) {
     return _super.call(this, envctx);
   }
 
-  return NodeMIMEMessage;
+  return _createClass(NodeMIMEMessage);
 }(MIMEMessage);
 
 function createMimeMessage() {
