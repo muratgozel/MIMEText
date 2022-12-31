@@ -1,8 +1,7 @@
-const {nodeResolve} = require('@rollup/plugin-node-resolve')
-const commonjs = require('@rollup/plugin-commonjs')
-const {babel} = require('@rollup/plugin-babel')
-const {terser} = require('rollup-plugin-terser')
-const json = require('@rollup/plugin-json')
+import {nodeResolve} from '@rollup/plugin-node-resolve';
+import commonjs from "@rollup/plugin-commonjs";
+import {babel} from '@rollup/plugin-babel';
+import {terser} from "rollup-plugin-terser";
 
 const babelPlugins=[]
 
@@ -13,7 +12,7 @@ babelPlugins.push(['@babel/plugin-transform-runtime', {
   absoluteRuntime: false
 }])
 
-module.exports = [
+export default [
   {
     external: [
       /@babel\/runtime/, /core-js/

@@ -14,47 +14,40 @@ import _filterInstanceProperty from '@babel/runtime-corejs3/core-js/instance/fil
 import _Array$from from '@babel/runtime-corejs3/core-js/array/from';
 import _Symbol from '@babel/runtime-corejs3/core-js/symbol';
 import _getIteratorMethod from '@babel/runtime-corejs3/core-js/get-iterator-method';
+import _taggedTemplateLiteral from '@babel/runtime-corejs3/helpers/taggedTemplateLiteral';
 import _reduceInstanceProperty from '@babel/runtime-corejs3/core-js/instance/reduce';
 import _wrapNativeSuper from '@babel/runtime-corejs3/helpers/wrapNativeSuper';
 import _trimInstanceProperty from '@babel/runtime-corejs3/core-js/instance/trim';
 
 function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = _Reflect$construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !_Reflect$construct) return false; if (_Reflect$construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(_Reflect$construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
 var MIMETextError = /*#__PURE__*/function (_Error) {
   _inherits(MIMETextError, _Error);
-
   var _super = _createSuper$1(MIMETextError);
-
   function MIMETextError(message, description) {
     var _this;
-
     _classCallCheck(this, MIMETextError);
-
     _this = _super.call(this, message);
     _this.description = description ? _trimInstanceProperty(description).call(description).replace(/[\s]{2,}/, ' ') : null;
     _this.name = 'MIMETextError';
     return _this;
   }
-
   return _createClass(MIMETextError);
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 
+var _templateObject;
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof _Symbol !== "undefined" && _getIteratorMethod(o) || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { var _context10; if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = _sliceInstanceProperty(_context10 = Object.prototype.toString.call(o)).call(_context10, 8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return _Array$from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
-function _unsupportedIterableToArray(o, minLen) { var _context5; if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = _sliceInstanceProperty(_context5 = Object.prototype.toString.call(o)).call(_context5, 8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return _Array$from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 /*
 * Headers are based on: https://www.rfc-editor.org/rfc/rfc4021#section-2.1
 * (Some are ignored as they can be added later or as a custom header.)
 */
-
 var MIMEMessageHeader = /*#__PURE__*/function () {
   function MIMEMessageHeader(placement) {
     _classCallCheck(this, MIMEMessageHeader);
-
+    this.maxLineLength = 998;
     this.placement = placement;
     this.store = [{
       placement: 'header',
@@ -73,16 +66,17 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
     }, {
       placement: 'header',
       name: 'From',
-      // required property indicates that this property must be set
       required: true,
-      dump: function dump(v) {
-        return v.dump();
+      dump: function dump(v, ctx) {
+        var _context;
+        return !v.name ? v.dump() : _concatInstanceProperty(_context = "=?utf-8?B?".concat(ctx.toBase64(v.name), "?= <")).call(_context, v.addr, ">");
       }
     }, {
       placement: 'header',
       name: 'Sender',
-      dump: function dump(v) {
-        return v.dump();
+      dump: function dump(v, ctx) {
+        var _context2;
+        return !v.name ? v.dump() : _concatInstanceProperty(_context2 = "=?utf-8?B?".concat(ctx.toBase64(v.name), "?= <")).call(_context2, v.addr, ">");
       }
     }, {
       placement: 'header',
@@ -93,43 +87,43 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
     }, {
       placement: 'header',
       name: 'To',
-      required: true,
-      dump: function dump(vs) {
-        return _mapInstanceProperty(vs).call(vs, function (v) {
-          return v.dump();
-        }).join(', ');
+      // INFO: "To" field is not required according to the RFC-2822
+      //required: true,
+      dump: function dump(arr, ctx) {
+        return _mapInstanceProperty(arr).call(arr, function (v) {
+          var _context3;
+          return !v.name ? v.dump() : _concatInstanceProperty(_context3 = "=?utf-8?B?".concat(ctx.toBase64(v.name), "?= <")).call(_context3, v.addr, ">");
+        }).join(",\n ");
       }
     }, {
       placement: 'header',
       name: 'Cc',
-      dump: function dump(vs) {
-        return _mapInstanceProperty(vs).call(vs, function (v) {
-          return v.dump();
-        }).join(', ');
+      dump: function dump(arr, ctx) {
+        return _mapInstanceProperty(arr).call(arr, function (v) {
+          var _context4;
+          return !v.name ? v.dump() : _concatInstanceProperty(_context4 = "=?utf-8?B?".concat(ctx.toBase64(v.name), "?= <")).call(_context4, v.addr, ">");
+        }).join(",\n ");
       }
     }, {
       placement: 'header',
       name: 'Bcc',
-      dump: function dump(vs) {
-        return _mapInstanceProperty(vs).call(vs, function (v) {
-          return v.dump();
-        }).join(', ');
+      dump: function dump(arr, ctx) {
+        return _mapInstanceProperty(arr).call(arr, function (v) {
+          var _context5;
+          return !v.name ? v.dump() : _concatInstanceProperty(_context5 = "=?utf-8?B?".concat(ctx.toBase64(v.name), "?= <")).call(_context5, v.addr, ">");
+        }).join(",\n ");
       }
     }, {
       placement: 'header',
       name: 'Message-ID',
       disabled: false,
       generator: function generator(ctx) {
-        var _context, _context2;
-
+        var _context6, _context7;
         var datestr = Date.now().toString();
-
-        var randomstr = _sliceInstanceProperty(_context = Math.random().toString(36)).call(_context, 2);
-
-        var domain = _filterInstanceProperty(_context2 = ctx.store).call(_context2, function (item) {
+        var randomstr = _sliceInstanceProperty(_context6 = Math.random().toString(36)).call(_context6, 2);
+        var domain = _filterInstanceProperty(_context7 = ctx.store).call(_context7, function (item) {
           return item.name == 'From';
         })[0].value.getAddrDomain();
-
         return '<' + randomstr + '-' + datestr + '@' + domain + '>';
       },
       dump: function dump(v) {
@@ -177,20 +171,18 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
       }
     }];
   }
-
   _createClass(MIMEMessageHeader, [{
     key: "set",
     value: function set(name, value) {
+      this.validateLength(name, value);
       var _iterator = _createForOfIteratorHelper(this.store),
-          _step;
-
+        _step;
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var item = _step.value;
-
-          if (item.name.toLowerCase() == name.toLowerCase()) {
-            item.value = value;
-            return item;
+          var _item = _step.value;
+          if (_item.name.toLowerCase() == name.toLowerCase()) {
+            _item.value = value;
+            return _item;
           }
         }
       } catch (err) {
@@ -198,7 +190,6 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
       } finally {
         _iterator.f();
       }
-
       var newHeader = {
         custom: true,
         placement: this.placement,
@@ -212,17 +203,23 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
       return newHeader;
     }
   }, {
+    key: "validateLength",
+    value: function validateLength(name, value) {
+      var len = name.length + value.length + 2; // 2 is ": "
+      if (len > this.maxLineLength) {
+        throw new MIMETextError('INVALID_HEADER', "The \"".concat(item.name, "\" header is too long. ")(_templateObject || (_templateObject = _taggedTemplateLiteral(["", " chars allowed at max, \"", "\" was ", " long."])), this.maxLineLength, item.name, len));
+      }
+    }
+  }, {
     key: "get",
     value: function get(name) {
       var _iterator2 = _createForOfIteratorHelper(this.store),
-          _step2;
-
+        _step2;
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var item = _step2.value;
-
-          if (item.name.toLowerCase() == name.toLowerCase()) {
-            return item.value;
+          var _item2 = _step2.value;
+          if (_item2.name.toLowerCase() == name.toLowerCase()) {
+            return _item2.value;
           }
         }
       } catch (err) {
@@ -230,15 +227,13 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
       } finally {
         _iterator2.f();
       }
-
       return undefined;
     }
   }, {
     key: "toObject",
     value: function toObject() {
-      var _context3;
-
-      return _reduceInstanceProperty(_context3 = this.store).call(_context3, function (memo, item) {
+      var _context8;
+      return _reduceInstanceProperty(_context8 = this.store).call(_context8, function (memo, item) {
         memo[item.name] = item.value;
         return memo;
       }, {});
@@ -251,46 +246,234 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
         store: this.store
       };
       var lines = '';
-
       var _iterator3 = _createForOfIteratorHelper(this.store),
-          _step3;
-
+        _step3;
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var _context4;
-
-          var item = _step3.value;
-          if (item.placement != this.placement) continue;
-          var v = item.value ? item.value : !item.disabled && typeof item.generator == 'function' ? item.generator(ctx) : null;
-
-          if (!v && item.required) {
-            throw new MIMETextError('MISSING_HEADER', "The \"".concat(item.name, "\" header is required."));
+          var _context9;
+          var _item3 = _step3.value;
+          if (_item3.placement != this.placement) continue;
+          var v = _item3.value ? _item3.value : !_item3.disabled && typeof _item3.generator == 'function' ? _item3.generator(ctx) : null;
+          if (!v && _item3.required) {
+            throw new MIMETextError('MISSING_HEADER', "The \"".concat(_item3.name, "\" header is required."));
           }
-
           if (!v) continue;
-          lines += _concatInstanceProperty(_context4 = "".concat(item.name, ": ")).call(_context4, item.dump(v, ctx), "\r\n");
+          lines += _concatInstanceProperty(_context9 = "".concat(_item3.name, ": ")).call(_context9, _item3.dump(v, ctx), "\r\n");
         }
       } catch (err) {
         _iterator3.e(err);
       } finally {
         _iterator3.f();
       }
-
       return _sliceInstanceProperty(lines).call(lines, 0, -2);
     }
   }]);
-
   return MIMEMessageHeader;
 }();
+
+// Current version.
+
+// Establish the root object, `window` (`self`) in the browser, `global`
+// on the server, or `this` in some virtual machines. We use `self`
+// instead of `window` for `WebWorker` support.
+(typeof self == 'object' && self.self === self && self) ||
+          (typeof global == 'object' && global.global === global && global) ||
+          Function('return this')() ||
+          {};
+
+// Save bytes in the minified (but not gzipped) version:
+var ArrayProto = Array.prototype;
+
+// Create quick reference variables for speed access to core prototypes.
+var slice = ArrayProto.slice;
+
+// Chunk a single array into multiple arrays, each containing `count` or fewer
+// items.
+function chunk(array, count) {
+  if (count == null || count < 1) return [];
+  var result = [];
+  var i = 0, length = array.length;
+  while (i < length) {
+    result.push(slice.call(array, i, i += count));
+  }
+  return result;
+}
+
+var runesExports = {};
+var runes$1 = {
+  get exports(){ return runesExports; },
+  set exports(v){ runesExports = v; },
+};
+
+const HIGH_SURROGATE_START = 0xd800;
+const HIGH_SURROGATE_END = 0xdbff;
+
+const LOW_SURROGATE_START = 0xdc00;
+
+const REGIONAL_INDICATOR_START = 0x1f1e6;
+const REGIONAL_INDICATOR_END = 0x1f1ff;
+
+const FITZPATRICK_MODIFIER_START = 0x1f3fb;
+const FITZPATRICK_MODIFIER_END = 0x1f3ff;
+
+const VARIATION_MODIFIER_START = 0xfe00;
+const VARIATION_MODIFIER_END = 0xfe0f;
+
+const DIACRITICAL_MARKS_START = 0x20d0;
+const DIACRITICAL_MARKS_END = 0x20ff;
+
+const ZWJ = 0x200d;
+
+const GRAPHEMS = [
+  0x0308, // ( ◌̈ ) COMBINING DIAERESIS
+  0x0937, // ( ष ) DEVANAGARI LETTER SSA
+  0x0937, // ( ष ) DEVANAGARI LETTER SSA
+  0x093F, // ( ि ) DEVANAGARI VOWEL SIGN I
+  0x093F, // ( ि ) DEVANAGARI VOWEL SIGN I
+  0x0BA8, // ( ந ) TAMIL LETTER NA
+  0x0BBF, // ( ி ) TAMIL VOWEL SIGN I
+  0x0BCD, // ( ◌்) TAMIL SIGN VIRAMA
+  0x0E31, // ( ◌ั ) THAI CHARACTER MAI HAN-AKAT
+  0x0E33, // ( ำ ) THAI CHARACTER SARA AM
+  0x0E40, // ( เ ) THAI CHARACTER SARA E
+  0x0E49, // ( เ ) THAI CHARACTER MAI THO
+  0x1100, // ( ᄀ ) HANGUL CHOSEONG KIYEOK
+  0x1161, // ( ᅡ ) HANGUL JUNGSEONG A
+  0x11A8 // ( ᆨ ) HANGUL JONGSEONG KIYEOK
+];
+
+function runes (string) {
+  if (typeof string !== 'string') {
+    throw new Error('string cannot be undefined or null')
+  }
+  const result = [];
+  let i = 0;
+  let increment = 0;
+  while (i < string.length) {
+    increment += nextUnits(i + increment, string);
+    if (isGraphem(string[i + increment])) {
+      increment++;
+    }
+    if (isVariationSelector(string[i + increment])) {
+      increment++;
+    }
+    if (isDiacriticalMark(string[i + increment])) {
+      increment++;
+    }
+    if (isZeroWidthJoiner(string[i + increment])) {
+      increment++;
+      continue
+    }
+    result.push(string.substring(i, i + increment));
+    i += increment;
+    increment = 0;
+  }
+  return result
+}
+
+// Decide how many code units make up the current character.
+// BMP characters: 1 code unit
+// Non-BMP characters (represented by surrogate pairs): 2 code units
+// Emoji with skin-tone modifiers: 4 code units (2 code points)
+// Country flags: 4 code units (2 code points)
+// Variations: 2 code units
+function nextUnits (i, string) {
+  const current = string[i];
+  // If we don't have a value that is part of a surrogate pair, or we're at
+  // the end, only take the value at i
+  if (!isFirstOfSurrogatePair(current) || i === string.length - 1) {
+    return 1
+  }
+
+  const currentPair = current + string[i + 1];
+  let nextPair = string.substring(i + 2, i + 5);
+
+  // Country flags are comprised of two regional indicator symbols,
+  // each represented by a surrogate pair.
+  // See http://emojipedia.org/flags/
+  // If both pairs are regional indicator symbols, take 4
+  if (isRegionalIndicator(currentPair) && isRegionalIndicator(nextPair)) {
+    return 4
+  }
+
+  // If the next pair make a Fitzpatrick skin tone
+  // modifier, take 4
+  // See http://emojipedia.org/modifiers/
+  // Technically, only some code points are meant to be
+  // combined with the skin tone modifiers. This function
+  // does not check the current pair to see if it is
+  // one of them.
+  if (isFitzpatrickModifier(nextPair)) {
+    return 4
+  }
+  return 2
+}
+
+function isFirstOfSurrogatePair (string) {
+  return string && betweenInclusive(string[0].charCodeAt(0), HIGH_SURROGATE_START, HIGH_SURROGATE_END)
+}
+
+function isRegionalIndicator (string) {
+  return betweenInclusive(codePointFromSurrogatePair(string), REGIONAL_INDICATOR_START, REGIONAL_INDICATOR_END)
+}
+
+function isFitzpatrickModifier (string) {
+  return betweenInclusive(codePointFromSurrogatePair(string), FITZPATRICK_MODIFIER_START, FITZPATRICK_MODIFIER_END)
+}
+
+function isVariationSelector (string) {
+  return typeof string === 'string' && betweenInclusive(string.charCodeAt(0), VARIATION_MODIFIER_START, VARIATION_MODIFIER_END)
+}
+
+function isDiacriticalMark (string) {
+  return typeof string === 'string' && betweenInclusive(string.charCodeAt(0), DIACRITICAL_MARKS_START, DIACRITICAL_MARKS_END)
+}
+
+function isGraphem (string) {
+  return typeof string === 'string' && GRAPHEMS.indexOf(string.charCodeAt(0)) !== -1
+}
+
+function isZeroWidthJoiner (string) {
+  return typeof string === 'string' && string.charCodeAt(0) === ZWJ
+}
+
+function codePointFromSurrogatePair (pair) {
+  const highOffset = pair.charCodeAt(0) - HIGH_SURROGATE_START;
+  const lowOffset = pair.charCodeAt(1) - LOW_SURROGATE_START;
+  return (highOffset << 10) + lowOffset + 0x10000
+}
+
+function betweenInclusive (value, lower, upper) {
+  return value >= lower && value <= upper
+}
+
+function substring (string, start, width) {
+  const chars = runes(string);
+  if (start === undefined) {
+    return string
+  }
+  if (start >= chars.length) {
+    return ''
+  }
+  const rest = chars.length - start;
+  const stringWidth = width === undefined ? rest : width;
+  let endIndex = start + stringWidth;
+  if (endIndex > (start + rest)) {
+    endIndex = undefined;
+  }
+  return chars.slice(start, endIndex).join('')
+}
+
+runes$1.exports = runes;
+runesExports.substr = substring;
 
 var MIMEMessageContent = /*#__PURE__*/function () {
   function MIMEMessageContent(data) {
     _classCallCheck(this, MIMEMessageContent);
-
+    this.maxLineLen = 78;
     this.data = data;
     this.headers = new MIMEMessageHeader('content');
   }
-
   _createClass(MIMEMessageContent, [{
     key: "setHeader",
     value: function setHeader() {
@@ -301,12 +484,10 @@ var MIMEMessageContent = /*#__PURE__*/function () {
     key: "setHeaders",
     value: function setHeaders(obj) {
       var _context,
-          _this = this;
-
+        _this = this;
       _mapInstanceProperty(_context = _Object$keys(obj)).call(_context, function (prop) {
         return _this.setHeader(prop, obj[prop]);
       });
-
       return this;
     }
   }, {
@@ -326,22 +507,30 @@ var MIMEMessageContent = /*#__PURE__*/function () {
       return d && _indexOfInstanceProperty(d).call(d, 'attachment') !== -1 ? true : false;
     }
   }, {
+    key: "configureLineLength",
+    value: function configureLineLength(text) {
+      var _context2,
+        _this2 = this;
+      return _mapInstanceProperty(_context2 = text.split(/[\r\n]+/)).call(_context2, function (line) {
+        var _context3;
+        return !line ? '' : _mapInstanceProperty(_context3 = chunk(runesExports(line), _this2.maxLineLen)).call(_context3, function (arr) {
+          return arr.join('');
+        }).join("\r\n");
+      }).join("\r\n");
+    }
+  }, {
     key: "dump",
     value: function dump(envctx, boundaries) {
       var headerBlock = this.headers.dump(envctx);
-
       if (this.isAttachment()) {
-        var _context2, _context3;
-
-        return _concatInstanceProperty(_context2 = _concatInstanceProperty(_context3 = "--".concat(boundaries.mixed, "\n")).call(_context3, headerBlock, "\n\n")).call(_context2, this.data, "\n");
+        var _context4, _context5;
+        return _concatInstanceProperty(_context4 = _concatInstanceProperty(_context5 = "--".concat(boundaries.mixed, "\n")).call(_context5, headerBlock, "\n\n")).call(_context4, this.configureLineLength(this.data), "\n");
       } else {
-        var _context4;
-
-        return _concatInstanceProperty(_context4 = "".concat(headerBlock, "\r\n\r\n")).call(_context4, this.data);
+        var _context6;
+        return _concatInstanceProperty(_context6 = "".concat(headerBlock, "\r\n\r\n")).call(_context6, this.configureLineLength(this.data));
       }
     }
   }]);
-
   return MIMEMessageContent;
 }();
 
@@ -350,9 +539,7 @@ var Mailbox = /*#__PURE__*/function () {
     var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
       type: 'to'
     };
-
     _classCallCheck(this, Mailbox);
-
     this.reSpecCompliantAddr = /(([^<>\n\r]+)\s)?<[^\n\r]+>/;
     this.name = null;
     this.addr = null;
@@ -361,7 +548,6 @@ var Mailbox = /*#__PURE__*/function () {
     this.inputType = this.findInputType(input);
     this.createMailbox();
   }
-
   _createClass(Mailbox, [{
     key: "findInputType",
     value: function findInputType(input) {
@@ -369,7 +555,6 @@ var Mailbox = /*#__PURE__*/function () {
         if (!input.addr) {
           throw new MIMETextError('INVALID_MAILBOX', "\n          The input should have an \"addr\" property that specifies the email address           of the recipient.\n        ");
         }
-
         return 'OBJECT';
       } else if (this.reSpecCompliantAddr.test(input)) {
         return 'SPEC_COMPLIANT_TEXT';
@@ -383,15 +568,12 @@ var Mailbox = /*#__PURE__*/function () {
     key: "parseSpecCompliantText",
     value: function parseSpecCompliantText(text) {
       var _context, _context2, _context3;
-
       text = _trimInstanceProperty(text).call(text);
-
       if (_sliceInstanceProperty(text).call(text, 0, 1) == '<' && _sliceInstanceProperty(text).call(text, -1) == '>') {
         return {
           addr: _sliceInstanceProperty(text).call(text, 1, -1)
         };
       }
-
       var arr = text.split(' <');
       arr[0] = /^("|')/.test(arr[0]) ? _sliceInstanceProperty(_context = arr[0]).call(_context, 1) : arr[0];
       arr[0] = /("|')$/.test(arr[0]) ? _sliceInstanceProperty(_context2 = arr[0]).call(_context2, 0, -1) : arr[0];
@@ -410,13 +592,11 @@ var Mailbox = /*#__PURE__*/function () {
           this.name = this.input.name || null;
           this.type = this.input.type || this.type;
           break;
-
         case 'SPEC_COMPLIANT_TEXT':
           var obj = this.parseSpecCompliantText(this.input);
           this.addr = obj.addr;
           this.name = obj.name || null;
           break;
-
         case 'TEXT':
           this.addr = this.input;
           break;
@@ -428,20 +608,16 @@ var Mailbox = /*#__PURE__*/function () {
       if (!this.addr) {
         return '';
       }
-
       return this.addr.split('@')[1];
     }
   }, {
     key: "dump",
     value: function dump() {
       var result = "<".concat(this.addr, ">");
-
       if (this.name) {
         var _context4;
-
         result = _concatInstanceProperty(_context4 = "\"".concat(this.name, "\" ")).call(_context4, result);
       }
-
       return result;
     }
   }, {
@@ -454,25 +630,21 @@ var Mailbox = /*#__PURE__*/function () {
       };
     }
   }]);
-
   return Mailbox;
 }();
 
 var MIMEMessage = /*#__PURE__*/function () {
   function MIMEMessage(envctx) {
     _classCallCheck(this, MIMEMessage);
-
     this.envctx = envctx;
     this.headers = new MIMEMessageHeader('header');
     this.messages = [];
     this.generateBoundaries();
   }
-
   _createClass(MIMEMessage, [{
     key: "generateBoundaries",
     value: function generateBoundaries() {
       var _context, _context2;
-
       this.boundaries = {
         mixed: _sliceInstanceProperty(_context = Math.random().toString(36)).call(_context, 2),
         alt: _sliceInstanceProperty(_context2 = Math.random().toString(36)).call(_context2, 2)
@@ -499,7 +671,6 @@ var MIMEMessage = /*#__PURE__*/function () {
         type: 'to'
       };
       var recs = [];
-
       if (Array.isArray(input)) {
         _mapInstanceProperty(input).call(input, function (input) {
           return recs.push(new Mailbox(input, opts));
@@ -507,7 +678,6 @@ var MIMEMessage = /*#__PURE__*/function () {
       } else {
         recs.push(new Mailbox(input, opts));
       }
-
       this.setHeader(opts.type, recs);
       return recs;
     }
@@ -573,12 +743,10 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "setHeaders",
     value: function setHeaders(obj) {
       var _context3,
-          _this = this;
-
+        _this = this;
       _mapInstanceProperty(_context3 = _Object$keys(obj)).call(_context3, function (prop) {
         return _this.setHeader(prop, obj[prop]);
       });
-
       return this;
     }
   }, {
@@ -591,17 +759,13 @@ var MIMEMessage = /*#__PURE__*/function () {
     value: function setMessage(type, data) {
       var moreHeaders = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var validTypes = ['text/html', 'text/plain'];
-
       if (_indexOfInstanceProperty(validTypes).call(validTypes, type) === -1) {
         var _context4;
-
         throw new MIMETextError('INVALID_MESSAGE_TYPE', _concatInstanceProperty(_context4 = "\n        Invalid content type for the message. Supported content types         are ".concat(validTypes.join(', '), " but you specified \"")).call(_context4, type, "\".\n      "));
       }
-
       var headers = _Object$assign({}, moreHeaders, {
         'Content-Type': "".concat(type, "; charset=UTF-8")
       });
-
       var msg = new MIMEMessageContent(data);
       msg.setHeaders(headers);
       this.messages.push(msg);
@@ -611,13 +775,11 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "setAttachment",
     value: function setAttachment(filename, type, data) {
       var moreHeaders = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-
       var headers = _Object$assign({}, moreHeaders, {
         'Content-Type': "".concat(type, "; charset=UTF-8"),
         'Content-Transfer-Encoding': 'base64',
         'Content-Disposition': "attachment;filename=\"".concat(filename, "\"")
       });
-
       var msg = new MIMEMessageContent(data);
       msg.setHeaders(headers);
       this.messages.push(msg);
@@ -627,13 +789,10 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "getMessageByType",
     value: function getMessageByType(type) {
       var _context5;
-
       var matches = _filterInstanceProperty(_context5 = this.messages).call(_context5, function (m) {
         var _context6;
-
         return _indexOfInstanceProperty(_context6 = m.getHeader('Content-Type')).call(_context6, type) !== -1;
       });
-
       if (Array.isArray(matches) && matches.length > 0) {
         return matches[0];
       } else {
@@ -644,7 +803,6 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "getAttachments",
     value: function getAttachments() {
       var _context7;
-
       return _filterInstanceProperty(_context7 = this.messages).call(_context7, function (m) {
         return m.isAttachment() === true;
       }) || [];
@@ -657,16 +815,7 @@ var MIMEMessage = /*#__PURE__*/function () {
       var htmlMessage = this.getMessageByType('text/html');
       var hasAttachments = this.getAttachments().length > 0;
       var hasPlainTextAlt = plainTextMessage instanceof MIMEMessageContent && htmlMessage instanceof MIMEMessageContent;
-
-      if (hasAttachments && hasPlainTextAlt) {
-        return this.asRawMixedAlt(lines);
-      } else if (hasAttachments) {
-        return this.asRawMixed(lines);
-      } else if (hasPlainTextAlt) {
-        return this.asRawAlt(lines);
-      } else {
-        return this.asRawMessage(lines);
-      }
+      if (hasAttachments && hasPlainTextAlt) return this.asRawMixedAlt(lines);else if (hasAttachments) return this.asRawMixed(lines);else if (hasPlainTextAlt) return this.asRawAlt(lines);else return this.asRawMessage(lines);
     }
   }, {
     key: "asEncoded",
@@ -677,7 +826,6 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "asRawMessage",
     value: function asRawMessage(lines) {
       var _context8;
-
       var plainTextMessage = this.getMessageByType('text/plain');
       var htmlMessage = this.getMessageByType('text/html');
       var message = htmlMessage || plainTextMessage;
@@ -688,7 +836,6 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "asRawAlt",
     value: function asRawAlt(lines) {
       var _context9, _context10, _context11, _context12, _context13, _context14;
-
       var plainTextMessage = this.getMessageByType('text/plain');
       var htmlMessage = this.getMessageByType('text/html');
       lines = _concatInstanceProperty(_context9 = _concatInstanceProperty(_context10 = _concatInstanceProperty(_context11 = _concatInstanceProperty(_context12 = _concatInstanceProperty(_context13 = _concatInstanceProperty(_context14 = "".concat(lines, "\nContent-Type: multipart/alternative; boundary=")).call(_context14, this.boundaries.alt, "\n\n--")).call(_context13, this.boundaries.alt, "\n")).call(_context12, plainTextMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context11, this.boundaries.alt, "\n")).call(_context10, htmlMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context9, this.boundaries.alt, "--");
@@ -698,21 +845,18 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "asRawMixed",
     value: function asRawMixed(lines) {
       var _context15,
-          _this2 = this,
-          _context16,
-          _context17,
-          _context18,
-          _context19,
-          _context20;
-
+        _this2 = this,
+        _context16,
+        _context17,
+        _context18,
+        _context19,
+        _context20;
       var plainTextMessage = this.getMessageByType('text/plain');
       var htmlMessage = this.getMessageByType('text/html');
       var message = htmlMessage || plainTextMessage;
-
       var attachments = _mapInstanceProperty(_context15 = this.getAttachments()).call(_context15, function (a) {
         return a.dump(_this2.envctx, _this2.boundaries);
       }).join('').replace(/[\r\n]$/g, '');
-
       lines = _concatInstanceProperty(_context16 = _concatInstanceProperty(_context17 = _concatInstanceProperty(_context18 = _concatInstanceProperty(_context19 = _concatInstanceProperty(_context20 = "".concat(lines, "\nContent-Type: multipart/mixed; boundary=")).call(_context20, this.boundaries.mixed, "\n\n--")).call(_context19, this.boundaries.mixed, "\n")).call(_context18, message.dump(this.envctx, this.boundaries), "\n\n")).call(_context17, attachments, "\n\n--")).call(_context16, this.boundaries.mixed, "--");
       return lines;
     }
@@ -720,25 +864,22 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "asRawMixedAlt",
     value: function asRawMixedAlt(lines) {
       var _context21,
-          _this3 = this,
-          _context22,
-          _context23,
-          _context24,
-          _context25,
-          _context26,
-          _context27,
-          _context28,
-          _context29,
-          _context30,
-          _context31;
-
+        _this3 = this,
+        _context22,
+        _context23,
+        _context24,
+        _context25,
+        _context26,
+        _context27,
+        _context28,
+        _context29,
+        _context30,
+        _context31;
       var plainTextMessage = this.getMessageByType('text/plain');
       var htmlMessage = this.getMessageByType('text/html');
-
       var attachments = _mapInstanceProperty(_context21 = this.getAttachments()).call(_context21, function (a) {
         return a.dump(_this3.envctx, _this3.boundaries);
       }).join('').replace(/[\r\n]$/g, '');
-
       lines = _concatInstanceProperty(_context22 = _concatInstanceProperty(_context23 = _concatInstanceProperty(_context24 = _concatInstanceProperty(_context25 = _concatInstanceProperty(_context26 = _concatInstanceProperty(_context27 = _concatInstanceProperty(_context28 = _concatInstanceProperty(_context29 = _concatInstanceProperty(_context30 = _concatInstanceProperty(_context31 = "".concat(lines, "\nContent-Type: multipart/mixed; boundary=")).call(_context31, this.boundaries.mixed, "\n\n--")).call(_context30, this.boundaries.mixed, "\nContent-Type: multipart/alternative; boundary=")).call(_context29, this.boundaries.alt, "\n\n--")).call(_context28, this.boundaries.alt, "\n")).call(_context27, plainTextMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context26, this.boundaries.alt, "\n")).call(_context25, htmlMessage.dump(this.envctx, this.boundaries), "\n\n--")).call(_context24, this.boundaries.alt, "--\n")).call(_context23, attachments, "\n\n--")).call(_context22, this.boundaries.mixed, "--");
       return lines;
     }
@@ -748,12 +889,10 @@ var MIMEMessage = /*#__PURE__*/function () {
       return this.envctx.toBase64(v);
     }
   }]);
-
   return MIMEMessage;
 }();
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = _Reflect$construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_Reflect$construct) return false; if (_Reflect$construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(_Reflect$construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 var envctx = {
   toBase64: function toBase64(data) {
@@ -763,21 +902,15 @@ var envctx = {
     return btoa(data).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
 };
-
 var NodeMIMEMessage = /*#__PURE__*/function (_MIMEMessage) {
   _inherits(NodeMIMEMessage, _MIMEMessage);
-
   var _super = _createSuper(NodeMIMEMessage);
-
   function NodeMIMEMessage() {
     _classCallCheck(this, NodeMIMEMessage);
-
     return _super.call(this, envctx);
   }
-
   return _createClass(NodeMIMEMessage);
 }(MIMEMessage);
-
 function createMimeMessage() {
   return new NodeMIMEMessage();
 }

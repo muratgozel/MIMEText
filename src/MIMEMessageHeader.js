@@ -7,6 +7,7 @@ import MIMETextError from './MIMETextError.js'
 
 export default class MIMEMessageHeader {
   constructor(placement) {
+    this.maxLineLength = 998
     this.placement = placement
     this.store = [
       {
@@ -25,18 +26,13 @@ export default class MIMEMessageHeader {
       {
         placement: 'header',
         name: 'From',
-        // required property indicates that this property must be set
         required: true,
-        dump: (v) => {
-          return v.dump()
-        }
+        dump: (v, ctx) => !v.name ? v.dump() : `=?utf-8?B?${ctx.toBase64(v.name)}?= <${v.addr}>`
       },
       {
         placement: 'header',
         name: 'Sender',
-        dump: (v) => {
-          return v.dump()
-        }
+        dump: (v, ctx) => !v.name ? v.dump() : `=?utf-8?B?${ctx.toBase64(v.name)}?= <${v.addr}>`
       },
       {
         placement: 'header',
@@ -48,24 +44,19 @@ export default class MIMEMessageHeader {
       {
         placement: 'header',
         name: 'To',
-        required: true,
-        dump: (vs) => {
-          return vs.map(v => v.dump()).join(', ')
-        }
+        // INFO: "To" field is not required according to the RFC-2822
+        //required: true,
+        dump: (arr, ctx) => arr.map(v => !v.name ? v.dump() : `=?utf-8?B?${ctx.toBase64(v.name)}?= <${v.addr}>`).join(",\n ")
       },
       {
         placement: 'header',
         name: 'Cc',
-        dump: (vs) => {
-          return vs.map(v => v.dump()).join(', ')
-        }
+        dump: (arr, ctx) => arr.map(v => !v.name ? v.dump() : `=?utf-8?B?${ctx.toBase64(v.name)}?= <${v.addr}>`).join(",\n ")
       },
       {
         placement: 'header',
         name: 'Bcc',
-        dump: (vs) => {
-          return vs.map(v => v.dump()).join(', ')
-        }
+        dump: (arr, ctx) => arr.map(v => !v.name ? v.dump() : `=?utf-8?B?${ctx.toBase64(v.name)}?= <${v.addr}>`).join(",\n ")
       },
       {
         placement: 'header',
@@ -85,9 +76,7 @@ export default class MIMEMessageHeader {
         placement: 'header',
         name: 'Subject',
         required: true,
-        dump: (v, ctx) => {
-          return '=?utf-8?B?' + ctx.toBase64(v) + '?='
-        }
+        dump: (v, ctx) => '=?utf-8?B?' + ctx.toBase64(v) + '?='
       },
       {
         placement: 'header',
@@ -129,6 +118,8 @@ export default class MIMEMessageHeader {
   }
 
   set(name, value) {
+    this.validateLength(name, value)
+
     for (const item of this.store) {
       if (item.name.toLowerCase() == name.toLowerCase()) {
         item.value = value
@@ -149,6 +140,14 @@ export default class MIMEMessageHeader {
     this.store.push(newHeader)
 
     return newHeader
+  }
+
+  validateLength(name, value) {
+    const len = name.length + value.length + 2 // 2 is ": "
+    if (len > this.maxLineLength) {
+      throw new MIMETextError('INVALID_HEADER', `The "${item.name}" header is too long. `
+        `${this.maxLineLength} chars allowed at max, "${item.name}" was ${len} long.`)
+    }
   }
 
   get(name) {

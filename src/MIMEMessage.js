@@ -152,18 +152,10 @@ export default class MIMEMessage {
     const hasAttachments = this.getAttachments().length > 0
     const hasPlainTextAlt = plainTextMessage instanceof MIMEMessageContent && htmlMessage instanceof MIMEMessageContent
 
-    if (hasAttachments && hasPlainTextAlt) {
-      return this.asRawMixedAlt(lines)
-    }
-    else if (hasAttachments) {
-      return this.asRawMixed(lines)
-    }
-    else if (hasPlainTextAlt) {
-      return this.asRawAlt(lines)
-    }
-    else {
-      return this.asRawMessage(lines)
-    }
+    if (hasAttachments && hasPlainTextAlt) return this.asRawMixedAlt(lines)
+    else if (hasAttachments) return this.asRawMixed(lines)
+    else if (hasPlainTextAlt) return this.asRawAlt(lines)
+    else return this.asRawMessage(lines)
   }
 
   asEncoded() {
