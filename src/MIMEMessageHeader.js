@@ -118,8 +118,6 @@ export default class MIMEMessageHeader {
   }
 
   set(name, value) {
-    this.validateLength(name, value)
-
     for (const item of this.store) {
       if (item.name.toLowerCase() == name.toLowerCase()) {
         item.value = value
@@ -140,14 +138,6 @@ export default class MIMEMessageHeader {
     this.store.push(newHeader)
 
     return newHeader
-  }
-
-  validateLength(name, value) {
-    const len = name.length + value.length + 2 // 2 is ": "
-    if (len > this.maxLineLength) {
-      throw new MIMETextError('INVALID_HEADER', `The "${item.name}" header is too long. `
-        `${this.maxLineLength} chars allowed at max, "${item.name}" was ${len} long.`)
-    }
   }
 
   get(name) {

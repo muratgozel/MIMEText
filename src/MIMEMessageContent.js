@@ -1,6 +1,4 @@
 import MIMEMessageHeader from './MIMEMessageHeader.js'
-import chunk from "underscore/modules/chunk.js";
-import runes from "runes";
 
 export default class MIMEMessageContent {
   constructor(data) {
@@ -32,10 +30,6 @@ export default class MIMEMessageContent {
     return d && d.indexOf('attachment') !== -1 ? true : false;
   }
 
-  configureLineLength(text) {
-    return text.split(/[\r\n]+/).map(line => !line ? '' : chunk(runes(line), this.maxLineLen).map(arr => arr.join('')).join("\r\n")).join("\r\n")
-  }
-
   dump(envctx, boundaries) {
     const headerBlock = this.headers.dump(envctx)
 
@@ -43,11 +37,11 @@ export default class MIMEMessageContent {
       return `--${boundaries.mixed}
 ${headerBlock}
 
-${this.configureLineLength(this.data)}
+${this.data}
 `
     }
     else {
-      return `${headerBlock}\r\n\r\n${this.configureLineLength(this.data)}`
+      return `${headerBlock}\r\n\r\n${this.data}`
     }
   }
 }

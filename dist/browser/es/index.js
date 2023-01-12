@@ -14,7 +14,6 @@ import _filterInstanceProperty from '@babel/runtime-corejs3/core-js/instance/fil
 import _Array$from from '@babel/runtime-corejs3/core-js/array/from';
 import _Symbol from '@babel/runtime-corejs3/core-js/symbol';
 import _getIteratorMethod from '@babel/runtime-corejs3/core-js/get-iterator-method';
-import _taggedTemplateLiteral from '@babel/runtime-corejs3/helpers/taggedTemplateLiteral';
 import _reduceInstanceProperty from '@babel/runtime-corejs3/core-js/instance/reduce';
 import _wrapNativeSuper from '@babel/runtime-corejs3/helpers/wrapNativeSuper';
 import _trimInstanceProperty from '@babel/runtime-corejs3/core-js/instance/trim';
@@ -35,7 +34,6 @@ var MIMETextError = /*#__PURE__*/function (_Error) {
   return _createClass(MIMETextError);
 }( /*#__PURE__*/_wrapNativeSuper(Error));
 
-var _templateObject;
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof _Symbol !== "undefined" && _getIteratorMethod(o) || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { var _context10; if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = _sliceInstanceProperty(_context10 = Object.prototype.toString.call(o)).call(_context10, 8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return _Array$from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
@@ -174,15 +172,14 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
   _createClass(MIMEMessageHeader, [{
     key: "set",
     value: function set(name, value) {
-      this.validateLength(name, value);
       var _iterator = _createForOfIteratorHelper(this.store),
         _step;
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var _item = _step.value;
-          if (_item.name.toLowerCase() == name.toLowerCase()) {
-            _item.value = value;
-            return _item;
+          var item = _step.value;
+          if (item.name.toLowerCase() == name.toLowerCase()) {
+            item.value = value;
+            return item;
           }
         }
       } catch (err) {
@@ -203,23 +200,15 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
       return newHeader;
     }
   }, {
-    key: "validateLength",
-    value: function validateLength(name, value) {
-      var len = name.length + value.length + 2; // 2 is ": "
-      if (len > this.maxLineLength) {
-        throw new MIMETextError('INVALID_HEADER', "The \"".concat(item.name, "\" header is too long. ")(_templateObject || (_templateObject = _taggedTemplateLiteral(["", " chars allowed at max, \"", "\" was ", " long."])), this.maxLineLength, item.name, len));
-      }
-    }
-  }, {
     key: "get",
     value: function get(name) {
       var _iterator2 = _createForOfIteratorHelper(this.store),
         _step2;
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var _item2 = _step2.value;
-          if (_item2.name.toLowerCase() == name.toLowerCase()) {
-            return _item2.value;
+          var item = _step2.value;
+          if (item.name.toLowerCase() == name.toLowerCase()) {
+            return item.value;
           }
         }
       } catch (err) {
@@ -251,14 +240,14 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
       try {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
           var _context9;
-          var _item3 = _step3.value;
-          if (_item3.placement != this.placement) continue;
-          var v = _item3.value ? _item3.value : !_item3.disabled && typeof _item3.generator == 'function' ? _item3.generator(ctx) : null;
-          if (!v && _item3.required) {
-            throw new MIMETextError('MISSING_HEADER', "The \"".concat(_item3.name, "\" header is required."));
+          var item = _step3.value;
+          if (item.placement != this.placement) continue;
+          var v = item.value ? item.value : !item.disabled && typeof item.generator == 'function' ? item.generator(ctx) : null;
+          if (!v && item.required) {
+            throw new MIMETextError('MISSING_HEADER', "The \"".concat(item.name, "\" header is required."));
           }
           if (!v) continue;
-          lines += _concatInstanceProperty(_context9 = "".concat(_item3.name, ": ")).call(_context9, _item3.dump(v, ctx), "\r\n");
+          lines += _concatInstanceProperty(_context9 = "".concat(item.name, ": ")).call(_context9, item.dump(v, ctx), "\r\n");
         }
       } catch (err) {
         _iterator3.e(err);
@@ -270,202 +259,6 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
   }]);
   return MIMEMessageHeader;
 }();
-
-// Current version.
-
-// Establish the root object, `window` (`self`) in the browser, `global`
-// on the server, or `this` in some virtual machines. We use `self`
-// instead of `window` for `WebWorker` support.
-(typeof self == 'object' && self.self === self && self) ||
-          (typeof global == 'object' && global.global === global && global) ||
-          Function('return this')() ||
-          {};
-
-// Save bytes in the minified (but not gzipped) version:
-var ArrayProto = Array.prototype;
-
-// Create quick reference variables for speed access to core prototypes.
-var slice = ArrayProto.slice;
-
-// Chunk a single array into multiple arrays, each containing `count` or fewer
-// items.
-function chunk(array, count) {
-  if (count == null || count < 1) return [];
-  var result = [];
-  var i = 0, length = array.length;
-  while (i < length) {
-    result.push(slice.call(array, i, i += count));
-  }
-  return result;
-}
-
-var runesExports = {};
-var runes$1 = {
-  get exports(){ return runesExports; },
-  set exports(v){ runesExports = v; },
-};
-
-const HIGH_SURROGATE_START = 0xd800;
-const HIGH_SURROGATE_END = 0xdbff;
-
-const LOW_SURROGATE_START = 0xdc00;
-
-const REGIONAL_INDICATOR_START = 0x1f1e6;
-const REGIONAL_INDICATOR_END = 0x1f1ff;
-
-const FITZPATRICK_MODIFIER_START = 0x1f3fb;
-const FITZPATRICK_MODIFIER_END = 0x1f3ff;
-
-const VARIATION_MODIFIER_START = 0xfe00;
-const VARIATION_MODIFIER_END = 0xfe0f;
-
-const DIACRITICAL_MARKS_START = 0x20d0;
-const DIACRITICAL_MARKS_END = 0x20ff;
-
-const ZWJ = 0x200d;
-
-const GRAPHEMS = [
-  0x0308, // ( ◌̈ ) COMBINING DIAERESIS
-  0x0937, // ( ष ) DEVANAGARI LETTER SSA
-  0x0937, // ( ष ) DEVANAGARI LETTER SSA
-  0x093F, // ( ि ) DEVANAGARI VOWEL SIGN I
-  0x093F, // ( ि ) DEVANAGARI VOWEL SIGN I
-  0x0BA8, // ( ந ) TAMIL LETTER NA
-  0x0BBF, // ( ி ) TAMIL VOWEL SIGN I
-  0x0BCD, // ( ◌்) TAMIL SIGN VIRAMA
-  0x0E31, // ( ◌ั ) THAI CHARACTER MAI HAN-AKAT
-  0x0E33, // ( ำ ) THAI CHARACTER SARA AM
-  0x0E40, // ( เ ) THAI CHARACTER SARA E
-  0x0E49, // ( เ ) THAI CHARACTER MAI THO
-  0x1100, // ( ᄀ ) HANGUL CHOSEONG KIYEOK
-  0x1161, // ( ᅡ ) HANGUL JUNGSEONG A
-  0x11A8 // ( ᆨ ) HANGUL JONGSEONG KIYEOK
-];
-
-function runes (string) {
-  if (typeof string !== 'string') {
-    throw new Error('string cannot be undefined or null')
-  }
-  const result = [];
-  let i = 0;
-  let increment = 0;
-  while (i < string.length) {
-    increment += nextUnits(i + increment, string);
-    if (isGraphem(string[i + increment])) {
-      increment++;
-    }
-    if (isVariationSelector(string[i + increment])) {
-      increment++;
-    }
-    if (isDiacriticalMark(string[i + increment])) {
-      increment++;
-    }
-    if (isZeroWidthJoiner(string[i + increment])) {
-      increment++;
-      continue
-    }
-    result.push(string.substring(i, i + increment));
-    i += increment;
-    increment = 0;
-  }
-  return result
-}
-
-// Decide how many code units make up the current character.
-// BMP characters: 1 code unit
-// Non-BMP characters (represented by surrogate pairs): 2 code units
-// Emoji with skin-tone modifiers: 4 code units (2 code points)
-// Country flags: 4 code units (2 code points)
-// Variations: 2 code units
-function nextUnits (i, string) {
-  const current = string[i];
-  // If we don't have a value that is part of a surrogate pair, or we're at
-  // the end, only take the value at i
-  if (!isFirstOfSurrogatePair(current) || i === string.length - 1) {
-    return 1
-  }
-
-  const currentPair = current + string[i + 1];
-  let nextPair = string.substring(i + 2, i + 5);
-
-  // Country flags are comprised of two regional indicator symbols,
-  // each represented by a surrogate pair.
-  // See http://emojipedia.org/flags/
-  // If both pairs are regional indicator symbols, take 4
-  if (isRegionalIndicator(currentPair) && isRegionalIndicator(nextPair)) {
-    return 4
-  }
-
-  // If the next pair make a Fitzpatrick skin tone
-  // modifier, take 4
-  // See http://emojipedia.org/modifiers/
-  // Technically, only some code points are meant to be
-  // combined with the skin tone modifiers. This function
-  // does not check the current pair to see if it is
-  // one of them.
-  if (isFitzpatrickModifier(nextPair)) {
-    return 4
-  }
-  return 2
-}
-
-function isFirstOfSurrogatePair (string) {
-  return string && betweenInclusive(string[0].charCodeAt(0), HIGH_SURROGATE_START, HIGH_SURROGATE_END)
-}
-
-function isRegionalIndicator (string) {
-  return betweenInclusive(codePointFromSurrogatePair(string), REGIONAL_INDICATOR_START, REGIONAL_INDICATOR_END)
-}
-
-function isFitzpatrickModifier (string) {
-  return betweenInclusive(codePointFromSurrogatePair(string), FITZPATRICK_MODIFIER_START, FITZPATRICK_MODIFIER_END)
-}
-
-function isVariationSelector (string) {
-  return typeof string === 'string' && betweenInclusive(string.charCodeAt(0), VARIATION_MODIFIER_START, VARIATION_MODIFIER_END)
-}
-
-function isDiacriticalMark (string) {
-  return typeof string === 'string' && betweenInclusive(string.charCodeAt(0), DIACRITICAL_MARKS_START, DIACRITICAL_MARKS_END)
-}
-
-function isGraphem (string) {
-  return typeof string === 'string' && GRAPHEMS.indexOf(string.charCodeAt(0)) !== -1
-}
-
-function isZeroWidthJoiner (string) {
-  return typeof string === 'string' && string.charCodeAt(0) === ZWJ
-}
-
-function codePointFromSurrogatePair (pair) {
-  const highOffset = pair.charCodeAt(0) - HIGH_SURROGATE_START;
-  const lowOffset = pair.charCodeAt(1) - LOW_SURROGATE_START;
-  return (highOffset << 10) + lowOffset + 0x10000
-}
-
-function betweenInclusive (value, lower, upper) {
-  return value >= lower && value <= upper
-}
-
-function substring (string, start, width) {
-  const chars = runes(string);
-  if (start === undefined) {
-    return string
-  }
-  if (start >= chars.length) {
-    return ''
-  }
-  const rest = chars.length - start;
-  const stringWidth = width === undefined ? rest : width;
-  let endIndex = start + stringWidth;
-  if (endIndex > (start + rest)) {
-    endIndex = undefined;
-  }
-  return chars.slice(start, endIndex).join('')
-}
-
-runes$1.exports = runes;
-runesExports.substr = substring;
 
 var MIMEMessageContent = /*#__PURE__*/function () {
   function MIMEMessageContent(data) {
@@ -507,27 +300,15 @@ var MIMEMessageContent = /*#__PURE__*/function () {
       return d && _indexOfInstanceProperty(d).call(d, 'attachment') !== -1 ? true : false;
     }
   }, {
-    key: "configureLineLength",
-    value: function configureLineLength(text) {
-      var _context2,
-        _this2 = this;
-      return _mapInstanceProperty(_context2 = text.split(/[\r\n]+/)).call(_context2, function (line) {
-        var _context3;
-        return !line ? '' : _mapInstanceProperty(_context3 = chunk(runesExports(line), _this2.maxLineLen)).call(_context3, function (arr) {
-          return arr.join('');
-        }).join("\r\n");
-      }).join("\r\n");
-    }
-  }, {
     key: "dump",
     value: function dump(envctx, boundaries) {
       var headerBlock = this.headers.dump(envctx);
       if (this.isAttachment()) {
-        var _context4, _context5;
-        return _concatInstanceProperty(_context4 = _concatInstanceProperty(_context5 = "--".concat(boundaries.mixed, "\n")).call(_context5, headerBlock, "\n\n")).call(_context4, this.configureLineLength(this.data), "\n");
+        var _context2, _context3;
+        return _concatInstanceProperty(_context2 = _concatInstanceProperty(_context3 = "--".concat(boundaries.mixed, "\n")).call(_context3, headerBlock, "\n\n")).call(_context2, this.data, "\n");
       } else {
-        var _context6;
-        return _concatInstanceProperty(_context6 = "".concat(headerBlock, "\r\n\r\n")).call(_context6, this.configureLineLength(this.data));
+        var _context4;
+        return _concatInstanceProperty(_context4 = "".concat(headerBlock, "\r\n\r\n")).call(_context4, this.data);
       }
     }
   }]);
