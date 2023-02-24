@@ -166,13 +166,14 @@ export default class MIMEMessageHeader {
     for (const item of this.store) {
       if (item.placement != this.placement) continue;
 
-      const v = item.value
+      const isDefined = typeof item.value !== 'undefined' && typeof item.value !== 'null'
+
+      const v = isDefined
         ? item.value
         : !item.disabled && typeof item.generator == 'function'
           ? item.generator(ctx)
           : null
 
-      const isDefined = typeof v !== 'undefined' && typeof v !== 'null'
 
       if (!isDefined && item.required) {
         throw new MIMETextError('MISSING_HEADER', `The "${item.name}" header is required.`)
