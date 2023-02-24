@@ -172,7 +172,7 @@ export default class MIMEMessageHeader {
           ? item.generator(ctx)
           : null
 
-      if (!v && item.required) {
+      if ((typeof v === 'undefined' || typeof v === 'null') && item.required) {
         throw new MIMETextError('MISSING_HEADER', `The "${item.name}" header is required.`)
       }
 
