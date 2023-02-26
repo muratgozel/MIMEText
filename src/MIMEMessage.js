@@ -103,9 +103,9 @@ export default class MIMEMessage {
       `)
     }
 
-    const headers = Object.assign({}, moreHeaders, {
+    const headers = Object.assign({}, {
       'Content-Type': `${type}; charset=UTF-8`
-    })
+    }, moreHeaders)
     const msg = new MIMEMessageContent(data)
 
     msg.setHeaders(headers)
@@ -116,11 +116,11 @@ export default class MIMEMessage {
   }
 
   setAttachment(filename, type, data, moreHeaders={}) {
-    const headers = Object.assign({}, moreHeaders, {
+    const headers = Object.assign({}, {
       'Content-Type': `${type}; charset=UTF-8`,
       'Content-Transfer-Encoding': 'base64',
       'Content-Disposition': `attachment;filename="${filename}"`
-    })
+    }, moreHeaders)
     const msg = new MIMEMessageContent(data)
 
     msg.setHeaders(headers)
