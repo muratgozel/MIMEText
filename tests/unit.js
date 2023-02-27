@@ -78,5 +78,10 @@ const msg1altraw = msg1.asRaw()
 //console.log(msg1altraw)
 
 msg1.setAttachment('test.txt', 'image/jpg', msg1.toBase64( fs.readFileSync('./tests/test.jpg') ))
+msg1.setAttachment('test2.jpg', 'image/jpg', msg1.toBase64( fs.readFileSync('./tests/test.jpg') ), {
+	'Content-Disposition': 'inline;filename=test2.jpg'
+})
+const attachments = msg1.getAttachments()
+assert.strictEqual(attachments.length, 2)
 const msg1altmixedraw = msg1.asRaw()
 console.log(msg1altmixedraw)
