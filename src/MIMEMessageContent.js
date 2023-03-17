@@ -27,7 +27,10 @@ export default class MIMEMessageContent {
 
   isAttachment() {
     const d = this.headers.get('Content-Disposition')
-    return d && d.indexOf('attachment') !== -1 ? true : false;
+    if (!d) {
+      return false;
+    }
+    return d.indexOf('attachment') !== -1 || d.indexOf('inline') !== -1;
   }
 
   dump(envctx, boundaries) {
