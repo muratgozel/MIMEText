@@ -39,6 +39,8 @@ assert.strictEqual(msg1.getRecipients({type: 'bcc'})[2].addr, 'test3@bcc.com')
 
 msg1.setSubject('🚀 Sample Tötlü')
 assert.strictEqual(msg1.getSubject(), '🚀 Sample Tötlü')
+msg1.setSubject('')
+assert.strictEqual(msg1.getSubject(), '')
 
 msg1.setHeader('X-ABC', 'asdildffdişfsdi')
 assert.strictEqual(msg1.getHeader('x-abc'), 'asdildffdişfsdi')
