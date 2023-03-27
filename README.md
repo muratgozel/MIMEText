@@ -1,5 +1,5 @@
 # MIMEText
-[RFC-2822](https://www.rfc-editor.org/rfc/rfc2822), [RFC-2045](https://www.rfc-editor.org/rfc/rfc2045) and [RFC-2049](https://www.rfc-editor.org/rfc/rfc2049) compliant raw email message generator.
+[RFC-2822](https://www.rfc-editor.org/rfc/rfc2822), [RFC-2045](https://www.rfc-editor.org/rfc/rfc2045) and [RFC-2049](https://www.rfc-editor.org/rfc/rfc2049) compliant raw email message generator. Refer to [https://muratgozel.github.io/MIMEText/](https://muratgozel.github.io/MIMEText/) for full api docs.
 
 ## Install
 ```sh

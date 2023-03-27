@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "v3.0.0",
+  "version": "v3.0.1",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "imports": {
