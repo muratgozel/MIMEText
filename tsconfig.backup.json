@@ -1,0 +1,20 @@
+{
+  "extends": "@tsconfig/node18-strictest-esm/tsconfig.json",
+  "compilerOptions": {
+    "verbatimModuleSyntax": true,
+    "outDir": "build",
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ],
+    "paths": {
+      "#src/*": ["src/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "types/**/*"
+  ]
+}
