@@ -1,11 +1,11 @@
 declare module 'MIMEText' {
-    export type Mailbox = import('#src/Mailbox').Mailbox
-    export type MIMEMessage = import('#src/MIMEMessage').MIMEMessage
-    export type MIMETextError = import('#src/MIMETextError').MIMETextError
-    export type MIMEMessageHeader = import('#src/MIMEMessageHeader').MIMEMessageHeader
-    export type MIMEMessageContent = import('#src/MIMEMessageContent').MIMEMessageContent
+    export type Mailbox = import('../src/Mailbox').Mailbox
+    export type MIMEMessage = import('../src/MIMEMessage').MIMEMessage
+    export type MIMETextError = import('../src/MIMETextError').MIMETextError
+    export type MIMEMessageHeader = import('../src/MIMEMessageHeader').MIMEMessageHeader
+    export type MIMEMessageContent = import('../src/MIMEMessageContent').MIMEMessageContent
 
-    export type createMimeMessage = () => MIMEMessage
+    export function createMimeMessage (): MIMEMessage
 
     interface EnvironmentContext {
         toBase64: (v: string) => string,

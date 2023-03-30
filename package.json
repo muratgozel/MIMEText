@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "v3.0.1",
+  "version": "v3.0.2",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "imports": {
@@ -34,9 +34,8 @@
   "scripts": {
     "precompile": "rm -rf build/*",
     "compile": "tsc -p tsconfig.json",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "compile:test": "npm run compile && npm run test",
     "build": "rollup --config rollup.config.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc --includeVersion --excludePrivate src/entrypoints/node.ts src/entrypoints/gas.ts src/entrypoints/browser.ts types/index.d.ts"
   },
   "repository": {
@@ -70,7 +69,6 @@
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.0",
-    "@tsconfig/node18-strictest-esm": "^1.0.1",
     "@types/google-apps-script": "^1.0.59",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^18.15.3",
@@ -89,6 +87,9 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "@babel/runtime-corejs3": "^7.15.4",
+    "@tsconfig/esm": "^1.0.2",
+    "@tsconfig/node18": "^1.0.1",
+    "@tsconfig/strictest": "^2.0.0",
     "js-base64": "^3.7.5",
     "mime-types": "^2.1.35"
   }
