@@ -3,10 +3,10 @@ import type {
     MailboxAddrText, Boundaries, ContentHeaders, ContentOptions, AttachmentOptions
 } from 'MIMEText'
 
-import {MIMETextError} from '#src/MIMETextError'
-import {MIMEMessageHeader} from '#src/MIMEMessageHeader'
-import {Mailbox} from '#src/Mailbox'
-import {MIMEMessageContent} from '#src/MIMEMessageContent'
+import {MIMETextError} from './MIMETextError'
+import {MIMEMessageHeader} from './MIMEMessageHeader'
+import {Mailbox} from './Mailbox'
+import {MIMEMessageContent} from './MIMEMessageContent'
 
 export class MIMEMessage {
     envctx: EnvironmentContext

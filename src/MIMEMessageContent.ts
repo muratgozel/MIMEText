@@ -1,6 +1,6 @@
 import type {EnvironmentContext} from 'MIMEText'
 
-import {MIMEMessageContentHeader} from '#src/MIMEMessageHeader'
+import {MIMEMessageContentHeader} from './MIMEMessageHeader'
 
 export class MIMEMessageContent {
     envctx: EnvironmentContext

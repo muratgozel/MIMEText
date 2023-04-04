@@ -1,5 +1,5 @@
 import {Base64} from 'js-base64'
-import {MIMEMessage} from '#src/MIMEMessage'
+import {MIMEMessage} from '../MIMEMessage'
 
 const envctx = {
     toBase64: function toBase64(data: string) {
@@ -18,8 +18,8 @@ export function createMimeMessage(): MIMEMessage {
     return new MIMEMessage(envctx)
 }
 
-export {MIMEMessage} from '#src/MIMEMessage'
-export {Mailbox} from '#src/Mailbox'
-export {MIMETextError} from '#src/MIMETextError'
-export {MIMEMessageHeader} from '#src/MIMEMessageHeader'
-export {MIMEMessageContent} from '#src/MIMEMessageContent'
+export {MIMEMessage} from '../MIMEMessage'
+export {Mailbox} from '../Mailbox'
+export {MIMETextError} from '../MIMETextError'
+export {MIMEMessageHeader} from '../MIMEMessageHeader'
+export {MIMEMessageContent} from '../MIMEMessageContent'

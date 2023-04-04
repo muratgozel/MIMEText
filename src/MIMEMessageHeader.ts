@@ -1,7 +1,7 @@
 import type {EnvironmentContext, HeaderField} from 'MIMEText'
 
-import {MIMETextError} from '#src/MIMETextError'
-import {Mailbox} from '#src/Mailbox'
+import {MIMETextError} from './MIMETextError'
+import {Mailbox} from './Mailbox'
 
 /*
     Headers are based on: https://www.rfc-editor.org/rfc/rfc4021#section-2.1

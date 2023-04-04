@@ -1,4 +1,4 @@
-import { MIMETextError } from '#src/MIMETextError';
+import { MIMETextError } from './MIMETextError';
 export class Mailbox {
     reSpecCompliantAddr = /(([^<>\r\n]+)\s)?<[^\r\n]+>/;
     name = '';
