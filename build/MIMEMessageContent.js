@@ -1,4 +1,4 @@
-import { MIMEMessageContentHeader } from './MIMEMessageHeader';
+import { MIMEMessageContentHeader } from './MIMEMessageHeader.js';
 export class MIMEMessageContent {
     envctx;
     headers;

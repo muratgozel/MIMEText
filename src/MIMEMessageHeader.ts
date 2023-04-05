@@ -1,7 +1,7 @@
 import type {EnvironmentContext, HeaderField} from 'MIMEText'
 
-import {MIMETextError} from './MIMETextError'
-import {Mailbox} from './Mailbox'
+import {MIMETextError} from './MIMETextError.js'
+import {Mailbox} from './Mailbox.js'
 
 /*
     Headers are based on: https://www.rfc-editor.org/rfc/rfc4021#section-2.1
@@ -111,7 +111,7 @@ export class MIMEMessageHeader {
         const isCustomHeader = !this.fields.some(fieldMatcher)
 
         if (!isCustomHeader) {
-            const ind = this.fields.findIndex(fieldMatcher);
+            const ind = this.fields.findIndex(fieldMatcher)
             const field = this.fields[ind] as HeaderField
             if (field.validate && !field.validate(value)) {
                 throw new MIMETextError('MIMETEXT_INVALID_HEADER_VALUE', 'You specified an invalid value for the header ' + name)

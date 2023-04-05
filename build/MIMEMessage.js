@@ -1,7 +1,7 @@
-import { MIMETextError } from './MIMETextError';
-import { MIMEMessageHeader } from './MIMEMessageHeader';
-import { Mailbox } from './Mailbox';
-import { MIMEMessageContent } from './MIMEMessageContent';
+import { MIMETextError } from './MIMETextError.js';
+import { MIMEMessageHeader } from './MIMEMessageHeader.js';
+import { Mailbox } from './Mailbox.js';
+import { MIMEMessageContent } from './MIMEMessageContent.js';
 export class MIMEMessage {
     envctx;
     headers;

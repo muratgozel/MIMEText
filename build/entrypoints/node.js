@@ -1,6 +1,6 @@
 import { EOL } from 'node:os';
 import * as mime from 'mime-types';
-import { MIMEMessage } from '../MIMEMessage';
+import { MIMEMessage } from '../MIMEMessage.js';
 const envctx = {
     toBase64: function toBase64(data) {
         return (new Buffer(data)).toString('base64');
@@ -19,8 +19,8 @@ const envctx = {
 export function createMimeMessage() {
     return new MIMEMessage(envctx);
 }
-export { MIMEMessage } from '../MIMEMessage';
-export { Mailbox } from '../Mailbox';
-export { MIMETextError } from '../MIMETextError';
-export { MIMEMessageHeader } from '../MIMEMessageHeader';
-export { MIMEMessageContent } from '../MIMEMessageContent';
+export { MIMEMessage } from '../MIMEMessage.js';
+export { Mailbox } from '../Mailbox.js';
+export { MIMETextError } from '../MIMETextError.js';
+export { MIMEMessageHeader } from '../MIMEMessageHeader.js';
+export { MIMEMessageContent } from '../MIMEMessageContent.js';

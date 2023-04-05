@@ -1,5 +1,5 @@
-import { MIMETextError } from './MIMETextError';
-import { Mailbox } from './Mailbox';
+import { MIMETextError } from './MIMETextError.js';
+import { Mailbox } from './Mailbox.js';
 /*
     Headers are based on: https://www.rfc-editor.org/rfc/rfc4021#section-2.1
     (Some are ignored as they can be added later or as a custom header.)
