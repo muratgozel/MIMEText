@@ -1,7 +1,7 @@
 import type {
     EnvironmentContext, MailboxType, Email, MailboxAddrObject,
     MailboxAddrText, Boundaries, ContentHeaders, ContentOptions, AttachmentOptions
-} from 'MIMEText'
+} from 'mimetext'
 
 import {MIMETextError} from './MIMETextError.js'
 import {MIMEMessageHeader} from './MIMEMessageHeader.js'

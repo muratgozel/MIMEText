@@ -1,4 +1,4 @@
-import type {EnvironmentContext, HeaderField} from 'MIMEText'
+import type {EnvironmentContext, HeaderField} from 'mimetext'
 
 import {MIMETextError} from './MIMETextError.js'
 import {Mailbox} from './Mailbox.js'
@@ -18,33 +18,33 @@ export class MIMEMessageHeader {
         {
             name: 'From',
             required: true,
-            validate: (v) => this.validateMailboxSingle(v),
-            dump: (v) => this.dumpMailboxSingle(v)
+            validate: (v: unknown) => this.validateMailboxSingle(v),
+            dump: (v: unknown) => this.dumpMailboxSingle(v)
         },
         {
             name: 'Sender',
-            validate: (v) => this.validateMailboxSingle(v),
-            dump: (v) => this.dumpMailboxSingle(v)
+            validate: (v: unknown) => this.validateMailboxSingle(v),
+            dump: (v: unknown) => this.dumpMailboxSingle(v)
         },
         {
             name: 'Reply-To',
-            validate: (v) => this.validateMailboxSingle(v),
-            dump: (v) => this.dumpMailboxSingle(v)
+            validate: (v: unknown) => this.validateMailboxSingle(v),
+            dump: (v: unknown) => this.dumpMailboxSingle(v)
         },
         {
             name: 'To',
-            validate: (v) => this.validateMailboxMulti(v),
-            dump: (v) => this.dumpMailboxMulti(v)
+            validate: (v: unknown) => this.validateMailboxMulti(v),
+            dump: (v: unknown) => this.dumpMailboxMulti(v)
         },
         {
             name: 'Cc',
-            validate: (v) => this.validateMailboxMulti(v),
-            dump: (v) => this.dumpMailboxMulti(v)
+            validate: (v: unknown) => this.validateMailboxMulti(v),
+            dump: (v: unknown) => this.dumpMailboxMulti(v)
         },
         {
             name: 'Bcc',
-            validate: (v) => this.validateMailboxMulti(v),
-            dump: (v) => this.dumpMailboxMulti(v)
+            validate: (v: unknown) => this.validateMailboxMulti(v),
+            dump: (v: unknown) => this.dumpMailboxMulti(v)
         },
         {
             name: 'Message-ID',
@@ -58,7 +58,7 @@ export class MIMEMessageHeader {
         {
             name: 'Subject',
             required: true,
-            dump: (v) => {
+            dump: (v: unknown) => {
                 return typeof v === 'string' ? '=?utf-8?B?' + this.envctx.toBase64(v) + '?=' : ''
             }
         },
@@ -124,7 +124,7 @@ export class MIMEMessageHeader {
             name: name,
             value: value,
             custom: true,
-            dump: (v) => typeof v === 'string' ? v : ''
+            dump: (v: unknown) => typeof v === 'string' ? v : ''
         }) as HeaderField
     }
 

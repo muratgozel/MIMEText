@@ -1,4 +1,4 @@
-import type {EnvironmentContext} from 'MIMEText'
+import type {EnvironmentContext} from 'mimetext'
 
 import {MIMEMessageContentHeader} from './MIMEMessageHeader.js'
 

@@ -1,4 +1,4 @@
-import type {MailboxAddrObject, MailboxAddrText, MailboxType, Email} from 'MIMEText'
+import type {MailboxAddrObject, MailboxAddrText, MailboxType, Email} from 'mimetext'
 
 import {MIMETextError} from './MIMETextError.js'
 
