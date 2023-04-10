@@ -1,4 +1,4 @@
-declare module 'MIMEText' {
+declare module 'mimetext' {
     export type Mailbox = import('../src/Mailbox').Mailbox
     export type MIMEMessage = import('../src/MIMEMessage').MIMEMessage
     export type MIMETextError = import('../src/MIMETextError').MIMETextError

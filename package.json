@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "v3.0.4",
+  "version": "v3.0.5",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "imports": {
@@ -81,7 +81,7 @@
     "jest": "^29.5.0",
     "node-releaser": "^2.0.0-beta.4",
     "rollup": "^3.19.1",
-    "typedoc": "^0.23.28",
+    "typedoc": "^0.24.1",
     "typescript": "^5.0.2"
   },
   "dependencies": {
@@ -92,5 +92,8 @@
     "@tsconfig/strictest": "^2.0.0",
     "js-base64": "^3.7.5",
     "mime-types": "^2.1.35"
+  },
+  "overrides": {
+    "xml2js": "0.5.0"
   }
 }
