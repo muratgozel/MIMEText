@@ -144,7 +144,7 @@ export class MIMEMessageHeader {
         return v instanceof Mailbox
     }
 
-    validateMailboxMulti(v: unknown) {
+    validateMailboxMulti(v: unknown): boolean {
         return v instanceof Mailbox || this.isArrayOfMailboxes(v)
     }
 

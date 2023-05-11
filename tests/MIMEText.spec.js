@@ -1,7 +1,9 @@
 import {EOL} from 'node:os'
-import AWS from 'aws-sdk'
+import { Buffer } from 'node:buffer'
+import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses'
+import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2'
 import {expect, test, beforeAll, jest} from '@jest/globals'
-import {createMimeMessage} from '../build/entrypoints/node'
+import { createMimeMessage } from '../dist/node/mimetext.es.js'
 
 const sampleImageBase64 = '/9j/4AAQSkZJRgABAgEASABIAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAgICAgICAgICAgMDAwMDAwMDAwMBAQEBAQEBAgEBAgICAQICAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA//AABEIAAUABQMAEQABEQECEQH/xABPAAEAAAAAAAAAAAAAAAAAAAAKEAEBAQEBAQAAAAAAAAAAAAAFBgQDAgEBAQAAAAAAAAAAAAAAAAAAAAARAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwAAARECEQA/AHsDDIlo1m7dWUFHmo6DMyOOzmleB0EdwlZme6ycn1npkJbZP7FgtTvTo7qaV+KtbefPb4N8Hn4A/9k='
 const sampleTxtBase64 = 'SGVsbG8gdGhlcmUu'
@@ -18,7 +20,7 @@ beforeAll(() => {
 })
 
 test('sends a plain text email to the specified recipients', async () => {
-    const ses = new AWS.SES({region: process.env.AWS_REGION})
+    const ses = new SESClient({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
     //const spyAsRawMessage = jest.spyOn(msg, 'asRawMessage')
     msg.setSender(process.env.FROM)
@@ -34,20 +36,18 @@ test('sends a plain text email to the specified recipients', async () => {
         Source: msg.getSender().addr,
         Destinations: msg.getRecipients().map((box) => box.addr),
         RawMessage: {
-            Data: msg.asRaw()
+            Data: Buffer.from(msg.asRaw(), 'utf8')
         }
     }
     //expect(spyAsRawMessage).toHaveBeenCalled()
-    return ses.sendRawEmail(params, (err, result) => {
-        if (err) throw err
-        expect(result).toHaveProperty('MessageId')
-        expect(typeof result.MessageId).toBe('string')
-        expect(result.MessageId.length).toBeGreaterThan(1)
-    })
+    const result = await ses.send(new SendRawEmailCommand(params))
+    expect(result).toHaveProperty('MessageId')
+    expect(typeof result.MessageId).toBe('string')
+    expect(result.MessageId.length).toBeGreaterThan(1)
 })
 
 test('sends an html email with an attachment', async () => {
-    const ses = new AWS.SES({region: process.env.AWS_REGION})
+    const ses = new SESClient({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
     msg.setSender(process.env.FROM)
     msg.setRecipients(process.env.TO.split(','))
@@ -69,19 +69,17 @@ test('sends an html email with an attachment', async () => {
         Source: msg.getSender().addr,
         Destinations: msg.getRecipients().map((box) => box.addr),
         RawMessage: {
-            Data: msg.asRaw()
+            Data: Buffer.from(msg.asRaw(), 'utf8')
         }
     }
-    return ses.sendRawEmail(params, (err, result) => {
-        if (err) throw err
-        expect(result).toHaveProperty('MessageId')
-        expect(typeof result.MessageId).toBe('string')
-        expect(result.MessageId.length).toBeGreaterThan(1)
-    })
+    const result = await ses.send(new SendRawEmailCommand(params))
+    expect(result).toHaveProperty('MessageId')
+    expect(typeof result.MessageId).toBe('string')
+    expect(result.MessageId.length).toBeGreaterThan(1)
 })
 
 test('sends an html email with inline attachments', async () => {
-    const ses = new AWS.SES({region: process.env.AWS_REGION})
+    const ses = new SESClient({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
     msg.setSender(process.env.FROM)
     msg.setRecipients(process.env.TO.split(','))
@@ -116,19 +114,17 @@ test('sends an html email with inline attachments', async () => {
         Source: msg.getSender().addr,
         Destinations: msg.getRecipients().map((box) => box.addr),
         RawMessage: {
-            Data: msg.asRaw()
+            Data: Buffer.from(msg.asRaw(), 'utf8')
         }
     }
-    return ses.sendRawEmail(params, (err, result) => {
-        if (err) throw err
-        expect(result).toHaveProperty('MessageId')
-        expect(typeof result.MessageId).toBe('string')
-        expect(result.MessageId.length).toBeGreaterThan(1)
-    })
+    const result = await ses.send(new SendRawEmailCommand(params))
+    expect(result).toHaveProperty('MessageId')
+    expect(typeof result.MessageId).toBe('string')
+    expect(result.MessageId.length).toBeGreaterThan(1)
 })
 
 test('sends a plain text and html mixed email with inline and multiple attachments', async () => {
-    const ses = new AWS.SES({region: process.env.AWS_REGION})
+    const ses = new SESClient({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
     //const spyAsRawRelatedMixedAlt = jest.spyOn(msg, 'asRawRelatedMixedAlt')
     msg.setSender(process.env.FROM)
@@ -170,14 +166,46 @@ test('sends a plain text and html mixed email with inline and multiple attachmen
         Source: msg.getSender().addr,
         Destinations: msg.getRecipients().map((box) => box.addr),
         RawMessage: {
-            Data: msg.asRaw()
+            Data: Buffer.from(msg.asRaw(), 'utf8')
         }
     }
     //expect(spyAsRawRelatedMixedAlt).toHaveBeenCalled()
-    return ses.sendRawEmail(params, (err, result) => {
-        if (err) throw err
-        expect(result).toHaveProperty('MessageId')
-        expect(typeof result.MessageId).toBe('string')
-        expect(result.MessageId.length).toBeGreaterThan(1)
+    const result = await ses.send(new SendRawEmailCommand(params))
+    expect(result).toHaveProperty('MessageId')
+    expect(typeof result.MessageId).toBe('string')
+    expect(result.MessageId.length).toBeGreaterThan(1)
+})
+
+test('sends an email using aws-sdk v2', async () => {
+    const ses = new SESv2Client({region: process.env.AWS_REGION})
+    const msg = createMimeMessage()
+    //const spyAsRawMessage = jest.spyOn(msg, 'asRawMessage')
+    msg.setSender(process.env.FROM)
+    msg.setRecipients(process.env.TO.split(','))
+    msg.setSubject('Testing MimeText 🐬 (Using AWS SDK v2)')
+    msg.addMessage({
+        contentType: 'text/plain',
+        data: 'Hello there,' + EOL + EOL +
+            'This is a test email sent by MimeText test suite.'
     })
+    msg.addAttachment({
+        filename: 'simple.txt',
+        contentType: 'text/plain',
+        data: Buffer.from('Hello there!', 'utf8').toString('base64')
+    })
+    const params = {
+        FromEmailAddress: msg.getSender().addr,
+        Destination: {
+            ToAddresses: msg.getRecipients().map((box) => box.addr)
+        },
+        Content: {
+            Raw: {
+                Data: Buffer.from(msg.asRaw(), 'utf8')
+            }
+        }
+    }
+    const result = await ses.send(new SendEmailCommand(params))
+    expect(result).toHaveProperty('MessageId')
+    expect(typeof result.MessageId).toBe('string')
+    expect(result.MessageId.length).toBeGreaterThan(1)
 })

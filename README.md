@@ -158,14 +158,17 @@ MIMEText is useful for email sending platforms and end-user apps whose email cli
 Below you can find some examples for **Amazon SES** or **Google Gmail**.
 
 ### Amazon SES with AWS-SDK
-
+ses client v1:
 ```js
+// install with npm i @aws-sdk/client-ses
+
 // init aws sdk
-const AWS = require('aws-sdk')
-const ses = new AWS.SES({region: ''})
+const { SESClient, SendRawEmailCommand } = require('@aws-sdk/client-ses')
+const ses = new SESClient({ region: 'YOUR_REGION' })
+const { Buffer } = require('node:buffer')
 
 // init mimetext
-const {createMimeMessage} = require('mimetext')
+const { createMimeMessage } = require('mimetext')
 const message = createMimeMessage()
 
 // create email message
@@ -186,14 +189,53 @@ message.addMessage({
 const params = {
   Destinations: message.getRecipients({type: 'to'}).map(mailbox => mailbox.addr),
   RawMessage: {
-    Data: message.asRaw() // aws-sdk does the base64 encoding
+    Data: Buffer.from(msg.asRaw(), 'utf8') // the raw message data needs to be sent as uint8array
   },
   Source: message.getSender().addr
 }
+const result = await ses.send(new SendRawEmailCommand(params))
+// result.MessageId
+```
+ses client v2:
+```js
+// install with npm i @aws-sdk/client-sesv2
 
-ses.sendRawEmail(params, function(err, result) {
-  // err or result.MessageId
+// init aws sdk
+const { SESv2Client, SendEmailCommand } = require('@aws-sdk/client-ses')
+const ses = new SESv2Client({ region: 'YOUR_REGION' })
+const { Buffer } = require('node:buffer')
+
+// init mimetext
+const { createMimeMessage } = require('mimetext')
+const message = createMimeMessage()
+
+// create email message
+message.setSender('sender@email.com')
+message.setTo('person1@email.com')
+message.setSubject('Weekly Newsletter 49 Ready 🚀')
+message.addAttachment({
+    filename: 'bill.pdf',
+    contentType: 'application/pdf',
+    data: '...base64 encoded data...'
 })
+message.addMessage({
+    contentType: 'text/html',
+    data: 'Hello <b>John</b>.'
+})
+
+const params = {
+    FromEmailAddress: msg.getSender().addr,
+    Destination: {
+        ToAddresses: msg.getRecipients().map((box) => box.addr)
+    },
+    Content: {
+        Raw: {
+            Data: Buffer.from(msg.asRaw(), 'utf8')
+        }
+    }
+}
+const result = await ses.send(new SendEmailCommand(params))
+// result.MessageId
 ```
 
 ### Google Gmail with googleapis-sdk

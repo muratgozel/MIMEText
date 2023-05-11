@@ -593,4 +593,3 @@ exports.MIMEMessageHeader = MIMEMessageHeader;
 exports.MIMETextError = MIMETextError;
 exports.Mailbox = Mailbox;
 exports.createMimeMessage = createMimeMessage;
-//# sourceMappingURL=index.js.map

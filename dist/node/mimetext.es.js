@@ -567,4 +567,3 @@ function createMimeMessage() {
 }
 
 export { MIMEMessage, MIMEMessageContent, MIMEMessageHeader, MIMETextError, Mailbox, createMimeMessage };
-//# sourceMappingURL=index.js.map

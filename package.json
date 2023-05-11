@@ -1,35 +1,35 @@
 {
   "name": "mimetext",
-  "version": "v3.0.6",
+  "version": "v3.0.7",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
-  "imports": {
-    "#src/*": "./build/*"
-  },
   "exports": {
     ".": {
       "node": {
-        "import": "./dist/node/es/index.js",
-        "require": "./dist/node/cjs/index.js"
+        "import": "./dist/node/mimetext.es.js",
+        "require": "./dist/node/mimetext.cjs.js",
+        "default": "./dist/node/mimetext.cjs.js"
       },
-      "import": "./dist/browser/es/index.js",
-      "require": "./dist/browser/cjs/index.js"
+      "import": "./dist/browser/mimetext.es.js",
+      "require": "./dist/browser/mimetext.cjs.js",
+      "default": "./dist/browser/mimetext.cjs.js"
     },
     "./browser": {
-      "import": "./dist/browser/es/index.js",
-      "require": "./dist/browser/cjs/index.js"
+      "import": "./dist/browser/mimetext.es.js",
+      "require": "./dist/browser/mimetext.cjs.js",
+      "default": "./dist/browser/mimetext.cjs.js"
     },
     "./node": {
-      "import": "./dist/node/es/index.js",
-      "require": "./dist/node/cjs/index.js"
+      "import": "./dist/node/mimetext.es.js",
+      "require": "./dist/node/mimetext.cjs.js",
+      "default": "./dist/node/mimetext.cjs.js"
     },
     "./gas": {
-      "import": "./dist/gas/es/index.js",
-      "require": "./dist/node/cjs/index.js"
+      "default": "./dist/gas/mimetext.js"
     }
   },
-  "main": "./dist/node/cjs/index.js",
-  "module": "./dist/node/es/index.js",
+  "main": "./dist/node/mimetext.cjs.js",
+  "module": "./dist/node/mimetext.es.js",
   "types": "types",
   "scripts": {
     "precompile": "rm -rf build/*",
@@ -58,12 +58,13 @@
   },
   "homepage": "https://github.com/muratgozel/MIMEText#readme",
   "devDependencies": {
+    "@aws-sdk/client-ses": "^3.332.0",
+    "@aws-sdk/client-sesv2": "^3.332.0",
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.5",
     "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.6",
     "@jest/globals": "^29.5.0",
-    "@rollup/plugin-alias": "^4.0.3",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-json": "^6.0.0",
@@ -71,10 +72,8 @@
     "@rollup/plugin-terser": "^0.4.0",
     "@types/google-apps-script": "^1.0.59",
     "@types/mime-types": "^2.1.1",
-    "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
-    "aws-sdk": "^2.1341.0",
     "core-js": "^3.18.3",
     "dotenv": "^16.0.3",
     "eslint": "^8.36.0",
@@ -88,8 +87,9 @@
     "@babel/runtime": "^7.15.4",
     "@babel/runtime-corejs3": "^7.15.4",
     "@tsconfig/esm": "^1.0.2",
-    "@tsconfig/node18": "^1.0.1",
+    "@tsconfig/node18": "^2.0.0",
     "@tsconfig/strictest": "^2.0.0",
+    "@types/node": "^20.1.2",
     "js-base64": "^3.7.5",
     "mime-types": "^2.1.35"
   },

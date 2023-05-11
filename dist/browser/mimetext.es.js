@@ -1,28 +1,26 @@
-'use strict';
-
-var jsBase64 = require('js-base64');
-var _classCallCheck = require('@babel/runtime-corejs3/helpers/classCallCheck');
-var _createClass = require('@babel/runtime-corejs3/helpers/createClass');
-var _defineProperty = require('@babel/runtime-corejs3/helpers/defineProperty');
-var _sliceInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/slice');
-var _mapInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/map');
-var _filterInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/filter');
-var _includesInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/includes');
-var _Object$assign = require('@babel/runtime-corejs3/core-js/object/assign');
-var _concatInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/concat');
-var _Object$keys = require('@babel/runtime-corejs3/core-js/object/keys');
-var _Reflect$construct = require('@babel/runtime-corejs3/core-js/reflect/construct');
-var _assertThisInitialized = require('@babel/runtime-corejs3/helpers/assertThisInitialized');
-var _inherits = require('@babel/runtime-corejs3/helpers/inherits');
-var _possibleConstructorReturn = require('@babel/runtime-corejs3/helpers/possibleConstructorReturn');
-var _getPrototypeOf = require('@babel/runtime-corejs3/helpers/getPrototypeOf');
-var _wrapNativeSuper = require('@babel/runtime-corejs3/helpers/wrapNativeSuper');
-var _Array$from = require('@babel/runtime-corejs3/core-js/array/from');
-var _Symbol = require('@babel/runtime-corejs3/core-js/symbol');
-var _getIteratorMethod = require('@babel/runtime-corejs3/core-js/get-iterator-method');
-var _reduceInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/reduce');
-var _findIndexInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/find-index');
-var _trimInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/trim');
+import { Base64 } from 'js-base64';
+import _classCallCheck from '@babel/runtime-corejs3/helpers/classCallCheck';
+import _createClass from '@babel/runtime-corejs3/helpers/createClass';
+import _defineProperty from '@babel/runtime-corejs3/helpers/defineProperty';
+import _sliceInstanceProperty from '@babel/runtime-corejs3/core-js/instance/slice';
+import _mapInstanceProperty from '@babel/runtime-corejs3/core-js/instance/map';
+import _filterInstanceProperty from '@babel/runtime-corejs3/core-js/instance/filter';
+import _includesInstanceProperty from '@babel/runtime-corejs3/core-js/instance/includes';
+import _Object$assign from '@babel/runtime-corejs3/core-js/object/assign';
+import _concatInstanceProperty from '@babel/runtime-corejs3/core-js/instance/concat';
+import _Object$keys from '@babel/runtime-corejs3/core-js/object/keys';
+import _Reflect$construct from '@babel/runtime-corejs3/core-js/reflect/construct';
+import _assertThisInitialized from '@babel/runtime-corejs3/helpers/assertThisInitialized';
+import _inherits from '@babel/runtime-corejs3/helpers/inherits';
+import _possibleConstructorReturn from '@babel/runtime-corejs3/helpers/possibleConstructorReturn';
+import _getPrototypeOf from '@babel/runtime-corejs3/helpers/getPrototypeOf';
+import _wrapNativeSuper from '@babel/runtime-corejs3/helpers/wrapNativeSuper';
+import _Array$from from '@babel/runtime-corejs3/core-js/array/from';
+import _Symbol from '@babel/runtime-corejs3/core-js/symbol';
+import _getIteratorMethod from '@babel/runtime-corejs3/core-js/get-iterator-method';
+import _reduceInstanceProperty from '@babel/runtime-corejs3/core-js/instance/reduce';
+import _findIndexInstanceProperty from '@babel/runtime-corejs3/core-js/instance/find-index';
+import _trimInstanceProperty from '@babel/runtime-corejs3/core-js/instance/trim';
 
 function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = _Reflect$construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !_Reflect$construct) return false; if (_Reflect$construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(_Reflect$construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
@@ -754,10 +752,10 @@ var MIMEMessage = /*#__PURE__*/function () {
 
 var envctx = {
   toBase64: function toBase64(data) {
-    return jsBase64.Base64.encode(data);
+    return Base64.encode(data);
   },
   toBase64WebSafe: function toBase64WebSafe(data) {
-    return jsBase64.Base64.encodeURI(data);
+    return Base64.encodeURI(data);
   },
   eol: '\r\n',
   validateContentType: function validateContentType(v) {
@@ -768,10 +766,4 @@ function createMimeMessage() {
   return new MIMEMessage(envctx);
 }
 
-exports.MIMEMessage = MIMEMessage;
-exports.MIMEMessageContent = MIMEMessageContent;
-exports.MIMEMessageHeader = MIMEMessageHeader;
-exports.MIMETextError = MIMETextError;
-exports.Mailbox = Mailbox;
-exports.createMimeMessage = createMimeMessage;
-//# sourceMappingURL=index.js.map
+export { MIMEMessage, MIMEMessageContent, MIMEMessageHeader, MIMETextError, Mailbox, createMimeMessage };

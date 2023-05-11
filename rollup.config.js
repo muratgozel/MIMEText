@@ -1,8 +1,7 @@
-import {nodeResolve} from '@rollup/plugin-node-resolve'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
 import terser from '@rollup/plugin-terser'
-import alias from '@rollup/plugin-alias'
 import json from '@rollup/plugin-json'
 
 const babelPresetsStandart = [
@@ -34,22 +33,16 @@ export default [
         output: [
             {
                 format: 'cjs',
-                file: 'dist/browser/cjs/index.js',
-                sourcemap: true
+                file: 'dist/browser/mimetext.cjs.js',
+                sourcemap: false
             },
             {
                 format: 'es',
-                file: 'dist/browser/es/index.js',
-                sourcemap: true
+                file: 'dist/browser/mimetext.es.js',
+                sourcemap: false
             }
         ],
         plugins: [
-            alias({
-                entries: [{
-                    find: /^#src\/(.*)/,
-                    replacement: 'build/$1.js'
-                }]
-            }),
             json(),
             nodeResolve({preferBuiltins: false}),
             commonjs({sourceMap: true}),
@@ -68,7 +61,7 @@ export default [
             {
                 format: 'iife',
                 name: 'MimeText',
-                file: 'dist/browser/iife/index.js',
+                file: 'dist/browser/mimetext.iife.js',
                 sourcemap: true,
                 globals: {
                     MimeText: 'MimeText'
@@ -76,12 +69,6 @@ export default [
             }
         ],
         plugins: [
-            alias({
-                entries: [{
-                    find: /^#src\/(.*)/,
-                    replacement: 'build/$1.js'
-                }]
-            }),
             json(),
             nodeResolve({preferBuiltins: false}),
             commonjs({sourceMap: true}),
@@ -101,22 +88,16 @@ export default [
         output: [
             {
                 format: 'cjs',
-                file: 'dist/node/cjs/index.js',
-                sourcemap: true
+                file: 'dist/node/mimetext.cjs.js',
+                sourcemap: false
             },
             {
                 format: 'es',
-                file: 'dist/node/es/index.js',
-                sourcemap: true
+                file: 'dist/node/mimetext.es.js',
+                sourcemap: false
             }
         ],
         plugins: [
-            alias({
-                entries: [{
-                    find: /^#src\/(.*)/,
-                    replacement: 'build/$1.js'
-                }]
-            }),
             json(),
             nodeResolve({preferBuiltins: true}),
             commonjs({sourceMap: true})
@@ -128,7 +109,7 @@ export default [
             {
                 format: 'iife',
                 name: 'MimeText',
-                file: 'dist/gas/iife/index.js',
+                file: 'dist/gas/mimetext.js',
                 sourcemap: true,
                 globals: {
                     MimeText: 'MimeText'
@@ -136,12 +117,6 @@ export default [
             }
         ],
         plugins: [
-            alias({
-                entries: [{
-                    find: /^#src\/(.*)/,
-                    replacement: 'build/$1.js'
-                }]
-            }),
             json(),
             nodeResolve({preferBuiltins: false}),
             commonjs({sourceMap: true}),
