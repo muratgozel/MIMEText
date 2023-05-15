@@ -1,34 +1,34 @@
 {
   "name": "mimetext",
-  "version": "v3.0.7",
+  "version": "v3.0.8",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "exports": {
     ".": {
       "node": {
         "import": "./dist/node/mimetext.es.js",
-        "require": "./dist/node/mimetext.cjs.js",
-        "default": "./dist/node/mimetext.cjs.js"
+        "require": "./dist/node/mimetext.cjs",
+        "default": "./dist/node/mimetext.cjs"
       },
       "import": "./dist/browser/mimetext.es.js",
-      "require": "./dist/browser/mimetext.cjs.js",
-      "default": "./dist/browser/mimetext.cjs.js"
+      "require": "./dist/browser/mimetext.cjs",
+      "default": "./dist/browser/mimetext.cjs"
     },
     "./browser": {
       "import": "./dist/browser/mimetext.es.js",
-      "require": "./dist/browser/mimetext.cjs.js",
-      "default": "./dist/browser/mimetext.cjs.js"
+      "require": "./dist/browser/mimetext.cjs",
+      "default": "./dist/browser/mimetext.cjs"
     },
     "./node": {
       "import": "./dist/node/mimetext.es.js",
-      "require": "./dist/node/mimetext.cjs.js",
-      "default": "./dist/node/mimetext.cjs.js"
+      "require": "./dist/node/mimetext.cjs",
+      "default": "./dist/node/mimetext.cjs"
     },
     "./gas": {
       "default": "./dist/gas/mimetext.js"
     }
   },
-  "main": "./dist/node/mimetext.cjs.js",
+  "main": "dist/node/mimetext.cjs",
   "module": "./dist/node/mimetext.es.js",
   "types": "types",
   "scripts": {

@@ -33,7 +33,7 @@ export default [
         output: [
             {
                 format: 'cjs',
-                file: 'dist/browser/mimetext.cjs.js',
+                file: 'dist/browser/mimetext.cjs',
                 sourcemap: false
             },
             {
@@ -88,7 +88,7 @@ export default [
         output: [
             {
                 format: 'cjs',
-                file: 'dist/node/mimetext.cjs.js',
+                file: 'dist/node/mimetext.cjs',
                 sourcemap: false
             },
             {
