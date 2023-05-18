@@ -75,7 +75,7 @@ declare module 'mimetext' {
         getMessageByType(type: string): MIMEMessageContent | undefined
         addAttachment(opts: AttachmentOptions): MIMEMessageContent
         addMessage(opts: ContentOptions): MIMEMessageContent
-        setSender(input: MailboxAddrObject | MailboxAddrText | Email, config: {type: MailboxType}): Mailbox
+        setSender(input: MailboxAddrObject | MailboxAddrText | Email, config?: {type: MailboxType}): Mailbox
         getSender(): Mailbox | undefined
         setRecipients(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[], config: {type: MailboxType}): Mailbox[]
         getRecipients(config: {type: MailboxType} = {type: 'To'}): Mailbox | Mailbox[] | undefined
