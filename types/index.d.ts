@@ -47,7 +47,7 @@ declare module 'mimetext' {
         envctx: EnvironmentContext
         headers: MIMEMessageContentHeader
         data: string
-        new(envctx: EnvironmentContext, data: string, headers = {}): MIMEMessageContent
+        new(envctx: EnvironmentContext, data: string, headers?: ContentHeaders): MIMEMessageContent
         dump(): string
         isAttachment(): boolean
         isInlineAttachment(): boolean
@@ -78,7 +78,7 @@ declare module 'mimetext' {
         setSender(input: MailboxAddrObject | MailboxAddrText | Email, config?: {type: MailboxType}): Mailbox
         getSender(): Mailbox | undefined
         setRecipients(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[], config: {type: MailboxType}): Mailbox[]
-        getRecipients(config: {type: MailboxType} = {type: 'To'}): Mailbox | Mailbox[] | undefined
+        getRecipients(config?: {type: MailboxType}): Mailbox | Mailbox[] | undefined
         setRecipient(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
         setTo(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
         setCc(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
@@ -145,7 +145,7 @@ declare module 'mimetext' {
         'Content-Transfer-Encoding'?: ContentTransferEncoding,
         'Content-Disposition'?: string,
         'Content-ID'?: string,
-        [index: string]: string
+        [index: string]: string | undefined
     }
 
     export type ContentOptions = {
