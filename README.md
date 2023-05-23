@@ -189,7 +189,7 @@ message.addMessage({
 const params = {
   Destinations: message.getRecipients({type: 'to'}).map(mailbox => mailbox.addr),
   RawMessage: {
-    Data: Buffer.from(msg.asRaw(), 'utf8') // the raw message data needs to be sent as uint8array
+    Data: Buffer.from(message.asRaw(), 'utf8') // the raw message data needs to be sent as uint8array
   },
   Source: message.getSender().addr
 }
@@ -224,13 +224,13 @@ message.addMessage({
 })
 
 const params = {
-    FromEmailAddress: msg.getSender().addr,
+    FromEmailAddress: message.getSender().addr,
     Destination: {
-        ToAddresses: msg.getRecipients().map((box) => box.addr)
+        ToAddresses: message.getRecipients().map((box) => box.addr)
     },
     Content: {
         Raw: {
-            Data: Buffer.from(msg.asRaw(), 'utf8')
+            Data: Buffer.from(message.asRaw(), 'utf8')
         }
     }
 }
