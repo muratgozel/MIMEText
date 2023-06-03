@@ -278,7 +278,7 @@ test('sends an html email with plain text attachment using aws-sdk v2', async ()
     const msg = createMimeMessage()
     msg.setSender(process.env.FROM)
     msg.setRecipients(process.env.TO.split(','))
-    msg.setSubject('Testing MimeText 🐬 (HTML + Plain Text Attachment Using AWS SDK v2)')
+    msg.setSubject('Testing MimeText 🐬 (Plain Text Message + Plain Text Attachment Using AWS SDK v2)')
     msg.addMessage({
         contentType: 'text/plain',
         data: 'Hello there,\n\n' +
