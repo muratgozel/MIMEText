@@ -245,7 +245,7 @@ test('sends an html email with plain text attachment using aws-sdk v2', async ()
     expect(result.MessageId.length).toBeGreaterThan(1)
 })
 
-test('sends only an attachment, without content using aws-sdk v2', async () => {
+test('sends only a plain text attachment, without content using aws-sdk v2', async () => {
     const ses = new SESv2Client({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
     msg.setSender(process.env.FROM)
@@ -273,7 +273,7 @@ test('sends only an attachment, without content using aws-sdk v2', async () => {
     expect(result.MessageId.length).toBeGreaterThan(1)
 })
 
-test('sends an html email with plain text attachment using aws-sdk v2', async () => {
+test('sends an plain text email with a plain text attachment using aws-sdk v2', async () => {
     const ses = new SESv2Client({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
     msg.setSender(process.env.FROM)
