@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "v3.0.13",
+  "version": "v3.0.14",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "exports": {
@@ -32,6 +32,7 @@
   "module": "./dist/node/mimetext.es.js",
   "types": "types",
   "scripts": {
+    "setup": "exit 0",
     "precompile": "rm -rf build/*",
     "compile": "tsc -p tsconfig.json",
     "build": "rollup --config rollup.config.js",
@@ -49,8 +50,8 @@
   ],
   "author": "Murat Gözel <murat@gozel.com.tr>",
   "funding": {
-    "type": "ko-fi",
-    "url": "https://ko-fi.com/muratgozel"
+    "type": "patreon",
+    "url": "https://patreon.com/muratgozel"
   },
   "license": "MIT",
   "bugs": {

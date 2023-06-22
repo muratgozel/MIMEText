@@ -3,7 +3,7 @@ import { Buffer } from 'node:buffer'
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses'
 import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2'
 import {expect, test, beforeAll, jest} from '@jest/globals'
-import { createMimeMessage } from '../dist/node/mimetext.es.js'
+import { createMimeMessage, MIMETextError } from '../dist/node/mimetext.es.js'
 
 const sampleImageBase64 = '/9j/4AAQSkZJRgABAgEASABIAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAgICAgICAgICAgMDAwMDAwMDAwMBAQEBAQEBAgEBAgICAQICAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA//AABEIAAUABQMAEQABEQECEQH/xABPAAEAAAAAAAAAAAAAAAAAAAAKEAEBAQEBAQAAAAAAAAAAAAAFBgQDAgEBAQAAAAAAAAAAAAAAAAAAAAARAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwAAARECEQA/AHsDDIlo1m7dWUFHmo6DMyOOzmleB0EdwlZme6ycn1npkJbZP7FgtTvTo7qaV+KtbefPb4N8Hn4A/9k='
 const sampleTxtBase64 = 'SGVsbG8gdGhlcmUu'
@@ -245,51 +245,23 @@ test('sends an html email with plain text attachment using aws-sdk v2', async ()
     expect(result.MessageId.length).toBeGreaterThan(1)
 })
 
-test('sends only a plain text attachment, without content using aws-sdk v2', async () => {
-    const ses = new SESv2Client({region: process.env.AWS_REGION})
-    const msg = createMimeMessage()
-    msg.setSender(process.env.FROM)
-    msg.setRecipients(process.env.TO.split(','))
-    msg.setSubject('Testing MimeText 🐬 (Plain Text Attachment Only Using AWS SDK v2)')
-    msg.addAttachment({
-        filename: 'plain.txt',
-        contentType: 'text/plain',
-        data: sampleTxtBase64
-    })
-    const params = {
-        FromEmailAddress: msg.getSender().addr,
-        Destination: {
-            ToAddresses: msg.getRecipients().map((box) => box.addr)
-        },
-        Content: {
-            Raw: {
-                Data: Buffer.from(msg.asRaw(), 'utf8')
-            }
-        }
-    }
-    const result = await ses.send(new SendEmailCommand(params))
-    expect(result).toHaveProperty('MessageId')
-    expect(typeof result.MessageId).toBe('string')
-    expect(result.MessageId.length).toBeGreaterThan(1)
-})
-
 test('sends an plain text email with a plain text attachment using aws-sdk v2', async () => {
     const ses = new SESv2Client({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
     msg.setSender(process.env.FROM)
     msg.setRecipients(process.env.TO.split(','))
     msg.setSubject('Testing MimeText 🐬 (Plain Text Message + Plain Text Attachment Using AWS SDK v2)')
+    msg.addAttachment({
+        filename: 'plain.txt',
+        contentType: 'text/plain',
+        data: sampleTxtBase64
+    })
     msg.addMessage({
         contentType: 'text/plain',
         data: 'Hello there,\n\n' +
             'This is a test email sent by MimeText test suite.\n\n' +
             'There should be a plain text attachment in this email called plain.txt\n\n' +
             'Best regards.'
-    })
-    msg.addAttachment({
-        filename: 'plain.txt',
-        contentType: 'text/plain',
-        data: sampleTxtBase64
     })
     const params = {
         FromEmailAddress: msg.getSender().addr,

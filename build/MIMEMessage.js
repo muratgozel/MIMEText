@@ -138,7 +138,7 @@ export class MIMEMessage {
         return this.messages.some(matcher) ? this.messages.filter(matcher) : [];
     }
     getMessageByType(type) {
-        const matcher = (msg) => (msg.getHeader('Content-Type') || '').includes(type);
+        const matcher = (msg) => !msg.isAttachment() && !msg.isInlineAttachment() && (msg.getHeader('Content-Type') || '').includes(type);
         return this.messages.some(matcher) ? this.messages.filter(matcher)[0] : undefined;
     }
     addAttachment(opts) {

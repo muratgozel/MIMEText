@@ -158,7 +158,7 @@ export class MIMEMessage {
     }
 
     getMessageByType(type: string): MIMEMessageContent | undefined {
-        const matcher = (msg: MIMEMessageContent) => (msg.getHeader('Content-Type') as string || '').includes(type)
+        const matcher = (msg: MIMEMessageContent) => !msg.isAttachment() && !msg.isInlineAttachment() && (msg.getHeader('Content-Type') as string || '').includes(type)
         return this.messages.some(matcher) ? this.messages.filter(matcher)[0] : undefined
     }
 

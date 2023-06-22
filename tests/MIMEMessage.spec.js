@@ -4,6 +4,7 @@ import * as mime from 'mime-types'
 import {MIMEMessage} from '../build/MIMEMessage'
 import {Mailbox} from '../build/Mailbox'
 import {MIMEMessageContent} from '../build/MIMEMessageContent'
+import {MIMETextError} from '../dist/node/mimetext.es.js'
 
 const envctx = {
     toBase64: function toBase64(data) {
@@ -193,4 +194,18 @@ test('generates plain text and html mixed message with an attachment', () => {
         sampleImageBase64 + envctx.eol +
         '--abcdef--'
     )
+})
+
+test('sending only an attachment, without content isn not allowed', async () => {
+    const msg = new MIMEMessage(envctx)
+    msg.setHeader('Date', 'Wed, 22 Mar 2023 23:36:33 +0000')
+    msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
+    msg.setSender('test@mail.com')
+    msg.setSubject('Lorem Ipsum')
+    msg.addAttachment({
+        contentType: 'image/jpg',
+        filename: 'sample.jpg',
+        data: sampleImageBase64
+    })
+    expect(() => msg.asRaw()).toThrow('No content added to the message.')
 })

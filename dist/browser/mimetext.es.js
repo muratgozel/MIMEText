@@ -550,7 +550,7 @@ var MIMEMessage = /*#__PURE__*/function () {
       var _context12;
       var matcher = function matcher(msg) {
         var _context11;
-        return _includesInstanceProperty(_context11 = msg.getHeader('Content-Type') || '').call(_context11, type);
+        return !msg.isAttachment() && !msg.isInlineAttachment() && _includesInstanceProperty(_context11 = msg.getHeader('Content-Type') || '').call(_context11, type);
       };
       return this.messages.some(matcher) ? _filterInstanceProperty(_context12 = this.messages).call(_context12, matcher)[0] : undefined;
     }
