@@ -570,10 +570,10 @@ class MIMEMessage {
 
 const envctx = {
     toBase64: function toBase64(data) {
-        return (new Buffer(data)).toString('base64');
+        return (Buffer.from(data)).toString('base64');
     },
     toBase64WebSafe: function toBase64WebSafe(data) {
-        return (new Buffer(data)).toString('base64')
+        return (Buffer.from(data)).toString('base64')
             .replace(/\+/g, '-')
             .replace(/\//g, '_')
             .replace(/=+$/, '');
