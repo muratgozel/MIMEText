@@ -259,6 +259,10 @@ export class MIMEMessage {
         return this.setRecipients(input, {type: 'Cc'})
     }
 
+    setReplyTo(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]) {
+        return this.setRecipients(input, {type: 'Reply-To'})
+    }
+
     setBcc(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]) {
         return this.setRecipients(input, {type: 'Bcc'})
     }

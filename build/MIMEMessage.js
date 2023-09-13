@@ -216,6 +216,9 @@ export class MIMEMessage {
     setCc(input) {
         return this.setRecipients(input, { type: 'Cc' });
     }
+    setReplyTo(input) {
+        return this.setRecipients(input, { type: 'Reply-To' });
+    }
     setBcc(input) {
         return this.setRecipients(input, { type: 'Bcc' });
     }

@@ -81,6 +81,7 @@ declare module 'mimetext' {
         getRecipients(config?: {type: MailboxType}): Mailbox | Mailbox[] | undefined
         setRecipient(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
         setTo(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
+        setReplyTo(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
         setCc(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
         setBcc(input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[]): Mailbox[]
         setSubject(value: string): string
@@ -111,7 +112,7 @@ declare module 'mimetext' {
         validateContentType: (v: string) => string | false
     }
 
-    export type MailboxType = 'To' | 'From' | 'Cc' | 'Bcc'
+    export type MailboxType = 'To' | 'From' | 'Cc' | 'Bcc' | 'Reply-To'
 
     export type MailboxAddrObject = {
         addr: string,

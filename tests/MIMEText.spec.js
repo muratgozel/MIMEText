@@ -22,9 +22,10 @@ beforeAll(() => {
 test('sends a plain text email to the specified recipients', async () => {
     const ses = new SESClient({region: process.env.AWS_REGION})
     const msg = createMimeMessage()
-    //const spyAsRawMessage = jest.spyOn(msg, 'asRawMessage')
+    // const spyAsRawMessage = jest.spyOn(msg, 'asRawMessage')
     msg.setSender(process.env.FROM)
     msg.setRecipients(process.env.TO.split(','))
+    msg.setReplyTo(process.env.REPLY_TO.split(','))
     msg.setSubject('Testing MimeText 🐬 (Plain Text)')
     msg.addMessage({
         contentType: 'text/plain',

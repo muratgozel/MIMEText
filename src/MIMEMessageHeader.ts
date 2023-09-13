@@ -28,8 +28,8 @@ export class MIMEMessageHeader {
         },
         {
             name: 'Reply-To',
-            validate: (v: unknown) => this.validateMailboxSingle(v),
-            dump: (v: unknown) => this.dumpMailboxSingle(v)
+            validate: (v: unknown) => this.validateMailboxMulti(v),
+            dump: (v: unknown) => this.dumpMailboxMulti(v)
         },
         {
             name: 'To',

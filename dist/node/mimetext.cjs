@@ -111,8 +111,8 @@ class MIMEMessageHeader {
         },
         {
             name: 'Reply-To',
-            validate: (v) => this.validateMailboxSingle(v),
-            dump: (v) => this.dumpMailboxSingle(v)
+            validate: (v) => this.validateMailboxMulti(v),
+            dump: (v) => this.dumpMailboxMulti(v)
         },
         {
             name: 'To',
@@ -523,6 +523,9 @@ class MIMEMessage {
     }
     setCc(input) {
         return this.setRecipients(input, { type: 'Cc' });
+    }
+    setReplyTo(input) {
+        return this.setRecipients(input, { type: 'Reply-To' });
     }
     setBcc(input) {
         return this.setRecipients(input, { type: 'Bcc' });

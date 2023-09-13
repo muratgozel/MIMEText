@@ -156,10 +156,10 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
     }, {
       name: 'Reply-To',
       validate: function validate(v) {
-        return _this.validateMailboxSingle(v);
+        return _this.validateMailboxMulti(v);
       },
       dump: function dump(v) {
-        return _this.dumpMailboxSingle(v);
+        return _this.dumpMailboxMulti(v);
       }
     }, {
       name: 'To',
@@ -673,6 +673,13 @@ var MIMEMessage = /*#__PURE__*/function () {
     value: function setCc(input) {
       return this.setRecipients(input, {
         type: 'Cc'
+      });
+    }
+  }, {
+    key: "setReplyTo",
+    value: function setReplyTo(input) {
+      return this.setRecipients(input, {
+        type: 'Reply-To'
       });
     }
   }, {
