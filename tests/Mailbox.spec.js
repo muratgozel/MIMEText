@@ -4,6 +4,8 @@ import {Mailbox} from '../build/Mailbox'
 const input1 = 'test@mail.com'
 const input2 = 'Test Lorem Ipsum <test@mail.com>'
 const input3 = {addr: 'test@mail.com', name: 'Test Lorem Ipsum', type: 'From'}
+const input4 = 'LoremIpsum<test@mail.com>'
+const input5 = '"LoremIpsum" <test@mail.com>'
 
 test('it accepts objects and texts in a certain format.', () => {
     const mail = new Mailbox(input1)
@@ -20,6 +22,16 @@ test('it accepts objects and texts in a certain format.', () => {
     expect(mail3.addr).toBe('test@mail.com')
     expect(mail3.name).toBe('Test Lorem Ipsum')
     expect(mail3.type).toBe('From')
+
+    const mail4 = new Mailbox(input4)
+    expect(mail4.addr).toBe('test@mail.com')
+    expect(mail4.name).toBe('LoremIpsum')
+    expect(mail4.type).toBe('To')
+
+    const mail5 = new Mailbox(input5)
+    expect(mail5.addr).toBe('test@mail.com')
+    expect(mail5.name).toBe('LoremIpsum')
+    expect(mail5.type).toBe('To')
 })
 
 test('gets domain part of the address', () => {

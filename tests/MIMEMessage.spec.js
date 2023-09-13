@@ -4,7 +4,6 @@ import * as mime from 'mime-types'
 import {MIMEMessage} from '../build/MIMEMessage'
 import {Mailbox} from '../build/Mailbox'
 import {MIMEMessageContent} from '../build/MIMEMessageContent'
-import {MIMETextError} from '../dist/node/mimetext.es.js'
 
 const envctx = {
     toBase64: function toBase64(data) {

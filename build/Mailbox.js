@@ -29,7 +29,8 @@ export class Mailbox {
                 this.addr = text.slice(1, -1);
                 return this;
             }
-            const arr = text.split(' <');
+            const arr = text.split('<');
+            arr[0] = arr[0].trim();
             arr[0] = /^("|')/.test(arr[0]) ? arr[0].slice(1) : arr[0];
             arr[0] = /("|')$/.test(arr[0]) ? arr[0].slice(0, -1) : arr[0];
             arr[1] = arr[1].slice(0, -1);
