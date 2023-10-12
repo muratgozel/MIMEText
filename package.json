@@ -6,21 +6,33 @@
   "exports": {
     ".": {
       "node": {
-        "import": "./dist/node/mimetext.es.js",
+        "import": {
+          "types": "./types/index.d.ts",
+          "default": "./dist/node/mimetext.es.js"
+        },
         "require": "./dist/node/mimetext.cjs",
         "default": "./dist/node/mimetext.cjs"
       },
-      "import": "./dist/browser/mimetext.es.js",
+      "import": {
+        "types": "./types/index.d.ts",
+        "default": "./dist/browser/mimetext.es.js"
+      },
       "require": "./dist/browser/mimetext.cjs",
       "default": "./dist/browser/mimetext.cjs"
     },
     "./browser": {
-      "import": "./dist/browser/mimetext.es.js",
+      "import": {
+        "types": "./types/index.d.ts",
+        "default": "./dist/browser/mimetext.es.js"
+      },
       "require": "./dist/browser/mimetext.cjs",
       "default": "./dist/browser/mimetext.cjs"
     },
     "./node": {
-      "import": "./dist/node/mimetext.es.js",
+      "import": {
+        "types": "./types/index.d.ts",
+        "default": "./dist/node/mimetext.es.js"
+      },
       "require": "./dist/node/mimetext.cjs",
       "default": "./dist/node/mimetext.cjs"
     },
