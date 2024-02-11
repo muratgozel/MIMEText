@@ -104,7 +104,7 @@ export class MIMEMessageHeader {
             const ind = this.fields.findIndex(fieldMatcher);
             const field = this.fields[ind];
             if (field.validate && !field.validate(value)) {
-                throw new MIMETextError('MIMETEXT_INVALID_HEADER_VALUE', 'You specified an invalid value for the header ' + name);
+                throw new MIMETextError('MIMETEXT_INVALID_HEADER_VALUE', `The value for the header "${name}" is invalid.`);
             }
             this.fields[ind].value = value;
             return this.fields[ind];
@@ -124,7 +124,7 @@ export class MIMEMessageHeader {
             this.fields.push(obj);
             return obj;
         }
-        throw new MIMETextError('MIMETEXT_INVALID_HEADER_FIELD', 'You specified an invalid header field object.');
+        throw new MIMETextError('MIMETEXT_INVALID_HEADER_FIELD', 'Invalid input for custom header. It must be in type of HeaderField.');
     }
     validateMailboxSingle(v) {
         return v instanceof Mailbox;
@@ -181,6 +181,7 @@ export class MIMEMessageContentHeader extends MIMEMessageHeader {
             name: 'Content-Disposition'
         }
     ];
+    // eslint-disable-next-line @typescript-eslint/no-useless-constructor
     constructor(envctx) {
         super(envctx);
     }

@@ -12,10 +12,10 @@ var _Object$assign = require('@babel/runtime-corejs3/core-js/object/assign');
 var _concatInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/concat');
 var _Object$keys = require('@babel/runtime-corejs3/core-js/object/keys');
 var _Reflect$construct = require('@babel/runtime-corejs3/core-js/reflect/construct');
-var _assertThisInitialized = require('@babel/runtime-corejs3/helpers/assertThisInitialized');
-var _inherits = require('@babel/runtime-corejs3/helpers/inherits');
 var _possibleConstructorReturn = require('@babel/runtime-corejs3/helpers/possibleConstructorReturn');
 var _getPrototypeOf = require('@babel/runtime-corejs3/helpers/getPrototypeOf');
+var _assertThisInitialized = require('@babel/runtime-corejs3/helpers/assertThisInitialized');
+var _inherits = require('@babel/runtime-corejs3/helpers/inherits');
 var _wrapNativeSuper = require('@babel/runtime-corejs3/helpers/wrapNativeSuper');
 var _Array$from = require('@babel/runtime-corejs3/core-js/array/from');
 var _Symbol = require('@babel/runtime-corejs3/core-js/symbol');
@@ -24,16 +24,15 @@ var _reduceInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/r
 var _findIndexInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/find-index');
 var _trimInstanceProperty = require('@babel/runtime-corejs3/core-js/instance/trim');
 
-function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = _Reflect$construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !_Reflect$construct) return false; if (_Reflect$construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(_Reflect$construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _callSuper$1(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct$1() ? _Reflect$construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _isNativeReflectConstruct$1() { try { var t = !Boolean.prototype.valueOf.call(_Reflect$construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct$1 = function _isNativeReflectConstruct() { return !!t; })(); }
 var MIMETextError = /*#__PURE__*/function (_Error) {
   _inherits(MIMETextError, _Error);
-  var _super = _createSuper$1(MIMETextError);
   function MIMETextError(message) {
     var _this;
     var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
     _classCallCheck(this, MIMETextError);
-    _this = _super.call(this, description);
+    _this = _callSuper$1(this, MIMETextError, [description]);
     _defineProperty(_assertThisInitialized(_this), "name", '');
     _defineProperty(_assertThisInitialized(_this), "description", '');
     _this.name = message;
@@ -60,13 +59,17 @@ var Mailbox = /*#__PURE__*/function () {
     key: "getAddrDomain",
     value: function getAddrDomain() {
       var _context;
-      return _includesInstanceProperty(_context = this.addr).call(_context, '@') ? this.addr.split('@')[1] : '';
+      if (_includesInstanceProperty(_context = this.addr).call(_context, '@')) {
+        var arr = this.addr.split('@');
+        if (arr.length > 1) return arr[1];
+      }
+      return '';
     }
   }, {
     key: "dump",
     value: function dump() {
       var _context2;
-      return this.name ? _concatInstanceProperty(_context2 = "\"".concat(this.name, "\" <")).call(_context2, this.addr, ">") : "<".concat(this.addr, ">");
+      return this.name.length > 0 ? _concatInstanceProperty(_context2 = "\"".concat(this.name, "\" <")).call(_context2, this.addr, ">") : "<".concat(this.addr, ">");
     }
   }, {
     key: "parse",
@@ -80,7 +83,7 @@ var Mailbox = /*#__PURE__*/function () {
       if (this.isMailboxAddrText(input)) {
         var _context3, _context4, _context5;
         var text = _trimInstanceProperty(input).call(input);
-        if (_sliceInstanceProperty(text).call(text, 0, 1) == '<' && _sliceInstanceProperty(text).call(text, -1) == '>') {
+        if (_sliceInstanceProperty(text).call(text, 0, 1) === '<' && _sliceInstanceProperty(text).call(text, -1) === '>') {
           this.addr = _sliceInstanceProperty(text).call(text, 1, -1);
           return this;
         }
@@ -117,8 +120,8 @@ var Mailbox = /*#__PURE__*/function () {
   return Mailbox;
 }();
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = _Reflect$construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !_Reflect$construct) return false; if (_Reflect$construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(_Reflect$construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? _Reflect$construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(_Reflect$construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof _Symbol !== "undefined" && _getIteratorMethod(o) || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { var _context10; if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = _sliceInstanceProperty(_context10 = Object.prototype.toString.call(o)).call(_context10, 8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return _Array$from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
@@ -268,7 +271,7 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
         var ind = _findIndexInstanceProperty(_context7 = this.fields).call(_context7, fieldMatcher);
         var field = this.fields[ind];
         if (field.validate && !field.validate(value)) {
-          throw new MIMETextError('MIMETEXT_INVALID_HEADER_VALUE', 'You specified an invalid value for the header ' + name);
+          throw new MIMETextError('MIMETEXT_INVALID_HEADER_VALUE', "The value for the header \"".concat(name, "\" is invalid."));
         }
         this.fields[ind].value = value;
         return this.fields[ind];
@@ -292,7 +295,7 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
         this.fields.push(obj);
         return obj;
       }
-      throw new MIMETextError('MIMETEXT_INVALID_HEADER_FIELD', 'You specified an invalid header field object.');
+      throw new MIMETextError('MIMETEXT_INVALID_HEADER_FIELD', 'Invalid input for custom header. It must be in type of HeaderField.');
     }
   }, {
     key: "validateMailboxSingle",
@@ -360,13 +363,13 @@ var MIMEMessageHeader = /*#__PURE__*/function () {
   }]);
   return MIMEMessageHeader;
 }();
-var MIMEMessageContentHeader = /*#__PURE__*/function (_MIMEMessageHeader) {
-  _inherits(MIMEMessageContentHeader, _MIMEMessageHeader);
-  var _super = _createSuper(MIMEMessageContentHeader);
+var MIMEMessageContentHeader = /*#__PURE__*/function (_MIMEMessageHeader2) {
+  _inherits(MIMEMessageContentHeader, _MIMEMessageHeader2);
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   function MIMEMessageContentHeader(envctx) {
     var _this4;
     _classCallCheck(this, MIMEMessageContentHeader);
-    _this4 = _super.call(this, envctx);
+    _this4 = _callSuper(this, MIMEMessageContentHeader, [envctx]);
     _defineProperty(_assertThisInitialized(_this4), "fields", [{
       name: 'Content-ID'
     }, {
@@ -466,7 +469,7 @@ var MIMEMessage = /*#__PURE__*/function () {
       var lines = this.headers.dump();
       var plaintext = this.getMessageByType('text/plain');
       var html = this.getMessageByType('text/html');
-      var primaryMessage = html ? html : plaintext ? plaintext : undefined;
+      var primaryMessage = html !== null && html !== void 0 ? html : plaintext !== null && plaintext !== void 0 ? plaintext : undefined;
       if (primaryMessage === undefined) {
         throw new MIMETextError('MIMETEXT_MISSING_BODY', 'No content added to the message.');
       }
@@ -509,9 +512,17 @@ var MIMEMessage = /*#__PURE__*/function () {
     key: "dumpTextContent",
     value: function dumpTextContent(plaintext, html, boundary) {
       var eol = this.envctx.eol;
-      var primaryMessage = html ? html : plaintext;
+      var primaryMessage = html !== null && html !== void 0 ? html : plaintext;
       var data = '';
-      if (plaintext && html && !this.hasInlineAttachments() && this.hasAttachments()) data = '--' + boundary + eol + 'Content-Type: multipart/alternative; boundary=' + this.boundaries.alt + eol + eol + '--' + this.boundaries.alt + eol + plaintext.dump() + eol + eol + '--' + this.boundaries.alt + eol + html.dump() + eol + eol + '--' + this.boundaries.alt + '--';else if (plaintext && html && this.hasInlineAttachments()) data = '--' + boundary + eol + html.dump();else if (plaintext && html) data = '--' + boundary + eol + plaintext.dump() + eol + eol + '--' + boundary + eol + html.dump();else data = '--' + boundary + eol + primaryMessage.dump();
+      if (plaintext && html && !this.hasInlineAttachments() && this.hasAttachments()) {
+        data = '--' + boundary + eol + 'Content-Type: multipart/alternative; boundary=' + this.boundaries.alt + eol + eol + '--' + this.boundaries.alt + eol + plaintext.dump() + eol + eol + '--' + this.boundaries.alt + eol + html.dump() + eol + eol + '--' + this.boundaries.alt + '--';
+      } else if (plaintext && html && this.hasInlineAttachments()) {
+        data = '--' + boundary + eol + html.dump();
+      } else if (plaintext && html) {
+        data = '--' + boundary + eol + plaintext.dump() + eol + eol + '--' + boundary + eol + html.dump();
+      } else {
+        data = '--' + boundary + eol + primaryMessage.dump();
+      }
       return data;
     }
   }, {
@@ -559,16 +570,16 @@ var MIMEMessage = /*#__PURE__*/function () {
   }, {
     key: "addAttachment",
     value: function addAttachment(opts) {
-      var _context13, _context14, _context15;
+      var _opts$headers$Content, _ref, _opts$headers$Content2, _context13, _context14, _context15;
       if (!this.isObject(opts.headers)) opts.headers = {};
       if (typeof opts.filename !== 'string') {
-        throw new MIMETextError('MIMETEXT_MISSING_FILENAME', 'The property filename must exist while adding attachments.');
+        throw new MIMETextError('MIMETEXT_MISSING_FILENAME', 'The property "filename" must exist while adding attachments.');
       }
-      var type = opts.headers['Content-Type'] || opts.contentType || 'none';
+      var type = ((_opts$headers$Content = opts.headers['Content-Type']) !== null && _opts$headers$Content !== void 0 ? _opts$headers$Content : opts.contentType) || 'none';
       if (this.envctx.validateContentType(type) === false) {
         throw new MIMETextError('MIMETEXT_INVALID_MESSAGE_TYPE', "You specified an invalid content type \"".concat(type, "\"."));
       }
-      var encoding = opts.headers['Content-Transfer-Encoding'] || opts.encoding || 'base64';
+      var encoding = (_ref = (_opts$headers$Content2 = opts.headers['Content-Transfer-Encoding']) !== null && _opts$headers$Content2 !== void 0 ? _opts$headers$Content2 : opts.encoding) !== null && _ref !== void 0 ? _ref : 'base64';
       if (!_includesInstanceProperty(_context13 = this.validContentTransferEncodings).call(_context13, encoding)) {
         type = 'application/octet-stream';
       }
@@ -590,18 +601,18 @@ var MIMEMessage = /*#__PURE__*/function () {
   }, {
     key: "addMessage",
     value: function addMessage(opts) {
-      var _context16, _context18, _context19;
+      var _opts$headers$Content3, _context16, _ref2, _opts$headers$Content4, _context18, _opts$charset, _context19;
       if (!this.isObject(opts.headers)) opts.headers = {};
-      var type = opts.headers['Content-Type'] || opts.contentType || 'none';
+      var type = ((_opts$headers$Content3 = opts.headers['Content-Type']) !== null && _opts$headers$Content3 !== void 0 ? _opts$headers$Content3 : opts.contentType) || 'none';
       if (!_includesInstanceProperty(_context16 = this.validTypes).call(_context16, type)) {
         var _context17;
         throw new MIMETextError('MIMETEXT_INVALID_MESSAGE_TYPE', _concatInstanceProperty(_context17 = "Valid content types are ".concat(this.validTypes.join(', '), " but you specified \"")).call(_context17, type, "\"."));
       }
-      var encoding = opts.headers['Content-Transfer-Encoding'] || opts.encoding || '7bit';
+      var encoding = (_ref2 = (_opts$headers$Content4 = opts.headers['Content-Transfer-Encoding']) !== null && _opts$headers$Content4 !== void 0 ? _opts$headers$Content4 : opts.encoding) !== null && _ref2 !== void 0 ? _ref2 : '7bit';
       if (!_includesInstanceProperty(_context18 = this.validContentTransferEncodings).call(_context18, encoding)) {
         type = 'application/octet-stream';
       }
-      var charset = opts.charset || 'UTF-8';
+      var charset = (_opts$charset = opts.charset) !== null && _opts$charset !== void 0 ? _opts$charset : 'UTF-8';
       opts.headers = _Object$assign({}, opts.headers, {
         'Content-Type': _concatInstanceProperty(_context19 = "".concat(type, "; charset=")).call(_context19, charset),
         'Content-Transfer-Encoding': encoding
@@ -657,30 +668,34 @@ var MIMEMessage = /*#__PURE__*/function () {
   }, {
     key: "setRecipient",
     value: function setRecipient(input) {
-      return this.setRecipients(input, {
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
         type: 'To'
-      });
+      };
+      return this.setRecipients(input, config);
     }
   }, {
     key: "setTo",
     value: function setTo(input) {
-      return this.setRecipients(input, {
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
         type: 'To'
-      });
+      };
+      return this.setRecipients(input, config);
     }
   }, {
     key: "setCc",
     value: function setCc(input) {
-      return this.setRecipients(input, {
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
         type: 'Cc'
-      });
+      };
+      return this.setRecipients(input, config);
     }
   }, {
     key: "setBcc",
     value: function setBcc(input) {
-      return this.setRecipients(input, {
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
         type: 'Bcc'
-      });
+      };
+      return this.setRecipients(input, config);
     }
   }, {
     key: "setSubject",

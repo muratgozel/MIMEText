@@ -1,48 +1,48 @@
-import type {EnvironmentContext} from 'mimetext'
-
-import {MIMEMessageContentHeader} from './MIMEMessageHeader.js'
+import type { EnvironmentContext } from './MIMEMessage'
+import type { Mailbox } from './Mailbox'
+import { type HeadersObject, MIMEMessageContentHeader } from './MIMEMessageHeader.js'
 
 export class MIMEMessageContent {
     envctx: EnvironmentContext
     headers
     data
 
-    constructor(envctx: EnvironmentContext, data: string, headers = {}) {
+    constructor (envctx: EnvironmentContext, data: string, headers = {}) {
         this.envctx = envctx
         this.headers = new MIMEMessageContentHeader(this.envctx)
         this.data = data
         this.setHeaders(headers)
     }
 
-    dump() {
+    dump (): string {
         const eol = this.envctx.eol
         return this.headers.dump() + eol + eol + this.data
     }
 
-    isAttachment(): boolean {
+    isAttachment (): boolean {
         const disposition = this.headers.get('Content-Disposition')
         return typeof disposition === 'string' && disposition.includes('attachment')
     }
 
-    isInlineAttachment(): boolean {
+    isInlineAttachment (): boolean {
         const disposition = this.headers.get('Content-Disposition')
         return typeof disposition === 'string' && disposition.includes('inline')
     }
 
-    setHeader(name: string, value: any) {
+    setHeader (name: string, value: any): string {
         this.headers.set(name, value)
         return name
     }
 
-    getHeader(name: string) {
+    getHeader (name: string): string | Mailbox | undefined {
         return this.headers.get(name)
     }
 
-    setHeaders(obj: {[index: string]: string}) {
+    setHeaders (obj: Record<string, any>): string[] {
         return Object.keys(obj).map((prop) => this.setHeader(prop, obj[prop]))
     }
 
-    getHeaders() {
+    getHeaders (): HeadersObject {
         return this.headers.toObject()
     }
 }

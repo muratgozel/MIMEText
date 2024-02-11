@@ -20,16 +20,20 @@ export class MIMEMessage {
         const lines = this.headers.dump();
         const plaintext = this.getMessageByType('text/plain');
         const html = this.getMessageByType('text/html');
-        const primaryMessage = html ? html : plaintext ? plaintext : undefined;
+        const primaryMessage = html ?? (plaintext ?? undefined);
         if (primaryMessage === undefined) {
             throw new MIMETextError('MIMETEXT_MISSING_BODY', 'No content added to the message.');
         }
         const hasAttachments = this.hasAttachments();
         const hasInlineAttachments = this.hasInlineAttachments();
-        const structure = hasInlineAttachments && hasAttachments ? 'mixed+related'
-            : hasAttachments ? 'mixed'
-                : hasInlineAttachments ? 'related'
-                    : plaintext && html ? 'alternative'
+        const structure = hasInlineAttachments && hasAttachments
+            ? 'mixed+related'
+            : hasAttachments
+                ? 'mixed'
+                : hasInlineAttachments
+                    ? 'related'
+                    : plaintext && html
+                        ? 'alternative'
                         : '';
         if (structure === 'mixed+related') {
             const attachments = this.getAttachments()
@@ -40,52 +44,52 @@ export class MIMEMessage {
                 .map((a) => '--' + this.boundaries.related + eol + a.dump() + eol + eol)
                 .join('')
                 .slice(0, -1 * eol.length);
-            return lines + eol
-                + 'Content-Type: multipart/mixed; boundary=' + this.boundaries.mixed + eol
-                + eol
-                + '--' + this.boundaries.mixed + eol
-                + 'Content-Type: multipart/related; boundary=' + this.boundaries.related + eol
-                + eol
-                + this.dumpTextContent(plaintext, html, this.boundaries.related) + eol
-                + eol
-                + inlineAttachments
-                + '--' + this.boundaries.related + '--' + eol
-                + attachments
-                + '--' + this.boundaries.mixed + '--';
+            return lines + eol +
+                'Content-Type: multipart/mixed; boundary=' + this.boundaries.mixed + eol +
+                eol +
+                '--' + this.boundaries.mixed + eol +
+                'Content-Type: multipart/related; boundary=' + this.boundaries.related + eol +
+                eol +
+                this.dumpTextContent(plaintext, html, this.boundaries.related) + eol +
+                eol +
+                inlineAttachments +
+                '--' + this.boundaries.related + '--' + eol +
+                attachments +
+                '--' + this.boundaries.mixed + '--';
         }
         else if (structure === 'mixed') {
             const attachments = this.getAttachments()
                 .map((a) => '--' + this.boundaries.mixed + eol + a.dump() + eol + eol)
                 .join('')
                 .slice(0, -1 * eol.length);
-            return lines + eol
-                + 'Content-Type: multipart/mixed; boundary=' + this.boundaries.mixed + eol
-                + eol
-                + this.dumpTextContent(plaintext, html, this.boundaries.mixed) + eol
-                + (plaintext && html ? '' : eol)
-                + attachments
-                + '--' + this.boundaries.mixed + '--';
+            return lines + eol +
+                'Content-Type: multipart/mixed; boundary=' + this.boundaries.mixed + eol +
+                eol +
+                this.dumpTextContent(plaintext, html, this.boundaries.mixed) + eol +
+                (plaintext && html ? '' : eol) +
+                attachments +
+                '--' + this.boundaries.mixed + '--';
         }
         else if (structure === 'related') {
             const inlineAttachments = this.getInlineAttachments()
                 .map((a) => '--' + this.boundaries.related + eol + a.dump() + eol + eol)
                 .join('')
                 .slice(0, -1 * eol.length);
-            return lines + eol
-                + 'Content-Type: multipart/related; boundary=' + this.boundaries.related + eol
-                + eol
-                + this.dumpTextContent(plaintext, html, this.boundaries.related) + eol
-                + eol
-                + inlineAttachments
-                + '--' + this.boundaries.related + '--';
+            return lines + eol +
+                'Content-Type: multipart/related; boundary=' + this.boundaries.related + eol +
+                eol +
+                this.dumpTextContent(plaintext, html, this.boundaries.related) + eol +
+                eol +
+                inlineAttachments +
+                '--' + this.boundaries.related + '--';
         }
         else if (structure === 'alternative') {
-            return lines + eol
-                + 'Content-Type: multipart/alternative; boundary=' + this.boundaries.alt + eol
-                + eol
-                + this.dumpTextContent(plaintext, html, this.boundaries.alt) + eol
-                + eol
-                + '--' + this.boundaries.alt + '--';
+            return lines + eol +
+                'Content-Type: multipart/alternative; boundary=' + this.boundaries.alt + eol +
+                eol +
+                this.dumpTextContent(plaintext, html, this.boundaries.alt) + eol +
+                eol +
+                '--' + this.boundaries.alt + '--';
         }
         else {
             return lines + eol + primaryMessage.dump();
@@ -96,31 +100,35 @@ export class MIMEMessage {
     }
     dumpTextContent(plaintext, html, boundary) {
         const eol = this.envctx.eol;
-        const primaryMessage = html ? html : plaintext;
+        const primaryMessage = html ?? plaintext;
         let data = '';
-        if (plaintext && html && !this.hasInlineAttachments() && this.hasAttachments())
-            data = '--' + boundary + eol
-                + 'Content-Type: multipart/alternative; boundary=' + this.boundaries.alt + eol
-                + eol
-                + '--' + this.boundaries.alt + eol
-                + plaintext.dump() + eol
-                + eol
-                + '--' + this.boundaries.alt + eol
-                + html.dump() + eol
-                + eol
-                + '--' + this.boundaries.alt + '--';
-        else if (plaintext && html && this.hasInlineAttachments())
-            data = '--' + boundary + eol
-                + html.dump();
-        else if (plaintext && html)
-            data = '--' + boundary + eol
-                + plaintext.dump() + eol
-                + eol
-                + '--' + boundary + eol
-                + html.dump();
-        else
-            data = '--' + boundary + eol
-                + primaryMessage.dump();
+        if (plaintext && html && !this.hasInlineAttachments() && this.hasAttachments()) {
+            data = '--' + boundary + eol +
+                'Content-Type: multipart/alternative; boundary=' + this.boundaries.alt + eol +
+                eol +
+                '--' + this.boundaries.alt + eol +
+                plaintext.dump() + eol +
+                eol +
+                '--' + this.boundaries.alt + eol +
+                html.dump() + eol +
+                eol +
+                '--' + this.boundaries.alt + '--';
+        }
+        else if (plaintext && html && this.hasInlineAttachments()) {
+            data = '--' + boundary + eol +
+                html.dump();
+        }
+        else if (plaintext && html) {
+            data = '--' + boundary + eol +
+                plaintext.dump() + eol +
+                eol +
+                '--' + boundary + eol +
+                html.dump();
+        }
+        else {
+            data = '--' + boundary + eol +
+                primaryMessage.dump();
+        }
         return data;
     }
     hasInlineAttachments() {
@@ -145,13 +153,13 @@ export class MIMEMessage {
         if (!this.isObject(opts.headers))
             opts.headers = {};
         if (typeof opts.filename !== 'string') {
-            throw new MIMETextError('MIMETEXT_MISSING_FILENAME', 'The property filename must exist while adding attachments.');
+            throw new MIMETextError('MIMETEXT_MISSING_FILENAME', 'The property "filename" must exist while adding attachments.');
         }
-        let type = opts.headers['Content-Type'] || opts.contentType || 'none';
+        let type = (opts.headers['Content-Type'] ?? opts.contentType) || 'none';
         if (this.envctx.validateContentType(type) === false) {
             throw new MIMETextError('MIMETEXT_INVALID_MESSAGE_TYPE', `You specified an invalid content type "${type}".`);
         }
-        const encoding = opts.headers['Content-Transfer-Encoding'] || opts.encoding || 'base64';
+        const encoding = (opts.headers['Content-Transfer-Encoding'] ?? opts.encoding) ?? 'base64';
         if (!this.validContentTransferEncodings.includes(encoding)) {
             type = 'application/octet-stream';
         }
@@ -170,15 +178,15 @@ export class MIMEMessage {
     addMessage(opts) {
         if (!this.isObject(opts.headers))
             opts.headers = {};
-        let type = opts.headers['Content-Type'] || opts.contentType || 'none';
+        let type = (opts.headers['Content-Type'] ?? opts.contentType) || 'none';
         if (!this.validTypes.includes(type)) {
             throw new MIMETextError('MIMETEXT_INVALID_MESSAGE_TYPE', `Valid content types are ${this.validTypes.join(', ')} but you specified "${type}".`);
         }
-        const encoding = opts.headers['Content-Transfer-Encoding'] || opts.encoding || '7bit';
+        const encoding = (opts.headers['Content-Transfer-Encoding'] ?? opts.encoding) ?? '7bit';
         if (!this.validContentTransferEncodings.includes(encoding)) {
             type = 'application/octet-stream';
         }
-        const charset = opts.charset || 'UTF-8';
+        const charset = opts.charset ?? 'UTF-8';
         opts.headers = Object.assign({}, opts.headers, {
             'Content-Type': `${type}; charset=${charset}`,
             'Content-Transfer-Encoding': encoding
@@ -207,17 +215,17 @@ export class MIMEMessage {
     getRecipients(config = { type: 'To' }) {
         return this.getHeader(config.type);
     }
-    setRecipient(input) {
-        return this.setRecipients(input, { type: 'To' });
+    setRecipient(input, config = { type: 'To' }) {
+        return this.setRecipients(input, config);
     }
-    setTo(input) {
-        return this.setRecipients(input, { type: 'To' });
+    setTo(input, config = { type: 'To' }) {
+        return this.setRecipients(input, config);
     }
-    setCc(input) {
-        return this.setRecipients(input, { type: 'Cc' });
+    setCc(input, config = { type: 'Cc' }) {
+        return this.setRecipients(input, config);
     }
-    setBcc(input) {
-        return this.setRecipients(input, { type: 'Bcc' });
+    setBcc(input, config = { type: 'Bcc' }) {
+        return this.setRecipients(input, config);
     }
     setSubject(value) {
         this.setHeader('subject', value);

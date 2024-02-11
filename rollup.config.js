@@ -28,7 +28,9 @@ const babelPlugins = [
 
 export default [
     {
-        external: [/@babel\/runtime/, /core-js/, /js-base64/],
+        external: [
+            /@babel\/runtime/, /core-js/, /js-base64/
+        ],
         input: 'build/entrypoints/browser.js',
         output: [
             {
@@ -83,7 +85,9 @@ export default [
         ]
     },
     {
-        external: [/@babel\/runtime/, /core-js/, /mime-types/],
+        external: [
+            /@babel\/runtime/, /core-js/, /mime-types/
+        ],
         input: 'build/entrypoints/node.js',
         output: [
             {

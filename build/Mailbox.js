@@ -9,10 +9,15 @@ export class Mailbox {
         this.parse(input);
     }
     getAddrDomain() {
-        return this.addr.includes('@') ? this.addr.split('@')[1] : '';
+        if (this.addr.includes('@')) {
+            const arr = this.addr.split('@');
+            if (arr.length > 1)
+                return arr[1];
+        }
+        return '';
     }
     dump() {
-        return this.name ? `"${this.name}" <${this.addr}>` : `<${this.addr}>`;
+        return this.name.length > 0 ? `"${this.name}" <${this.addr}>` : `<${this.addr}>`;
     }
     parse(input) {
         if (this.isMailboxAddrObject(input)) {
@@ -25,7 +30,7 @@ export class Mailbox {
         }
         if (this.isMailboxAddrText(input)) {
             const text = input.trim();
-            if (text.slice(0, 1) == '<' && text.slice(-1) == '>') {
+            if (text.slice(0, 1) === '<' && text.slice(-1) === '>') {
                 this.addr = text.slice(1, -1);
                 return this;
             }
