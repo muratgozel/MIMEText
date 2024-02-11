@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "v3.0.19",
+  "version": "v3.0.20",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "exports": {
@@ -45,9 +45,6 @@
     "setup": "exit 0",
     "precompile": "rm -rf build/*",
     "compile": "tsc -p tsconfig.json && babel build --out-dir build --out-file-extension .cjs",
-    "mingle": "echo \"declare module 'mimetext' {\\n\" | cat - ./types/entrypoints/node.d.ts > ./types/entrypoints/node2.d.ts && echo \"\\n}\" >> ./types/entrypoints/node2.d.ts && mv ./types/entrypoints/node2.d.ts ./types/entrypoints/node.d.ts",
-    "gingle": "echo \"declare module 'mimetext' {\\n\" | cat - ./types/entrypoints/browser.d.ts > ./types/entrypoints/browser2.d.ts && echo \"\\n}\" >> ./types/entrypoints/browser2.d.ts && mv ./types/entrypoints/browser2.d.ts ./types/entrypoints/browser.d.ts",
-    "dingle": "echo \"declare module 'mimetext' {\\n\" | cat - ./types/entrypoints/gas.d.ts > ./types/entrypoints/gas2.d.ts && echo \"\\n}\" >> ./types/entrypoints/gas2.d.ts && mv ./types/entrypoints/gas2.d.ts ./types/entrypoints/gas.d.ts",
     "build": "rollup --config rollup.config.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc --entryPointStrategy expand --includeVersion --excludePrivate ./src/entrypoints/node.ts ./src/entrypoints/gas.ts ./src/entrypoints/browser.ts"
