@@ -1,56 +1,56 @@
 {
   "name": "mimetext",
-  "version": "v3.0.18",
+  "version": "v3.0.19",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "exports": {
     ".": {
       "import": {
-        "types": "./types/entrypoints/node.d.ts",
-        "default": "./dist/node/mimetext.es.js"
+        "types": "./build/entrypoints/node.d.ts",
+        "default": "./build/entrypoints/node.js"
       },
       "require": {
-        "types": "./types/entrypoints/node.d.ts",
-        "default": "./dist/node/mimetext.cjs"
+        "types": "./build/entrypoints/node.d.ts",
+        "default": "./build/entrypoints/node.cjs"
       }
     },
     "./browser": {
       "import": {
-        "types": "./types/entrypoints/browser.d.ts",
-        "default": "./dist/browser/mimetext.es.js"
+        "types": "./build/entrypoints/browser.d.ts",
+        "default": "./build/entrypoints/browser.js"
       },
       "require": {
-        "types": "./types/entrypoints/browser.d.ts",
-        "default": "./dist/browser/mimetext.cjs"
+        "types": "./build/entrypoints/browser.d.ts",
+        "default": "./build/entrypoints/browser.cjs"
       }
     },
     "./node": {
       "import": {
-        "types": "./types/entrypoints/node.d.ts",
-        "default": "./dist/node/mimetext.es.js"
+        "types": "./build/entrypoints/node.d.ts",
+        "default": "./build/entrypoints/node.js"
       },
       "require": {
-        "types": "./types/entrypoints/node.d.ts",
-        "default": "./dist/node/mimetext.cjs"
+        "types": "./build/entrypoints/node.d.ts",
+        "default": "./build/entrypoints/node.cjs"
       }
     },
     "./gas": {
-      "default": "./dist/gas/mimetext.js",
-      "types": "./types/entrypoints/gas.d.ts"
+      "types": "./build/entrypoints/gas.d.ts",
+      "default": "./build/bundles/mimetext.gas.js"
     }
   },
-  "main": "dist/node/mimetext.cjs",
-  "module": "./dist/node/mimetext.es.js",
+  "main": "./build/entrypoints/node.cjs",
+  "module": "./build/entrypoints/node.js",
   "scripts": {
     "setup": "exit 0",
     "precompile": "rm -rf build/*",
-    "compile": "tsc -p tsconfig.json && npm run mingle && npm run gingle && npm run dingle",
+    "compile": "tsc -p tsconfig.json && babel build --out-dir build --out-file-extension .cjs",
     "mingle": "echo \"declare module 'mimetext' {\\n\" | cat - ./types/entrypoints/node.d.ts > ./types/entrypoints/node2.d.ts && echo \"\\n}\" >> ./types/entrypoints/node2.d.ts && mv ./types/entrypoints/node2.d.ts ./types/entrypoints/node.d.ts",
     "gingle": "echo \"declare module 'mimetext' {\\n\" | cat - ./types/entrypoints/browser.d.ts > ./types/entrypoints/browser2.d.ts && echo \"\\n}\" >> ./types/entrypoints/browser2.d.ts && mv ./types/entrypoints/browser2.d.ts ./types/entrypoints/browser.d.ts",
     "dingle": "echo \"declare module 'mimetext' {\\n\" | cat - ./types/entrypoints/gas.d.ts > ./types/entrypoints/gas2.d.ts && echo \"\\n}\" >> ./types/entrypoints/gas2.d.ts && mv ./types/entrypoints/gas2.d.ts ./types/entrypoints/gas.d.ts",
     "build": "rollup --config rollup.config.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "docs": "typedoc --entryPointStrategy expand --includeVersion --excludePrivate ./src/entrypoints/node.ts ./src/entrypoints/gas.ts ./src/entrypoints/browser.ts ./types/entrypoints/node.d.ts ./types/entrypoints/gas.d.ts ./types/entrypoints/browser.d.ts ./types/*.d.ts"
+    "docs": "typedoc --entryPointStrategy expand --includeVersion --excludePrivate ./src/entrypoints/node.ts ./src/entrypoints/gas.ts ./src/entrypoints/browser.ts"
   },
   "repository": {
     "type": "git",

@@ -28,42 +28,12 @@ const babelPlugins = [
 
 export default [
     {
-        external: [
-            /@babel\/runtime/, /core-js/, /js-base64/
-        ],
-        input: 'build/entrypoints/browser.js',
-        output: [
-            {
-                format: 'cjs',
-                file: 'dist/browser/mimetext.cjs',
-                sourcemap: false
-            },
-            {
-                format: 'es',
-                file: 'dist/browser/mimetext.es.js',
-                sourcemap: false
-            }
-        ],
-        plugins: [
-            json(),
-            nodeResolve({preferBuiltins: false}),
-            commonjs({sourceMap: true}),
-            babel({
-                babelHelpers: 'runtime',
-                babelrc: false,
-                exclude: ['node_modules/**'],
-                presets: babelPresetsStandart,
-                plugins: babelPlugins
-            })
-        ]
-    },
-    {
         input: 'build/entrypoints/browser.js',
         output: [
             {
                 format: 'iife',
                 name: 'MimeText',
-                file: 'dist/browser/mimetext.iife.js',
+                file: 'build/bundles/mimetext.iife.js',
                 sourcemap: true,
                 globals: {
                     MimeText: 'MimeText'
@@ -85,35 +55,12 @@ export default [
         ]
     },
     {
-        external: [
-            /@babel\/runtime/, /core-js/, /mime-types/
-        ],
-        input: 'build/entrypoints/node.js',
-        output: [
-            {
-                format: 'cjs',
-                file: 'dist/node/mimetext.cjs',
-                sourcemap: false
-            },
-            {
-                format: 'es',
-                file: 'dist/node/mimetext.es.js',
-                sourcemap: false
-            }
-        ],
-        plugins: [
-            json(),
-            nodeResolve({preferBuiltins: true}),
-            commonjs({sourceMap: true})
-        ]
-    },
-    {
         input: 'build/entrypoints/gas.js',
         output: [
             {
                 format: 'iife',
                 name: 'MimeText',
-                file: 'dist/gas/mimetext.js',
+                file: 'build/bundles/mimetext.gas.js',
                 sourcemap: true,
                 globals: {
                     MimeText: 'MimeText'

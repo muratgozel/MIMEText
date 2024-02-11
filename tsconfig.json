@@ -5,7 +5,6 @@
   ],
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "types",
     "outDir": "build",
     "baseUrl": ".",
     "rootDir": "src",
