@@ -1,6 +1,6 @@
 {
   "name": "mimetext",
-  "version": "v3.0.20",
+  "version": "v3.0.21",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "exports": {
@@ -39,12 +39,14 @@
       "default": "./build/bundles/mimetext.gas.js"
     }
   },
+  "types": "./build/entrypoints/node.d.ts",
   "main": "./build/entrypoints/node.cjs",
   "module": "./build/entrypoints/node.js",
   "scripts": {
     "setup": "exit 0",
     "precompile": "rm -rf build/*",
     "compile": "tsc -p tsconfig.json && babel build --out-dir build --out-file-extension .cjs",
+    "create-cts": "for f in build/**/*.d.ts; do cp -- \"$f\" \"${f%.ts}.cts\"; done && for f in build/*.d.ts; do cp -- \"$f\" \"${f%.ts}.cts\"; done",
     "build": "rollup --config rollup.config.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc --entryPointStrategy expand --includeVersion --excludePrivate ./src/entrypoints/node.ts ./src/entrypoints/gas.ts ./src/entrypoints/browser.ts"
