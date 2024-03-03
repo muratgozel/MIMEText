@@ -149,6 +149,4 @@ declare class MIMETextError extends Error {
     constructor(message: string, description?: string);
 }
 
-declare function createMimeMessage(): MIMEMessage;
-
-export { type AttachmentOptions, type Boundaries, type ContentHeaders, type ContentOptions, type ContentTransferEncoding, type Email, type EnvironmentContext, type HeaderField, type HeadersObject, MIMEMessage, MIMEMessageContent, MIMEMessageContentHeader, MIMEMessageHeader, MIMETextError, Mailbox, type MailboxAddrObject, type MailboxAddrText, type MailboxConfig, type MailboxType, createMimeMessage };
+export { type AttachmentOptions as A, type Boundaries as B, type ContentTransferEncoding as C, type EnvironmentContext as E, type HeadersObject as H, MIMEMessage as M, Mailbox as a, MIMETextError as b, MIMEMessageHeader as c, MIMEMessageContent as d, type ContentHeaders as e, type ContentOptions as f, type MailboxConfig as g, type MailboxAddrObject as h, type MailboxType as i, type Email as j, type MailboxAddrText as k, MIMEMessageContentHeader as l, type HeaderField as m };

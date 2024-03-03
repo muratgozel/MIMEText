@@ -1,21 +1,5 @@
-'use strict';
-
-const node_os = require('node:os');
-const mime = require('mime-types');
-
-function _interopNamespaceCompat(e) {
-    if (e && typeof e === 'object' && 'default' in e) return e;
-    const n = Object.create(null);
-    if (e) {
-        for (const k in e) {
-            n[k] = e[k];
-        }
-    }
-    n.default = e;
-    return n;
-}
-
-const mime__namespace = /*#__PURE__*/_interopNamespaceCompat(mime);
+import { EOL } from 'node:os';
+import * as mime from 'mime-types';
 
 var __defProp$4 = Object.defineProperty;
 var __defNormalProp$4 = (obj, key, value) => key in obj ? __defProp$4(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -534,18 +518,13 @@ const envctx = {
   toBase64WebSafe: function toBase64WebSafe(data) {
     return Buffer.from(data).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   },
-  eol: node_os.EOL,
+  eol: EOL,
   validateContentType: (v) => {
-    return mime__namespace.contentType(v);
+    return mime.contentType(v);
   }
 };
 function createMimeMessage() {
   return new MIMEMessage(envctx);
 }
 
-exports.MIMEMessage = MIMEMessage;
-exports.MIMEMessageContent = MIMEMessageContent;
-exports.MIMEMessageHeader = MIMEMessageHeader;
-exports.MIMETextError = MIMETextError;
-exports.Mailbox = Mailbox;
-exports.createMimeMessage = createMimeMessage;
+export { MIMEMessage, MIMEMessageContent, MIMEMessageHeader, MIMETextError, Mailbox, createMimeMessage };
