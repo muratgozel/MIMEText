@@ -29,17 +29,17 @@ export class MIMEMessageContent {
         return typeof disposition === 'string' && disposition.includes('inline')
     }
 
-    setHeader (name: string, value: any): string {
+    setHeader (name: string, value: string | Mailbox | Mailbox[]): string {
         this.headers.set(name, value)
         return name
     }
 
-    getHeader (name: string): string | Mailbox | undefined {
+    getHeader (name: string): string | Mailbox | Mailbox[] | undefined {
         return this.headers.get(name)
     }
 
-    setHeaders (obj: Record<string, any>): string[] {
-        return Object.keys(obj).map((prop) => this.setHeader(prop, obj[prop]))
+    setHeaders (obj: Record<string, string | Mailbox | Mailbox[]>): string[] {
+        return Object.keys(obj).map((prop) => this.setHeader(prop, obj[prop]!))
     }
 
     getHeaders (): HeadersObject {

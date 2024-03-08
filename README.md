@@ -1,17 +1,19 @@
 # MIMEText
 [RFC-2822](https://www.rfc-editor.org/rfc/rfc2822), [RFC-2045](https://www.rfc-editor.org/rfc/rfc2045) and [RFC-2049](https://www.rfc-editor.org/rfc/rfc2049) compliant raw email message generator. Refer to [https://muratgozel.github.io/MIMEText/](https://muratgozel.github.io/MIMEText/) for full api docs.
 
+It has full typings. Optimized to run on node, browser and google apps script environments. Compatible with commonjs and esm.
+
 ## Install
 ```sh
 npm i mimetext
 ```
 
 ## Use
+Import the appropriate version for your environment. Use `mimetext/browser` for browser, `mimetext/gas` for google apps script and `mimetext` for node environments.
 ```js
-// cjs
-const {createMimeMessage} = require('mimetext')
 // es
 import {createMimeMessage} from 'mimetext'
+// or const {createMimeMessage} = require('mimetext') for commonjs
 
 // create a simple plain text email
 const msg = createMimeMessage()

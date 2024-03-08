@@ -49,7 +49,7 @@ export class MIMEMessageHeader {
             name: 'Message-ID',
             generator: () => {
                 const randomstr = Math.random().toString(36).slice(2)
-                const from: Mailbox = (this.fields.filter((obj) => obj.name === 'From')[0] as HeaderField).value as Mailbox
+                const from = (this.fields.filter((obj) => obj.name === 'From')[0]!).value as Mailbox
                 const domain = from.getAddrDomain()
                 return '<' + randomstr + '@' + domain + '>'
             }
@@ -98,25 +98,25 @@ export class MIMEMessageHeader {
         }, {})
     }
 
-    get (name: string): string | Mailbox | undefined {
+    get (name: string): string | Mailbox | Mailbox[] | undefined {
         const fieldMatcher = (obj: HeaderField): boolean => obj.name.toLowerCase() === name.toLowerCase()
         const ind = this.fields.findIndex(fieldMatcher)
 
-        return ind !== -1 ? (this.fields[ind] as HeaderField).value : undefined
+        return ind !== -1 ? (this.fields[ind]!).value : undefined
     }
 
-    set (name: string, value: any): HeaderField {
+    set (name: string, value: string | Mailbox | Mailbox[]): HeaderField {
         const fieldMatcher = (obj: HeaderField): boolean => obj.name.toLowerCase() === name.toLowerCase()
         const isCustomHeader = !this.fields.some(fieldMatcher)
 
         if (!isCustomHeader) {
             const ind = this.fields.findIndex(fieldMatcher)
-            const field = this.fields[ind] as HeaderField
+            const field = this.fields[ind]!
             if (field.validate && !field.validate(value)) {
                 throw new MIMETextError('MIMETEXT_INVALID_HEADER_VALUE', `The value for the header "${name}" is invalid.`)
             }
-            (this.fields[ind] as HeaderField).value = value
-            return this.fields[ind] as HeaderField
+            (this.fields[ind]!).value = value
+            return this.fields[ind]!
         }
 
         return this.setCustom({
@@ -179,10 +179,10 @@ export class MIMEMessageHeader {
     }
 
     isArrayOfMailboxes (v: unknown): v is Mailbox[] {
-        return this.isArray(v) && v.every((item) => item instanceof Mailbox)
+        return this.isArray(v) && v.every((item: unknown) => item instanceof Mailbox)
     }
 
-    isArray (v: unknown): v is any[] {
+    isArray (v: unknown): v is never[] {
         return (!!v) && (v.constructor === Array)
     }
 }
@@ -209,11 +209,11 @@ export class MIMEMessageContentHeader extends MIMEMessageHeader {
     }
 }
 
-export type HeadersObject = Record<string, string | Mailbox | undefined>
+export type HeadersObject = Record<string, string | Mailbox | Mailbox[] | undefined>
 export interface HeaderField {
     name: string
     dump?: (v: string | Mailbox | Mailbox[] | undefined) => string
-    value?: string | Mailbox | undefined
+    value?: string | Mailbox | Mailbox[] | undefined
     validate?: (v: unknown) => boolean
     required?: boolean
     disabled?: boolean

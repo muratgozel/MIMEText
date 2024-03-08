@@ -1,5 +1,5 @@
-import { M as MIMEMessage } from './MIMETextError-CgSUo8Yb.cjs';
-export { A as AttachmentOptions, B as Boundaries, e as ContentHeaders, f as ContentOptions, C as ContentTransferEncoding, j as Email, E as EnvironmentContext, m as HeaderField, H as HeadersObject, d as MIMEMessageContent, l as MIMEMessageContentHeader, c as MIMEMessageHeader, b as MIMETextError, a as Mailbox, h as MailboxAddrObject, k as MailboxAddrText, g as MailboxConfig, i as MailboxType } from './MIMETextError-CgSUo8Yb.cjs';
+import { M as MIMEMessage } from './MIMETextError-BRDlE5Ge.cjs';
+export { A as AttachmentOptions, B as Boundaries, e as ContentHeaders, f as ContentOptions, C as ContentTransferEncoding, E as EnvironmentContext, k as HeaderField, H as HeadersObject, d as MIMEMessageContent, j as MIMEMessageContentHeader, c as MIMEMessageHeader, b as MIMETextError, a as Mailbox, h as MailboxAddrObject, g as MailboxConfig, i as MailboxType } from './MIMETextError-BRDlE5Ge.cjs';
 
 declare function createMimeMessage(): MIMEMessage;
 

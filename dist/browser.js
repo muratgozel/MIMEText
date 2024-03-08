@@ -1,5 +1,5 @@
-import { e } from './chunk-Q6TFZJLI.js';
-export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-Q6TFZJLI.js';
+import { e } from './chunk-ZSYOIGYG.js';
+export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-ZSYOIGYG.js';
 import { Base64 } from 'js-base64';
 
 var f={toBase64:function(r){return Base64.encode(r)},toBase64WebSafe:function(r){return Base64.encodeURI(r)},eol:`\r

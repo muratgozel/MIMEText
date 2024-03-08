@@ -1,5 +1,5 @@
-import { e } from './chunk-Q6TFZJLI.js';
-export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-Q6TFZJLI.js';
+import { e } from './chunk-ZSYOIGYG.js';
+export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-ZSYOIGYG.js';
 import { EOL } from 'os';
 import * as o from 'mime-types';
 

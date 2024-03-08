@@ -1,4 +1,4 @@
-import type { Email, MailboxAddrObject, MailboxAddrText, MailboxConfig } from './Mailbox.js'
+import type { MailboxAddrObject, MailboxConfig } from './Mailbox.js'
 
 import { MIMETextError } from './MIMETextError.js'
 import { type HeadersObject, MIMEMessageHeader } from './MIMEMessageHeader.js'
@@ -135,7 +135,7 @@ export class MIMEMessage {
                 html.dump()
         } else {
             data = '--' + boundary + eol +
-                (primaryMessage as MIMEMessageContent).dump()
+                (primaryMessage!).dump()
         }
 
         return data
@@ -182,7 +182,7 @@ export class MIMEMessage {
         }
 
         const contentId = opts.headers['Content-ID']
-        if (typeof contentId === 'string' && contentId.length > 2 && contentId.slice(0, 1) !== '<' && contentId.slice(-1) !== '>') {
+        if (typeof contentId === 'string' && contentId.length > 2 && !contentId.startsWith('<') && !contentId.endsWith('>')) {
             opts.headers['Content-ID'] = '<' + opts.headers['Content-ID'] + '>'
         }
 
@@ -228,40 +228,40 @@ export class MIMEMessage {
         return msg
     }
 
-    setSender (input: MailboxAddrObject | MailboxAddrText | Email, config: MailboxConfig = { type: 'From' }): Mailbox {
+    setSender (input: MailboxAddrObject | string, config: MailboxConfig = { type: 'From' }): Mailbox {
         const mailbox = new Mailbox(input, config)
         this.setHeader('From', mailbox)
         return mailbox
     }
 
-    getSender (): string | Mailbox | undefined {
-        return this.getHeader('From')
+    getSender (): Mailbox | undefined {
+        return this.getHeader('From') as Mailbox
     }
 
-    setRecipients (input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[], config: MailboxConfig = { type: 'To' }): Mailbox[] {
+    setRecipients (input: MailboxAddrObject | string | MailboxAddrObject[] | string[], config: MailboxConfig = { type: 'To' }): Mailbox[] {
         const arr = !this.isArray(input) ? [input] : input
         const recs = arr.map((_input) => new Mailbox(_input, config))
         this.setHeader(config.type, recs)
         return recs
     }
 
-    getRecipients (config: MailboxConfig = { type: 'To' }): string | Mailbox | undefined {
-        return this.getHeader(config.type)
+    getRecipients (config: MailboxConfig = { type: 'To' }): Mailbox | Mailbox[] | undefined {
+        return this.getHeader(config.type) as Mailbox | Mailbox[] | undefined
     }
 
-    setRecipient (input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[], config: MailboxConfig = { type: 'To' }): Mailbox[] {
+    setRecipient (input: MailboxAddrObject | string | MailboxAddrObject[] | string[], config: MailboxConfig = { type: 'To' }): Mailbox[] {
         return this.setRecipients(input, config)
     }
 
-    setTo (input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[], config: MailboxConfig = { type: 'To' }): Mailbox[] {
+    setTo (input: MailboxAddrObject | string | MailboxAddrObject[] | string[], config: MailboxConfig = { type: 'To' }): Mailbox[] {
         return this.setRecipients(input, config)
     }
 
-    setCc (input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[], config: MailboxConfig = { type: 'Cc' }): Mailbox[] {
+    setCc (input: MailboxAddrObject | string | MailboxAddrObject[] | string[], config: MailboxConfig = { type: 'Cc' }): Mailbox[] {
         return this.setRecipients(input, config)
     }
 
-    setBcc (input: MailboxAddrObject | MailboxAddrText | Email | MailboxAddrObject[] | MailboxAddrText[] | Email[], config: MailboxConfig = { type: 'Bcc' }): Mailbox[] {
+    setBcc (input: MailboxAddrObject | string | MailboxAddrObject[] | string[], config: MailboxConfig = { type: 'Bcc' }): Mailbox[] {
         return this.setRecipients(input, config)
     }
 
@@ -270,21 +270,21 @@ export class MIMEMessage {
         return value
     }
 
-    getSubject (): string | Mailbox | undefined {
-        return this.getHeader('subject')
+    getSubject (): string | undefined {
+        return this.getHeader('subject') as string
     }
 
-    setHeader (name: string, value: any): string {
+    setHeader (name: string, value: string | Mailbox | Mailbox[]): string {
         this.headers.set(name, value)
         return name
     }
 
-    getHeader (name: string): string | Mailbox | undefined {
+    getHeader (name: string): string | Mailbox | Mailbox[] | undefined {
         return this.headers.get(name)
     }
 
-    setHeaders (obj: Record<string, any>): string[] {
-        return Object.keys(obj).map((prop) => this.setHeader(prop, obj[prop]))
+    setHeaders (obj: Record<string, string | Mailbox | Mailbox[]>): string[] {
+        return Object.keys(obj).map((prop) => this.setHeader(prop, obj[prop]!))
     }
 
     getHeaders (): HeadersObject {
@@ -307,7 +307,7 @@ export class MIMEMessage {
         }
     }
 
-    isArray (v: unknown): v is any[] {
+    isArray (v: unknown): v is unknown[] {
         return (!!v) && (v.constructor === Array)
     }
 

@@ -6,7 +6,7 @@ export class Mailbox {
     addr = ''
     type: MailboxType = 'To'
 
-    constructor (input: MailboxAddrObject | MailboxAddrText | Email, config: MailboxConfig = { type: 'To' }) {
+    constructor (input: MailboxAddrObject | string, config: MailboxConfig = { type: 'To' }) {
         this.type = config.type
 
         this.parse(input)
@@ -15,7 +15,7 @@ export class Mailbox {
     getAddrDomain (): string {
         if (this.addr.includes('@')) {
             const arr = this.addr.split('@')
-            if (arr.length > 1) return arr[1] as string
+            if (arr.length > 1) return arr[1]!
         }
         return ''
     }
@@ -24,7 +24,7 @@ export class Mailbox {
         return this.name.length > 0 ? `"${this.name}" <${this.addr}>` : `<${this.addr}>`
     }
 
-    parse (input: MailboxAddrObject | MailboxAddrText | Email): this {
+    parse (input: MailboxAddrObject | string): this {
         if (this.isMailboxAddrObject(input)) {
             this.addr = input.addr
             if (typeof input.name === 'string') this.name = input.name
@@ -34,7 +34,7 @@ export class Mailbox {
 
         if (this.isMailboxAddrText(input)) {
             const text = input.trim()
-            if (text.slice(0, 1) === '<' && text.slice(-1) === '>') {
+            if (text.startsWith('<') && text.endsWith('>')) {
                 this.addr = text.slice(1, -1)
                 return this
             }
@@ -55,7 +55,7 @@ export class Mailbox {
         throw new MIMETextError('MIMETEXT_INVALID_MAILBOX', 'Couldn\'t recognize the input.')
     }
 
-    isMailboxAddrText (v: unknown): v is MailboxAddrText {
+    isMailboxAddrText (v: unknown): boolean {
         return typeof v === 'string' && this.reSpecCompliantAddr.test(v)
     }
 
@@ -77,5 +77,3 @@ export interface MailboxAddrObject {
     type?: MailboxType
 }
 export type MailboxType = 'To' | 'From' | 'Cc' | 'Bcc'
-export type Email = string
-export type MailboxAddrText = string
