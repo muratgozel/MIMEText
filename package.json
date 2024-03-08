@@ -1,53 +1,35 @@
 {
   "name": "mimetext",
-  "version": "v3.0.21",
+  "version": "v3.0.22",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "types": "./build/entrypoints/node.d.ts",
-        "default": "./build/entrypoints/node.js"
-      },
-      "require": {
-        "types": "./build/entrypoints/node.d.ts",
-        "default": "./build/entrypoints/node.cjs"
-      }
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js",
+      "require": "./dist/node.cjs"
     },
     "./browser": {
-      "import": {
-        "types": "./build/entrypoints/browser.d.ts",
-        "default": "./build/entrypoints/browser.js"
-      },
-      "require": {
-        "types": "./build/entrypoints/browser.d.ts",
-        "default": "./build/entrypoints/browser.cjs"
-      }
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js",
+      "require": "./dist/browser.cjs"
     },
     "./node": {
-      "import": {
-        "types": "./build/entrypoints/node.d.ts",
-        "default": "./build/entrypoints/node.js"
-      },
-      "require": {
-        "types": "./build/entrypoints/node.d.ts",
-        "default": "./build/entrypoints/node.cjs"
-      }
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js",
+      "require": "./dist/node.cjs"
     },
     "./gas": {
-      "types": "./build/entrypoints/gas.d.ts",
-      "default": "./build/bundles/mimetext.gas.js"
+      "types": "./dist/gas.d.ts",
+      "default": "./dist/gas.js"
     }
   },
-  "types": "./build/entrypoints/node.d.ts",
-  "main": "./build/entrypoints/node.cjs",
-  "module": "./build/entrypoints/node.js",
+  "types": "./dist/node.d.ts",
+  "main": "./dist/node.js",
   "scripts": {
     "setup": "exit 0",
-    "precompile": "rm -rf build/*",
-    "compile": "tsc -p tsconfig.json && babel build --out-dir build --out-file-extension .cjs",
-    "create-cts": "for f in build/**/*.d.ts; do cp -- \"$f\" \"${f%.ts}.cts\"; done && for f in build/*.d.ts; do cp -- \"$f\" \"${f%.ts}.cts\"; done",
-    "build": "rollup --config rollup.config.js",
+    "compile": "exit 0",
+    "build": "NODE_ENV=production tsup",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "docs": "typedoc --entryPointStrategy expand --includeVersion --excludePrivate ./src/entrypoints/node.ts ./src/entrypoints/gas.ts ./src/entrypoints/browser.ts"
   },
@@ -90,19 +72,16 @@
     "@types/google-apps-script": "^1.0.59",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^20.11.17",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
     "core-js": "^3.18.3",
     "dotenv": "^16.0.3",
     "eslint": "^8.36.0",
-    "eslint-config-standard-with-typescript": "^43.0.1",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
     "jest": "^29.5.0",
     "node-releaser": "^2.0.0-beta.4",
     "rollup": "^4.10.0",
+    "tsup": "^8.0.2",
     "typedoc": "^0.25.8",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^7.1.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
