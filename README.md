@@ -8,8 +8,10 @@ It has full typings. Optimized to run on node, browser and google apps script en
 npm i mimetext
 ```
 
+There is special version for Google Apps Script environment which can be found under dist folder: `./dist/gas.js` or `./dist/gas.cjs`
+
 ## Use
-Import the appropriate version for your environment. Use `mimetext/browser` for browser, `mimetext/gas` for google apps script and `mimetext` for node environments.
+Import the appropriate version for your environment. Use `mimetext/browser` for browser and `mimetext` for node environments.
 ```js
 // es
 import {createMimeMessage} from 'mimetext'

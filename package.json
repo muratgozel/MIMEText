@@ -1,27 +1,48 @@
 {
   "name": "mimetext",
-  "version": "v3.0.23",
+  "version": "v3.0.24",
   "description": "RFC 2822 compliant raw email message generator written in node.js",
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/node.d.ts",
-      "import": "./dist/node.js",
-      "require": "./dist/node.cjs"
+      "import": {
+        "types": "./dist/node.d.ts",
+        "default": "./dist/node.js"
+      },
+      "require": {
+        "types": "./dist/node.d.cts",
+        "default": "./dist/node.cjs"
+      }
     },
     "./browser": {
-      "types": "./dist/browser.d.ts",
-      "import": "./dist/browser.js",
-      "require": "./dist/browser.cjs"
+      "import": {
+        "types": "./dist/browser.d.ts",
+        "default": "./dist/browser.js"
+      },
+      "require": {
+        "types": "./dist/browser.d.cts",
+        "default": "./dist/browser.cjs"
+      }
     },
     "./node": {
-      "types": "./dist/node.d.ts",
-      "import": "./dist/node.js",
-      "require": "./dist/node.cjs"
+      "import": {
+        "types": "./dist/node.d.ts",
+        "default": "./dist/node.js"
+      },
+      "require": {
+        "types": "./dist/node.d.cts",
+        "default": "./dist/node.cjs"
+      }
     },
     "./gas": {
-      "types": "./dist/gas.d.ts",
-      "default": "./dist/gas.js"
+      "import": {
+        "types": "./dist/gas.d.ts",
+        "default": "./dist/gas.js"
+      },
+      "require": {
+        "types": "./dist/gas.d.cts",
+        "default": "./dist/gas.cjs"
+      }
     }
   },
   "types": "./dist/node.d.ts",
