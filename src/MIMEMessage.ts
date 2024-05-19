@@ -113,7 +113,7 @@ export class MIMEMessage {
 
         let data = ''
 
-        if (plaintext && html && !this.hasInlineAttachments() && this.hasAttachments()) {
+        if (plaintext && html && (this.hasInlineAttachments() || this.hasAttachments())) {
             data = '--' + boundary + eol +
                 'Content-Type: multipart/alternative; boundary=' + this.boundaries.alt + eol +
                 eol +
@@ -124,9 +124,6 @@ export class MIMEMessage {
                 html.dump() + eol +
                 eol +
                 '--' + this.boundaries.alt + '--'
-        } else if (plaintext && html && this.hasInlineAttachments()) {
-            data = '--' + boundary + eol +
-                html.dump()
         } else if (plaintext && html) {
             data = '--' + boundary + eol +
                 plaintext.dump() + eol +
