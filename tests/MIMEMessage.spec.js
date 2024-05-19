@@ -193,7 +193,52 @@ test('generates plain text and html mixed message with an attachment', () => {
     )
 })
 
-test('sending only an attachment, without content isn not allowed', async () => {
+test('generates plain text and html related message with an inline attachment', () => {
+    const msg = new MIMEMessage(envctx)
+    msg.boundaries = {related: 'abcdef', alt: 'qwerty'}
+    msg.setHeader('Date', 'Wed, 22 Mar 2023 23:36:33 +0000')
+    msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
+    msg.setSender('test@mail.com')
+    msg.setSubject('Lorem Ipsum')
+    msg.addMessage({contentType: 'text/plain', data: 'hello there'})
+    msg.addMessage({contentType: 'text/html', data: 'hello there <b>Murat</b>'})
+    msg.addAttachment({
+        inline: true,
+        contentType: 'image/jpg',
+        filename: 'sample.jpg',
+        data: sampleImageBase64
+    })
+
+    expect(msg.hasInlineAttachments()).toBe(true);
+    expect(msg.getMessageByType("text/plain")?.data).toBe("hello there")
+
+    expect(msg.asRaw()).toBe('Date: Wed, 22 Mar 2023 23:36:33 +0000' + envctx.eol +
+        'From: <test@mail.com>' + envctx.eol +
+        'Message-ID: <oliusb0xvxc@mail.com>' + envctx.eol +
+        'Subject: =?utf-8?B?TG9yZW0gSXBzdW0=?=' + envctx.eol +
+        'MIME-Version: 1.0' + envctx.eol +
+        'Content-Type: multipart/related; boundary=abcdef' + envctx.eol + envctx.eol +
+        '--abcdef' + envctx.eol +
+        'Content-Type: multipart/alternative; boundary=qwerty' + envctx.eol + envctx.eol +
+        '--qwerty' + envctx.eol +
+        'Content-Type: text/plain; charset=UTF-8' + envctx.eol +
+        'Content-Transfer-Encoding: 7bit' + envctx.eol + envctx.eol +
+        'hello there' + envctx.eol + envctx.eol +
+        '--qwerty' + envctx.eol +
+        'Content-Type: text/html; charset=UTF-8' + envctx.eol +
+        'Content-Transfer-Encoding: 7bit' + envctx.eol + envctx.eol +
+        'hello there <b>Murat</b>' + envctx.eol + envctx.eol +
+        '--qwerty--' + envctx.eol + envctx.eol +
+        '--abcdef' + envctx.eol +
+        'Content-Type: image/jpg; name="sample.jpg"' + envctx.eol +
+        'Content-Transfer-Encoding: base64' + envctx.eol +
+        'Content-Disposition: inline; filename="sample.jpg"' + envctx.eol + envctx.eol +
+        sampleImageBase64 + envctx.eol +
+        '--abcdef--'
+    )
+})
+
+test('sending only an attachment, without content is not allowed', async () => {
     const msg = new MIMEMessage(envctx)
     msg.setHeader('Date', 'Wed, 22 Mar 2023 23:36:33 +0000')
     msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
