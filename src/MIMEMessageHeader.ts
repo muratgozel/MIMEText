@@ -58,7 +58,7 @@ export class MIMEMessageHeader {
             name: 'Subject',
             required: true,
             dump: (v: unknown) => {
-                return typeof v === 'string' ? '=?utf-8?B?' + this.envctx.toBase64(v) + '?=' : ''
+                return typeof v === 'string' ? this.mimeEncodedWordUTF8IfNotAscii(v, '') : ''
             }
         },
         {
@@ -66,9 +66,14 @@ export class MIMEMessageHeader {
             generator: () => '1.0'
         }
     ]
+    skipEncodingPureASCII: boolean;
 
-    constructor (envctx: EnvironmentContext) {
+    constructor (
+        envctx: EnvironmentContext,
+        { skipEncodingPureASCII = false } : { skipEncodingPureASCII?: boolean } = {}
+    ) {
         this.envctx = envctx
+        this.skipEncodingPureASCII = skipEncodingPureASCII; 
     }
 
     dump (): string {
@@ -147,17 +152,24 @@ export class MIMEMessageHeader {
         return v instanceof Mailbox || this.isArrayOfMailboxes(v)
     }
 
+    mimeEncodedWordUTF8IfNotAscii(data: string, trailingString: string) {
+        // eslint-disable-next-line no-control-regex
+        const skipEncoding = this.skipEncodingPureASCII && /^[\x00-\x7F]*$/.test(data); // is pure ascii
+        const converted = skipEncoding ? data : `=?utf-8?B?${this.envctx.toBase64(data)}?=`
+        return converted + trailingString;
+    }
+
     dumpMailboxMulti (v: unknown): string {
         const dump = (item: Mailbox): string => item.name.length === 0
             ? item.dump()
-            : `=?utf-8?B?${this.envctx.toBase64(item.name)}?= <${item.addr}>`
+            : `${this.mimeEncodedWordUTF8IfNotAscii(item.name, ' ')}<${item.addr}>`
         return this.isArrayOfMailboxes(v) ? v.map(dump).join(`,${this.envctx.eol} `) : v instanceof Mailbox ? dump(v) : ''
     }
 
     dumpMailboxSingle (v: unknown): string {
         const dump = (item: Mailbox): string => item.name.length === 0
             ? item.dump()
-            : `=?utf-8?B?${this.envctx.toBase64(item.name)}?= <${item.addr}>`
+            : `${this.mimeEncodedWordUTF8IfNotAscii(item.name, ' ')}<${item.addr}>`
         return v instanceof Mailbox ? dump(v) : ''
     }
 

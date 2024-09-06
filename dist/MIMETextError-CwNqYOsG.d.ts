@@ -24,7 +24,10 @@ type MailboxType = 'To' | 'From' | 'Cc' | 'Bcc';
 declare class MIMEMessageHeader {
     envctx: EnvironmentContext;
     fields: HeaderField[];
-    constructor(envctx: EnvironmentContext);
+    skipEncodingPureASCII: boolean;
+    constructor(envctx: EnvironmentContext, { skipEncodingPureASCII }?: {
+        skipEncodingPureASCII?: boolean;
+    });
     dump(): string;
     toObject(): HeadersObject;
     get(name: string): string | Mailbox | Mailbox[] | undefined;
@@ -32,6 +35,7 @@ declare class MIMEMessageHeader {
     setCustom(obj: HeaderField): HeaderField;
     validateMailboxSingle(v: unknown): v is Mailbox;
     validateMailboxMulti(v: unknown): boolean;
+    mimeEncodedWordUTF8IfNotAscii(data: string, trailingString: string): string;
     dumpMailboxMulti(v: unknown): string;
     dumpMailboxSingle(v: unknown): string;
     isHeaderField(v: unknown): v is HeaderField;
