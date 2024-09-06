@@ -66,14 +66,11 @@ export class MIMEMessageHeader {
             generator: () => '1.0'
         }
     ]
-    skipEncodingPureASCII: boolean;
 
     constructor (
         envctx: EnvironmentContext,
-        { skipEncodingPureASCII = false } : { skipEncodingPureASCII?: boolean } = {}
     ) {
         this.envctx = envctx
-        this.skipEncodingPureASCII = skipEncodingPureASCII; 
     }
 
     dump (): string {
@@ -154,7 +151,7 @@ export class MIMEMessageHeader {
 
     optionallySkipPureAsciiEncoding(data: string) {
         // eslint-disable-next-line no-control-regex
-        const skipEncoding = this.skipEncodingPureASCII && /^[\x00-\x7F]*$/.test(data); // is pure ascii
+        const skipEncoding = this.envctx.skipEncodingPureAsciiHeaders && /^[\x00-\x7F]*$/.test(data); // is pure ascii
         return skipEncoding ? data : `=?utf-8?B?${this.envctx.toBase64(data)}?=`
     }
 

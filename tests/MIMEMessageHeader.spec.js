@@ -38,7 +38,11 @@ test('exports heade fields as object', () => {
 })
 
 test('sets and reads headers, without encoding pure ASCII values', () => {
-    const a = new MIMEMessageHeader(envctx, { skipEncodingPureASCII: true })
+    const envctx2 = {
+        ...envctx,
+        skipEncodingPureAsciiHeaders: true,
+    }
+    const a = new MIMEMessageHeader(envctx2)
     a.set('From', new Mailbox('Alice <test@test.com>'))
     a.set('To', new Mailbox('Bob <to@test.com>'))
     a.set('Cc', [new Mailbox('Charlie One <cc@test.com>'), new Mailbox('Charlie Two <cc2@test.com>')])

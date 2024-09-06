@@ -321,6 +321,7 @@ export interface EnvironmentContext {
     toBase64WebSafe: (v: string) => string
     eol: string
     validateContentType: (v: string) => string | false
+    skipEncodingPureAsciiHeaders?: boolean
 }
 
 export interface Boundaries {
