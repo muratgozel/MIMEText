@@ -13,9 +13,12 @@ export class MIMEMessage {
     validContentTransferEncodings = ['7bit', '8bit', 'binary', 'quoted-printable', 'base64']
     messages: MIMEMessageContent[] = []
 
-    constructor (envctx: EnvironmentContext) {
+    constructor (
+        envctx: EnvironmentContext, 
+        options : { skipEncodingPureAsciiHeaders: boolean} = { skipEncodingPureAsciiHeaders: false }
+    ) {
         this.envctx = envctx
-        this.headers = new MIMEMessageHeader(this.envctx)
+        this.headers = new MIMEMessageHeader(this.envctx, options)
         this.messages = []
 
         this.generateBoundaries()

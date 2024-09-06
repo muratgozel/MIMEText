@@ -206,3 +206,23 @@ test('sending only an attachment, without content isn not allowed', async () => 
     })
     expect(() => msg.asRaw()).toThrow('No content added to the message.')
 })
+
+test('option to skip UTF-8 Base64 encoding for pure ascii headers', () => {
+    const msg = new MIMEMessage(envctx, { skipEncodingPureAsciiHeaders: true })
+    msg.setHeader('Date', 'Wed, 22 Mar 2023 23:36:33 +0000')
+    msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
+    msg.setSender('John <test@mail.com>')
+    msg.setSubject('Lorem Ipsum')
+    const result = msg.addMessage({contentType: 'text/plain', data: 'hello there'})
+
+    expect(msg.getMessageByType('text/plain')).toBeInstanceOf(MIMEMessageContent)
+    expect(msg.asRaw()).toBe('Date: Wed, 22 Mar 2023 23:36:33 +0000' + envctx.eol +
+        'From: John <test@mail.com>' + envctx.eol +
+        'Message-ID: <oliusb0xvxc@mail.com>' + envctx.eol +
+        'Subject: Lorem Ipsum' + envctx.eol +
+        'MIME-Version: 1.0' + envctx.eol +
+        'Content-Type: text/plain; charset=UTF-8' + envctx.eol +
+        'Content-Transfer-Encoding: 7bit' + envctx.eol + envctx.eol +
+        'hello there'
+    )
+})
