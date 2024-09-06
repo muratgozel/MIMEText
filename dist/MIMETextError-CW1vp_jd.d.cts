@@ -25,9 +25,7 @@ declare class MIMEMessageHeader {
     envctx: EnvironmentContext;
     skipEncodingPureAsciiHeaders: boolean;
     fields: HeaderField[];
-    constructor(envctx: EnvironmentContext, options?: {
-        skipEncodingPureAsciiHeaders: boolean;
-    });
+    constructor(envctx: EnvironmentContext, options?: MIMEMessageOptions);
     dump(): string;
     toObject(): HeadersObject;
     get(name: string): string | Mailbox | Mailbox[] | undefined;
@@ -75,6 +73,9 @@ declare class MIMEMessageContent {
     getHeaders(): HeadersObject;
 }
 
+interface MIMEMessageOptions {
+    skipEncodingPureAsciiHeaders: boolean;
+}
 declare class MIMEMessage {
     envctx: EnvironmentContext;
     headers: MIMEMessageHeader;
@@ -82,9 +83,7 @@ declare class MIMEMessage {
     validTypes: string[];
     validContentTransferEncodings: string[];
     messages: MIMEMessageContent[];
-    constructor(envctx: EnvironmentContext, options?: {
-        skipEncodingPureAsciiHeaders: boolean;
-    });
+    constructor(envctx: EnvironmentContext, options?: MIMEMessageOptions);
     asRaw(): string;
     asEncoded(): string;
     dumpTextContent(plaintext: MIMEMessageContent | undefined, html: MIMEMessageContent | undefined, boundary: string): string;
@@ -154,4 +153,4 @@ declare class MIMETextError extends Error {
     constructor(message: string, description?: string);
 }
 
-export { type AttachmentOptions as A, type Boundaries as B, type ContentTransferEncoding as C, type EnvironmentContext as E, type HeadersObject as H, MIMEMessage as M, Mailbox as a, MIMETextError as b, MIMEMessageHeader as c, MIMEMessageContent as d, type ContentHeaders as e, type ContentOptions as f, type MailboxConfig as g, type MailboxAddrObject as h, type MailboxType as i, MIMEMessageContentHeader as j, type HeaderField as k };
+export { type AttachmentOptions as A, type Boundaries as B, type ContentTransferEncoding as C, type EnvironmentContext as E, type HeadersObject as H, type MIMEMessageOptions as M, MIMEMessage as a, Mailbox as b, MIMETextError as c, MIMEMessageHeader as d, MIMEMessageContent as e, type ContentHeaders as f, type ContentOptions as g, type MailboxConfig as h, type MailboxAddrObject as i, type MailboxType as j, MIMEMessageContentHeader as k, type HeaderField as l };

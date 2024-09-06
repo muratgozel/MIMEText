@@ -1,6 +1,6 @@
-import { M as MIMEMessage } from './MIMETextError-FlEvpGVW.cjs';
-export { A as AttachmentOptions, B as Boundaries, e as ContentHeaders, f as ContentOptions, C as ContentTransferEncoding, E as EnvironmentContext, k as HeaderField, H as HeadersObject, d as MIMEMessageContent, j as MIMEMessageContentHeader, c as MIMEMessageHeader, b as MIMETextError, a as Mailbox, h as MailboxAddrObject, g as MailboxConfig, i as MailboxType } from './MIMETextError-FlEvpGVW.cjs';
+import { M as MIMEMessageOptions, a as MIMEMessage } from './MIMETextError-CW1vp_jd.cjs';
+export { A as AttachmentOptions, B as Boundaries, f as ContentHeaders, g as ContentOptions, C as ContentTransferEncoding, E as EnvironmentContext, l as HeaderField, H as HeadersObject, e as MIMEMessageContent, k as MIMEMessageContentHeader, d as MIMEMessageHeader, c as MIMETextError, b as Mailbox, i as MailboxAddrObject, h as MailboxConfig, j as MailboxType } from './MIMETextError-CW1vp_jd.cjs';
 
-declare function createMimeMessage(): MIMEMessage;
+declare function createMimeMessage(options?: MIMEMessageOptions): MIMEMessage;
 
-export { MIMEMessage, createMimeMessage };
+export { MIMEMessage, MIMEMessageOptions, createMimeMessage };

@@ -1,10 +1,10 @@
-import { e } from './chunk-PK5PMFJQ.js';
-export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-PK5PMFJQ.js';
+import { e } from './chunk-HUCYWSMS.js';
+export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-HUCYWSMS.js';
 import { EOL } from 'node:os';
 import * as o from 'mime-types';
 
-var p={toBase64:function(r){return Buffer.from(r).toString("base64")},toBase64WebSafe:function(r){return Buffer.from(r).toString("base64").replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},eol:EOL,validateContentType:e=>o.contentType(e)};function E(){return new e(p)}
+var f={toBase64:function(r){return Buffer.from(r).toString("base64")},toBase64WebSafe:function(r){return Buffer.from(r).toString("base64").replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},eol:EOL,validateContentType:e=>o.contentType(e)};function c(e$1={skipEncodingPureAsciiHeaders:!1}){return new e(f,e$1)}
 
-export { E as createMimeMessage };
+export { c as createMimeMessage };
 //# sourceMappingURL=node.js.map
 //# sourceMappingURL=node.js.map
