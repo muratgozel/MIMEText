@@ -58,7 +58,7 @@ export class MIMEMessageHeader {
             name: 'Subject',
             required: true,
             dump: (v: unknown) => {
-                return typeof v === 'string' ? this.utf8base64IfNotPureAscii(v) : ''
+                return typeof v === 'string' ? this.optionallySkipPureAsciiEncoding(v) : ''
             }
         },
         {
@@ -152,7 +152,7 @@ export class MIMEMessageHeader {
         return v instanceof Mailbox || this.isArrayOfMailboxes(v)
     }
 
-    utf8base64IfNotPureAscii(data: string) {
+    optionallySkipPureAsciiEncoding(data: string) {
         // eslint-disable-next-line no-control-regex
         const skipEncoding = this.skipEncodingPureASCII && /^[\x00-\x7F]*$/.test(data); // is pure ascii
         return skipEncoding ? data : `=?utf-8?B?${this.envctx.toBase64(data)}?=`
@@ -161,14 +161,14 @@ export class MIMEMessageHeader {
     dumpMailboxMulti (v: unknown): string {
         const dump = (item: Mailbox): string => item.name.length === 0
             ? item.dump()
-            : `${this.utf8base64IfNotPureAscii(item.name)} <${item.addr}>`
+            : `${this.optionallySkipPureAsciiEncoding(item.name)} <${item.addr}>`
         return this.isArrayOfMailboxes(v) ? v.map(dump).join(`,${this.envctx.eol} `) : v instanceof Mailbox ? dump(v) : ''
     }
 
     dumpMailboxSingle (v: unknown): string {
         const dump = (item: Mailbox): string => item.name.length === 0
             ? item.dump()
-            : `${this.utf8base64IfNotPureAscii(item.name)} <${item.addr}>`
+            : `${this.optionallySkipPureAsciiEncoding(item.name)} <${item.addr}>`
         return v instanceof Mailbox ? dump(v) : ''
     }
 
