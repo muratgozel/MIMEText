@@ -67,9 +67,7 @@ export class MIMEMessageHeader {
         }
     ]
 
-    constructor (
-        envctx: EnvironmentContext,
-    ) {
+    constructor (envctx: EnvironmentContext) {
         this.envctx = envctx
     }
 
