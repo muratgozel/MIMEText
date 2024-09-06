@@ -58,7 +58,7 @@ test('generates plain text messages', () => {
     msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
     msg.setSender('test@mail.com')
     msg.setSubject('Lorem Ipsum')
-    const result = msg.addMessage({contentType: 'text/plain', data: 'hello there'})
+    msg.addMessage({contentType: 'text/plain', data: 'hello there'})
 
     expect(msg.getMessageByType('text/plain')).toBeInstanceOf(MIMEMessageContent)
     expect(msg.asRaw()).toBe('Date: Wed, 22 Mar 2023 23:36:33 +0000' + envctx.eol +
@@ -213,7 +213,7 @@ test('option to skip UTF-8 Base64 encoding for pure ascii headers', () => {
     msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
     msg.setSender('John <test@mail.com>')
     msg.setSubject('Lorem Ipsum')
-    const result = msg.addMessage({contentType: 'text/plain', data: 'hello there'})
+    msg.addMessage({contentType: 'text/plain', data: 'hello there'})
 
     expect(msg.getMessageByType('text/plain')).toBeInstanceOf(MIMEMessageContent)
     expect(msg.asRaw()).toBe('Date: Wed, 22 Mar 2023 23:36:33 +0000' + envctx.eol +

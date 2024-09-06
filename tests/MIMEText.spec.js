@@ -279,3 +279,21 @@ test('sends an plain text email with a plain text attachment using aws-sdk v2', 
     expect(typeof result.MessageId).toBe('string')
     expect(result.MessageId.length).toBeGreaterThan(1)
 })
+
+test('option to skip UTF-8 Base64 encoding for pure ascii headers', () => {
+    const msg = createMimeMessage({ skipEncodingPureAsciiHeaders: true })
+    msg.setHeader('Date', 'Wed, 22 Mar 2023 23:36:33 +0000')
+    msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
+    msg.setSender('John <test@mail.com>')
+    msg.setSubject('Lorem Ipsum')
+    msg.addMessage({contentType: 'text/plain', data: 'hello there'})
+    expect(msg.asRaw()).toBe('Date: Wed, 22 Mar 2023 23:36:33 +0000' + EOL +
+        'From: John <test@mail.com>' + EOL +
+        'Message-ID: <oliusb0xvxc@mail.com>' + EOL +
+        'Subject: Lorem Ipsum' + EOL +
+        'MIME-Version: 1.0' + EOL +
+        'Content-Type: text/plain; charset=UTF-8' + EOL +
+        'Content-Transfer-Encoding: 7bit' + EOL + EOL +
+        'hello there'
+    )
+})
