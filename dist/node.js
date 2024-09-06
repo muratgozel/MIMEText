@@ -1,5 +1,5 @@
-import { e } from './chunk-PUI6B4DX.js';
-export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-PUI6B4DX.js';
+import { e } from './chunk-EZE4SS3D.js';
+export { e as MIMEMessage, d as MIMEMessageContent, c as MIMEMessageHeader, a as MIMETextError, b as Mailbox } from './chunk-EZE4SS3D.js';
 import { EOL } from 'node:os';
 import * as o from 'mime-types';
 
