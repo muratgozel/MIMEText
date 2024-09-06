@@ -1,4 +1,4 @@
-import type { EnvironmentContext } from './MIMEMessage'
+import type { EnvironmentContext, MIMEMessageOptions } from './MIMEMessage'
 import { MIMETextError } from './MIMETextError.js'
 import { Mailbox } from './Mailbox.js'
 
@@ -68,7 +68,7 @@ export class MIMEMessageHeader {
         }
     ]
 
-    constructor (envctx: EnvironmentContext, options : { skipEncodingPureAsciiHeaders: boolean } = { skipEncodingPureAsciiHeaders: false}) {
+    constructor (envctx: EnvironmentContext, options : MIMEMessageOptions = { skipEncodingPureAsciiHeaders: false}) {
         this.envctx = envctx
         this.skipEncodingPureAsciiHeaders = options.skipEncodingPureAsciiHeaders;
     }

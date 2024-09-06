@@ -5,6 +5,9 @@ import { type HeadersObject, MIMEMessageHeader } from './MIMEMessageHeader.js'
 import { Mailbox } from './Mailbox.js'
 import { MIMEMessageContent } from './MIMEMessageContent.js'
 
+export interface MIMEMessageOptions {
+    skipEncodingPureAsciiHeaders: boolean
+}
 export class MIMEMessage {
     envctx: EnvironmentContext
     headers: MIMEMessageHeader
@@ -15,7 +18,7 @@ export class MIMEMessage {
 
     constructor (
         envctx: EnvironmentContext, 
-        options : { skipEncodingPureAsciiHeaders: boolean} = { skipEncodingPureAsciiHeaders: false }
+        options :  MIMEMessageOptions = { skipEncodingPureAsciiHeaders: false }
     ) {
         this.envctx = envctx
         this.headers = new MIMEMessageHeader(this.envctx, options)
