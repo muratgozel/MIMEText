@@ -23,8 +23,11 @@ type MailboxType = 'To' | 'From' | 'Cc' | 'Bcc';
 
 declare class MIMEMessageHeader {
     envctx: EnvironmentContext;
+    skipEncodingPureAsciiHeaders: boolean;
     fields: HeaderField[];
-    constructor(envctx: EnvironmentContext);
+    constructor(envctx: EnvironmentContext, options?: {
+        skipEncodingPureAsciiHeaders: boolean;
+    });
     dump(): string;
     toObject(): HeadersObject;
     get(name: string): string | Mailbox | Mailbox[] | undefined;
@@ -32,6 +35,7 @@ declare class MIMEMessageHeader {
     setCustom(obj: HeaderField): HeaderField;
     validateMailboxSingle(v: unknown): v is Mailbox;
     validateMailboxMulti(v: unknown): boolean;
+    optionallySkipPureAsciiEncoding(data: string): string;
     dumpMailboxMulti(v: unknown): string;
     dumpMailboxSingle(v: unknown): string;
     isHeaderField(v: unknown): v is HeaderField;
@@ -78,7 +82,9 @@ declare class MIMEMessage {
     validTypes: string[];
     validContentTransferEncodings: string[];
     messages: MIMEMessageContent[];
-    constructor(envctx: EnvironmentContext);
+    constructor(envctx: EnvironmentContext, options?: {
+        skipEncodingPureAsciiHeaders: boolean;
+    });
     asRaw(): string;
     asEncoded(): string;
     dumpTextContent(plaintext: MIMEMessageContent | undefined, html: MIMEMessageContent | undefined, boundary: string): string;
@@ -115,6 +121,7 @@ interface EnvironmentContext {
     toBase64WebSafe: (v: string) => string;
     eol: string;
     validateContentType: (v: string) => string | false;
+    skipEncodingPureAsciiHeaders?: boolean;
 }
 interface Boundaries {
     mixed: string;
