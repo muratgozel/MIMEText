@@ -6,7 +6,7 @@ import { Mailbox } from './Mailbox.js'
 import { MIMEMessageContent } from './MIMEMessageContent.js'
 
 export interface MIMEMessageOptions {
-    skipEncodingPureAsciiHeaders: boolean
+    checkHeaderRequiresBase64?: (data:string) => boolean
 }
 export class MIMEMessage {
     envctx: EnvironmentContext
@@ -18,7 +18,7 @@ export class MIMEMessage {
 
     constructor (
         envctx: EnvironmentContext, 
-        options :  MIMEMessageOptions = { skipEncodingPureAsciiHeaders: false }
+        options ?:  MIMEMessageOptions
     ) {
         this.envctx = envctx
         this.headers = new MIMEMessageHeader(this.envctx, options)

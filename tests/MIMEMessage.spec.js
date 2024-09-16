@@ -208,7 +208,10 @@ test('sending only an attachment, without content isn not allowed', async () => 
 })
 
 test('option to skip UTF-8 Base64 encoding for pure ascii headers', () => {
-    const msg = new MIMEMessage(envctx, { skipEncodingPureAsciiHeaders: true })
+    const validAWSRegex = /^[-?&!$%*\/\\#.^@_~|{}+=`\d\w ]+$/
+    const msg = new MIMEMessage(envctx, { checkHeaderRequiresBase64: (data) => {
+        return !validAWSRegex.test(data); // invalid char found, base64 required
+    }})
     msg.setHeader('Date', 'Wed, 22 Mar 2023 23:36:33 +0000')
     msg.setHeader('Message-ID', '<oliusb0xvxc@mail.com>')
     msg.setSender('John <test@mail.com>')

@@ -18,7 +18,7 @@ const envctx = {
     }
 }
 
-export function createMimeMessage (options: MIMEMessageOptions = { skipEncodingPureAsciiHeaders: false }): MIMEMessage {
+export function createMimeMessage (options?: MIMEMessageOptions): MIMEMessage {
     return new MIMEMessage(envctx, options)
 }
 

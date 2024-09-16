@@ -9,7 +9,7 @@ import { Mailbox } from './Mailbox.js'
 
 export class MIMEMessageHeader {
     envctx: EnvironmentContext
-    skipEncodingPureAsciiHeaders: boolean
+    checkHeaderRequiresBase64: ((data: string) => boolean) | undefined
     fields: HeaderField[] = [
         {
             name: 'Date',
@@ -68,9 +68,9 @@ export class MIMEMessageHeader {
         }
     ]
 
-    constructor (envctx: EnvironmentContext, options : MIMEMessageOptions = { skipEncodingPureAsciiHeaders: false}) {
+    constructor (envctx: EnvironmentContext, options?: MIMEMessageOptions) {
         this.envctx = envctx
-        this.skipEncodingPureAsciiHeaders = options.skipEncodingPureAsciiHeaders;
+        this.checkHeaderRequiresBase64 = options?.checkHeaderRequiresBase64;
     }
 
     dump (): string {
@@ -150,9 +150,8 @@ export class MIMEMessageHeader {
     }
 
     optionallySkipPureAsciiEncoding(data: string) {
-        // eslint-disable-next-line no-control-regex
-        const skipEncoding = this.skipEncodingPureAsciiHeaders && /^[\x00-\x7F]*$/.test(data); // is pure ascii
-        return skipEncoding ? data : `=?utf-8?B?${this.envctx.toBase64(data)}?=`
+        const base64Required = this.checkHeaderRequiresBase64 === undefined || this.checkHeaderRequiresBase64(data) === true;
+        return base64Required ? `=?utf-8?B?${this.envctx.toBase64(data)}?=` : data;
     }
 
     dumpMailboxMulti (v: unknown): string {
