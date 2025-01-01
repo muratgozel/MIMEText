@@ -2,7 +2,7 @@
  * @type {import('semantic-release').GlobalConfig}
  */
 export default {
-    branches: ['main'],
+    branches: ['master'],
     plugins: [
         ['@semantic-release/commit-analyzer', { preset: 'angular' }],
         ['@semantic-release/release-notes-generator', { preset: 'angular' }],
