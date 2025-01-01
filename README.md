@@ -303,10 +303,6 @@ If you're interested in contributing, read the [CONTRIBUTING.md](https://github.
 
 ---
 
-Version management of this repository done by [releaser](https://github.com/muratgozel/node-releaser) 🚀
-
----
-
 Thanks for watching 🐬
 
-[![Support me on Patreon](https://cdn.muratgozel.com.tr/support-me-on-patreon.v1.png)](https://patreon.com/muratgozel?utm_medium=organic&utm_source=github_repo&utm_campaign=github&utm_content=join_link)
+Support me on [patreon](https://patreon.com/muratgozel?utm_medium=organic&utm_source=github_repo&utm_campaign=github&utm_content=join_link) or [github](https://github.com/sponsors/muratgozel)

@@ -1,0 +1,35 @@
+name: Create release & artifacts
+
+on:
+    push:
+        branches:
+            - main
+        tags:
+            - '^v[0-9]+'
+
+env:
+    NODE_ENV: production
+    HUSKY: 0
+    GITHUB_TOKEN: ${{ secrets.PERSONAL_PAT }}
+    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+permissions:
+    contents: write # to be able to publish a GitHub release
+    issues: write # to be able to comment on released issues
+    pull-requests: write # to be able to comment on released pull requests
+    id-token: write # to enable use of OIDC for npm provenance
+    packages: write
+
+jobs:
+    release:
+        runs-on: ubuntu-24.04
+        steps:
+            - uses: actions/checkout@v4
+            - name: install dependencies
+              run: npm install --frozen-lockfile --include=dev
+            - name: test
+              run: npm run test
+            - name: build
+              run: npm run build
+            - name: release
+              run: npm exec semantic-release

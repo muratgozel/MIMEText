@@ -1,23 +1,10 @@
-// @ts-check
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
 
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-
-export default tseslint.config(
-    eslint.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
-    ...tseslint.configs.stylisticTypeChecked,
-    {
-        languageOptions: {
-            parserOptions: {
-                project: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
-    },
-    // to disable type aware linting for certain subset of files
-    {
-        files: ['*.js'],
-        ...tseslint.configs.disableTypeChecked,
-    },
-);
+export default [
+    {files: ["**/*.{js,mjs,cjs,ts}"]},
+    {languageOptions: { globals: globals.browser }},
+    pluginJs.configs.recommended,
+    ...tseslint.configs.recommended,
+];

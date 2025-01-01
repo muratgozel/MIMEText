@@ -1,22 +1,28 @@
 {
-  "extends": [
-    "@tsconfig/strictest/tsconfig",
-    "@tsconfig/node20/tsconfig"
-  ],
   "compilerOptions": {
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowJs": true,
+    "checkJs": true,
+    "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "outDir": "build",
-    "baseUrl": ".",
-    "rootDir": "src",
-    "resolveJsonModule": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "typeRoots": [
-      "node_modules/@types"
-    ]
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true
   },
-  "include": [
-    "src/**/*",
-    "node_modules/@types/*"
-  ]
+  "include": ["src/**/*.ts"]
 }
