@@ -1,23 +1,54 @@
 # MIMEText
-[RFC-2822](https://www.rfc-editor.org/rfc/rfc2822), [RFC-2045](https://www.rfc-editor.org/rfc/rfc2045) and [RFC-2049](https://www.rfc-editor.org/rfc/rfc2049) compliant raw email message generator. Refer to [https://muratgozel.github.io/MIMEText/](https://muratgozel.github.io/MIMEText/) for full api docs.
+RFC-5322 compliant, fully typed and documented email message generator for javascript runtimes.
 
-It has full typings. Optimized to run on node, browser and google apps script environments. Compatible with commonjs and esm.
+> Earlier specification RFC-2822 obsoleted by RFC-5322, therefore this library aims to be fully compliant with RFC-5322 and it's decendant specifications.
 
-## Install
+## Installation
+### npm
+It's published on [npm](https://www.npmjs.com/package/mimetext). Any package manager compatible with it, should work:
 ```sh
 npm i mimetext
+# or
+pnpm add mimetext
+# or
+yarn add mimetext
 ```
 
-There is special version for Google Apps Script environment which can be found under dist folder: `./dist/gas.js` or `./dist/gas.cjs`
+### Standalone Browser Script
+There is an [iife version](dist/mimetext.iife.js) (immediatly invoked function). This file includes polyfills and transforms that is neccessary to work on almost all browsers. Use it in your html documents but be aware of its size (~50kb).
+```html
+<script type="text/javascript" src="/path/to/mimetext.iife.js"></script>
+<script type="text/javascript">
+    console.log(window.MimeText)
+</script>
+```
 
-## Use
-Import the appropriate version for your environment. Use `mimetext/browser` for browser and `mimetext` for node environments.
+### Google Apps Script
+There is a special export that is compatible with Google Apps Script environment. Use [gas.cjs](https://github.com/muratgozel/MIMEText/blob/master/dist/gas.cjs) as necessary.
+
+## Usage
+The code is optimized for different environments such as node, browser and gas (Google Apps Script). Therefore, the library has three corresponding exports:
+```ts
+import { createMimeMessage } from 'mimetext/node'
+import { createMimeMessage } from 'mimetext/browser'
+import { createMimeMessage } from 'mimetext/gas'
+// defaults to node export
+import { createMimeMessage } from 'mimetext'
+```
+They all have the same API but minor internal differences. Apart from environment, it can be imported as commonjs module too:
+```ts
+const { createMimeMessage } = require('mimetext')
+const { createMimeMessage } = require('mimetext')
+const { createMimeMessage } = require('mimetext')
+// defaults to node export
+const { createMimeMessage } = require('mimetext')
+```
+
+### Simple Email Message
+Here is a simple plain text email message:
 ```js
-// es
-import {createMimeMessage} from 'mimetext'
-// or const {createMimeMessage} = require('mimetext') for commonjs
+import { createMimeMessage } from 'mimetext'
 
-// create a simple plain text email
 const msg = createMimeMessage()
 msg.setSender({name: 'Lorem Ipsum', addr: 'lorem@ipsum.com'})
 msg.setRecipient('foobor@test.com')
@@ -28,6 +59,7 @@ msg.addMessage({
 I'm a simple text.`
 })
 const raw = msg.asRaw()
+
 /*
 Date: Sun, 24 Oct 2021 04:50:32 +0000
 From: "Lorem Ipsum" <lorem@ipsum.com>
@@ -42,31 +74,33 @@ I'm a simple text.
 */
 ```
 
-### Different Ways Of Adding Recipients
-There are more than one method and format to add recipients:
+### APIs For Adding Different Kind Of Recipients
 ```js
-// adds recipient to To field by default
-msg.setRecipient('Firstname Lastname <first@last.com>')
-// you can specify To, Cc, Bcc
-msg.setRecipient('Firstname Lastname <first@last.com>', {type: 'Cc'})
-// as object, only addr is required
-msg.setRecipient({addr: 'first@last.com', name: 'Firstname Lastname', type: 'Bcc'})
-// shortcut methods
 msg.setTo('first@last.com')
 msg.setCc('first@last.com')
 msg.setBcc('first@last.com')
-// multiple recipient at once
-msg.setRecipients('test@mail.com', 'Firstname Lastname <first@last.com>', {addr: 'multiple@mail.com'})
 
-// similarly you can set the sender
-msg.setSender('First Last <sender@mail.com>')
-msg.setSender({name: 'First Last', addr: 'sender@mail.com'})
+// "To" by default
+msg.setRecipient('Firstname Lastname <first@last.com>')
+// but you can still specify other kinds
+msg.setRecipient('Firstname Lastname <first@last.com>', {type: 'Cc'})
+// all as object
+msg.setRecipient({
+    addr: 'first@last.com', 
+    name: 'Firstname Lastname', 
+    type: 'Bcc'
+})
+
+// multiple recipients, each as argument
+msg.setRecipients(
+    'test@mail.com', 
+    'Firstname Lastname <first@last.com>', 
+    {addr: 'multiple@mail.com'}
+)
 ```
 
 ### HTML Message With Plain Text Fallback And Attachments
-You can set html and plain text messages both and recipients mail client will render however they think appropriate.
-
-The example below demonstrates more sophisticated email content including inline attachments and regular attachments.
+Both html and plain text version of a message can be set and attachments can be added. Here is a more complex example:
 ```js
 const msg = createMimeMessage()
 msg.setSender('sender@mail.com')
@@ -77,16 +111,25 @@ msg.addMessage({
     data: 'Hello there,' + EOL + EOL +
         'This is a test email sent by MimeText test suite.'
 })
-// specify inline attachment's content id inside img src tag. <img src="cid:[ID]">
 msg.addMessage({
     contentType: 'text/html',
     data: 'Hello there,<br><br>' +
         'This is a test email sent by <b>MimeText</b> test suite.<br><br>' +
         'The term MimeText above supposed to be bold. Are you able to see it?<br><br>' +
         'Below, there should be a small image that contains little black dots:<br><br>' +
+        // using an inline attachment id here:
         '<img src="cid:dots123456"><br><br>' +
         'Best regards.'
 })
+// and the inline attachment:
+msg.addAttachment({
+    inline: true,
+    filename: 'dots.jpg',
+    contentType: 'image/jpg',
+    data: '...base64 encoded data...',
+    headers: {'Content-ID': 'dots123456'}
+})
+// two more attachments but they aren't inlined, they are attached
 msg.addAttachment({
     filename: 'sample.jpg',
     contentType: 'image/jpg',
@@ -97,15 +140,9 @@ msg.addAttachment({
     contentType: 'text/plain',
     data: '...base64 encoded data...'
 })
-// this is inline attachment!
-msg.addAttachment({
-    inline: true,
-    filename: 'dots.jpg',
-    contentType: 'image/jpg',
-    data: '...base64 encoded data...',
-    headers: {'Content-ID': 'dots123456'}
-})
+
 const raw = msg.asRaw()
+
 /*
 Date: Sun, 26 Mar 2023 13:27:15 +0000
 From: <sender@mail.com>
@@ -150,32 +187,30 @@ SGVsbG8gdGhlcmUu
 ```
 
 ### Encoding The Output
-If you ever need to get base64-websafe encoded version of the raw data, you can use `asEncoded()` method.
-```js
+Service providers may ask for the encoded version of a message. In that case use the `.asEncoded()` call instead of `.asRaw()`:
+```ts
+// base64-websafe encoded message
 // it first gets the raw version and then encodes it.
 msg.asEncoded()
 ```
 
 ## Use Cases
-MIMEText is useful for email sending platforms and end-user apps whose email clients require raw email messages.
+- Email delivery services might ask you to prepare an email message in raw format before sending it with their email client.
+- When email message testing or parsing needed.
+- Preference.
 
-Below you can find some examples for **Amazon SES** or **Google Gmail**.
+Here are two examples that uses **Amazon SES** and **Google Gmail** for email sending.
 
-### Amazon SES with AWS-SDK
-ses client v1:
+### Amazon SES with AWS-SDK Client V1
 ```js
 // install with npm i @aws-sdk/client-ses
 
-// init aws sdk
 const { SESClient, SendRawEmailCommand } = require('@aws-sdk/client-ses')
 const ses = new SESClient({ region: 'YOUR_REGION' })
 const { Buffer } = require('node:buffer')
-
-// init mimetext
 const { createMimeMessage } = require('mimetext')
-const message = createMimeMessage()
 
-// create email message
+const message = createMimeMessage()
 message.setSender('sender@email.com')
 message.setTo('person1@email.com')
 message.setSubject('Weekly Newsletter 49 Ready 🚀')
@@ -189,31 +224,31 @@ message.addMessage({
   data: 'Hello <b>John</b>.'
 })
 
-// send email with aws sdk
+// send
 const params = {
-  Destinations: message.getRecipients({type: 'to'}).map(mailbox => mailbox.addr),
+  Destinations: message.getRecipients({type: 'to'})
+    .map(mailbox => mailbox.addr),
   RawMessage: {
-    Data: Buffer.from(message.asRaw(), 'utf8') // the raw message data needs to be sent as uint8array
+      // the raw message data needs to be sent as uint8array
+      Data: Buffer.from(message.asRaw(), 'utf8')
   },
   Source: message.getSender().addr
 }
 const result = await ses.send(new SendRawEmailCommand(params))
-// result.MessageId
+
+// expect result.MessageId
 ```
-ses client v2:
+
+### Amazon SES with AWS-SDK Client V2
 ```js
 // install with npm i @aws-sdk/client-sesv2
 
-// init aws sdk
 const { SESv2Client, SendEmailCommand } = require('@aws-sdk/client-ses')
 const ses = new SESv2Client({ region: 'YOUR_REGION' })
 const { Buffer } = require('node:buffer')
-
-// init mimetext
 const { createMimeMessage } = require('mimetext')
-const message = createMimeMessage()
 
-// create email message
+const message = createMimeMessage()
 message.setSender('sender@email.com')
 message.setTo('person1@email.com')
 message.setSubject('Weekly Newsletter 49 Ready 🚀')
@@ -230,7 +265,8 @@ message.addMessage({
 const params = {
     FromEmailAddress: message.getSender().addr,
     Destination: {
-        ToAddresses: message.getRecipients().map((box) => box.addr)
+        ToAddresses: message.getRecipients()
+            .map((box) => box.addr)
     },
     Content: {
         Raw: {
@@ -239,6 +275,7 @@ const params = {
     }
 }
 const result = await ses.send(new SendEmailCommand(params))
+
 // result.MessageId
 ```
 
@@ -247,9 +284,8 @@ const result = await ses.send(new SendEmailCommand(params))
 ```js
 // init google api sdk
 const {google} = require('googleapis')
-
-// create email message
 const {createMimeMessage} = require('mimetext')
+
 const message = createMimeMessage()
 message.setSender('sender@email.com')
 message.setTo('person1@email.com')
@@ -264,7 +300,7 @@ message.addMessage({
     data: 'Hello <b>John</b>.'
 })
 
-// send email
+// send
 google.auth
   .getClient({scopes: ['https://www.googleapis.com/auth/gmail.send']})
   .then(function(client) {
@@ -280,7 +316,7 @@ google.auth
         }
       })
       .then(function(result) {
-        // result.id
+        // expect result.id
       })
       .catch(function(err) {
 
@@ -289,7 +325,7 @@ google.auth
 ```
 
 ## Error Handling
-Most of the methods raises `MIMETextError` in case of invalid input. You can catch them and handle them accordingly.
+Most of the methods raises `MIMETextError` in case of invalid input. You can catch and handle them accordingly.
 ```js
 try {
   message.setTo({prop: 'invalid'})

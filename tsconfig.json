@@ -18,6 +18,7 @@
     "checkJs": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
+    "declarationDir": "dist",
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",

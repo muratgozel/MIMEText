@@ -1,66 +1,78 @@
 {
   "name": "mimetext",
   "version": "v3.0.24",
-  "description": "RFC 2822 compliant raw email message generator written in node.js",
+  "description": "RFC-5322 compliant, fully typed and documented email message generator for javascript runtimes.",
   "type": "module",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/node.d.ts",
-        "default": "./dist/node.js"
+        "types": "./dist/entrypoints/node.d.ts",
+        "default": "./dist/mimetext.node.es.js"
       },
       "require": {
-        "types": "./dist/node.d.cts",
-        "default": "./dist/node.cjs"
+        "types": "./dist/entrypoints/node.d.ts",
+        "default": "./dist/mimetext.node.cjs.js"
       }
     },
     "./browser": {
       "import": {
-        "types": "./dist/browser.d.ts",
-        "default": "./dist/browser.js"
+        "types": "./dist/entrypoints/browser.d.ts",
+        "default": "./dist/mimetext.browser.es.js"
       },
       "require": {
-        "types": "./dist/browser.d.cts",
-        "default": "./dist/browser.cjs"
+        "types": "./dist/entrypoints/browser.d.ts",
+        "default": "./dist/mimetext.browser.cjs.js"
       }
     },
     "./node": {
       "import": {
-        "types": "./dist/node.d.ts",
-        "default": "./dist/node.js"
+        "types": "./dist/entrypoints/node.d.ts",
+        "default": "./dist/mimetext.node.es.js"
       },
       "require": {
-        "types": "./dist/node.d.cts",
-        "default": "./dist/node.cjs"
+        "types": "./dist/entrypoints/node.d.ts",
+        "default": "./dist/mimetext.node.cjs.js"
       }
     },
     "./gas": {
       "import": {
-        "types": "./dist/gas.d.ts",
-        "default": "./dist/gas.js"
+        "types": "./dist/entrypoints/gas.d.ts",
+        "default": "./dist/mimetext.gas.iife.js"
       },
       "require": {
-        "types": "./dist/gas.d.cts",
-        "default": "./dist/gas.cjs"
+        "types": "./dist/entrypoints/gas.d.ts",
+        "default": "./dist/mimetext.gas.iife.js"
       }
     }
   },
-  "types": "./dist/node.d.ts",
-  "main": "./dist/node.js",
+  "main": "./dist/mimetext.node.es.js",
   "scripts": {
     "lint": "eslint src",
     "format:check": "prettier src --check",
     "format": "prettier $(git diff --cached --name-only --diff-filter=ACMR src | sed 's| |\\\\ |g') --write --ignore-unknown",
-    "build": "NODE_ENV=production tsup",
+    "build": "rollup --config rollup.config.js",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --testPathIgnorePatterns tests/MIMEText.spec.js",
     "prepare": "husky || true",
     "commit": "cz"
   },
+  "browserslist": [
+    "defaults",
+    "> 0.1%",
+    "ie 10",
+    "not ie 9",
+    "not dead"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/muratgozel/MIMEText.git"
   },
   "keywords": [
+    "rfc-5322",
+    "rfc-2045",
+    "rfc-2046",
+    "rfc-2047",
+    "rfc-2048",
+    "rfc-2049",
     "rfc-2822",
     "mime-message",
     "email-message"
@@ -87,22 +99,21 @@
     "@babel/core": "^7.26.0",
     "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
+    "@babel/preset-typescript": "^7.26.0",
     "@eslint/js": "^9.17.0",
     "@jest/globals": "^29.7.0",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^28.0.2",
-    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@swc/core": "^1.10.4",
     "@swc/jest": "^0.2.37",
-    "@tsconfig/node20": "^20.1.4",
-    "@tsconfig/strictest": "^2.0.5",
     "@types/google-apps-script": "^1.0.89",
     "@types/mime-types": "^2.1.4",
     "@types/node": "^22.10.3",
     "commitizen": "^4.3.1",
-    "core-js": "^3.39.0",
+    "core-js": "3.30",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^16.4.7",
     "eslint": "^9.17.0",
@@ -112,7 +123,6 @@
     "prettier": "^3.4.2",
     "rollup": "^4.29.1",
     "semantic-release": "^24.2.0",
-    "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.19.0"
   },
@@ -121,8 +131,5 @@
     "@babel/runtime-corejs3": "^7.26.0",
     "js-base64": "^3.7.7",
     "mime-types": "^2.1.35"
-  },
-  "overrides": {
-    "xml2js": "0.5.0"
   }
 }
