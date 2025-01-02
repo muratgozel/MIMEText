@@ -1,7 +1,7 @@
 import {EOL} from 'node:os'
 import {expect, test} from '@jest/globals'
 import * as mime from 'mime-types'
-import {MIMEMessageHeader, Mailbox} from '../dist/node.js'
+import {MIMEMessageHeader, Mailbox} from '../src/entrypoints/node.js'
 
 const _reLineSplit = /\r\n|(?!\r\n)[\n-\r\x85\u2028\u2029]/
 const envctx = {

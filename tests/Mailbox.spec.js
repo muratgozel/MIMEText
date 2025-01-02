@@ -1,5 +1,5 @@
 import {expect, test} from '@jest/globals'
-import {Mailbox} from '../dist/node.js'
+import {Mailbox} from "../src/Mailbox.js";
 
 const input1 = 'test@mail.com'
 const input2 = 'Test Lorem Ipsum <test@mail.com>'

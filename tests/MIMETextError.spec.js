@@ -1,5 +1,5 @@
 import {expect, test} from '@jest/globals'
-import {MIMETextError} from '../dist/node.js'
+import {MIMETextError} from '../src/entrypoints/node.js'
 
 test('is an instance of native error class', () => {
     const a = new MIMETextError('test error.')

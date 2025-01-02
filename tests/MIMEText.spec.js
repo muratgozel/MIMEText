@@ -3,7 +3,7 @@ import { Buffer } from 'node:buffer'
 import { SESClient, SendRawEmailCommand } from '@aws-sdk/client-ses'
 import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2'
 import {expect, test, beforeAll, jest} from '@jest/globals'
-import {createMimeMessage} from '../dist/node.js'
+import {createMimeMessage} from '../src/entrypoints/node.js'
 
 const sampleImageBase64 = '/9j/4AAQSkZJRgABAgEASABIAAD/2wCEAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQECAgICAgICAgICAgMDAwMDAwMDAwMBAQEBAQEBAgEBAgICAQICAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA//AABEIAAUABQMAEQABEQECEQH/xABPAAEAAAAAAAAAAAAAAAAAAAAKEAEBAQEBAQAAAAAAAAAAAAAFBgQDAgEBAQAAAAAAAAAAAAAAAAAAAAARAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwAAARECEQA/AHsDDIlo1m7dWUFHmo6DMyOOzmleB0EdwlZme6ycn1npkJbZP7FgtTvTo7qaV+KtbefPb4N8Hn4A/9k='
 const sampleTxtBase64 = 'SGVsbG8gdGhlcmUu'

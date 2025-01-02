@@ -1,7 +1,7 @@
 import {EOL} from 'node:os'
 import {expect, test} from '@jest/globals'
 import * as mime from 'mime-types'
-import {MIMEMessageContent} from '../dist/node.js'
+import {MIMEMessageContent} from '../src/entrypoints/node.js'
 
 const envctx = {
     toBase64: function toBase64(data) {
