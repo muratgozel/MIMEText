@@ -74,7 +74,7 @@ I'm a simple text.
 */
 ```
 
-### APIs For Adding Different Kind Of Recipients
+### APIs for Adding Different Kind and Way of Recipients
 ```js
 msg.setTo('first@last.com')
 msg.setCc('first@last.com')
@@ -103,9 +103,11 @@ msg.setRecipients(
 Both html and plain text version of a message can be set and attachments can be added. Here is a more complex example:
 ```js
 const msg = createMimeMessage()
+
 msg.setSender('sender@mail.com')
 msg.setRecipients('recipient@mail.com')
 msg.setSubject('Testing MimeText 🐬 (Plain Text + HTML With Mixed Attachments)')
+
 msg.addMessage({
     contentType: 'text/plain',
     data: 'Hello there,' + EOL + EOL +
@@ -121,6 +123,7 @@ msg.addMessage({
         '<img src="cid:dots123456"><br><br>' +
         'Best regards.'
 })
+
 // and the inline attachment:
 msg.addAttachment({
     inline: true,
@@ -129,6 +132,7 @@ msg.addAttachment({
     data: '...base64 encoded data...',
     headers: {'Content-ID': 'dots123456'}
 })
+
 // two more attachments but they aren't inlined, they are attached
 msg.addAttachment({
     filename: 'sample.jpg',
@@ -334,11 +338,17 @@ try {
 }
 ```
 
+## Relevant Specifications
+- [RFC-5322](https://datatracker.ietf.org/doc/html/rfc5322)
+- [RFC-2045](https://datatracker.ietf.org/doc/html/rfc2045)
+- [RFC-2046](https://datatracker.ietf.org/doc/html/rfc2046)
+- [RFC-2047](https://datatracker.ietf.org/doc/html/rfc2047)
+- [RFC-2048](https://datatracker.ietf.org/doc/html/rfc2048)
+- [RFC-2049](https://datatracker.ietf.org/doc/html/rfc2049)
+
 ## Contributing
 If you're interested in contributing, read the [CONTRIBUTING.md](https://github.com/muratgozel/muratgozel/blob/main/CONTRIBUTING.md) first, please.
 
 ---
 
-Thanks for watching 🐬
-
-Support me on [patreon](https://patreon.com/muratgozel?utm_medium=organic&utm_source=github_repo&utm_campaign=github&utm_content=join_link) or [github](https://github.com/sponsors/muratgozel)
+Thanks for the attention 💙 Any amount of support on [patreon](https://patreon.com/muratgozel?utm_medium=organic&utm_source=github_repo&utm_campaign=github&utm_content=join_link) or [github](https://github.com/sponsors/muratgozel) will return you back as bug fixes, new features and bits and bytes.
