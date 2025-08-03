@@ -46,6 +46,7 @@
     }
   },
   "main": "./dist/mimetext.node.es.js",
+  "types": "./dist/entrypoints/node.d.ts",
   "scripts": {
     "lint": "eslint src",
     "format:check": "prettier src --check",
