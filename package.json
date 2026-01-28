@@ -1,7 +1,7 @@
 {
   "name": "mimetext",
   "version": "v3.0.24",
-  "description": "RFC-5322 compliant, fully typed and documented email message generator for javascript runtimes.",
+  "description": "RFC-5322 compliant, fully typed and documented email message generator for javascript runtimes",
   "type": "module",
   "exports": {
     ".": {
