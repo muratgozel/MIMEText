@@ -1,7 +1,7 @@
 # MIMEText
 RFC-5322 compliant, fully typed and documented email message generator for javascript runtimes.
 
-> Earlier specification RFC-2822 obsoleted by RFC-5322, therefore this library aims to be fully compliant with RFC-5322 and it's decendant specifications.
+> Earlier specification RFC-2822 obsoleted by RFC-5322, therefore this library aims to be fully compliant with RFC-5322 and it's descendant specifications.
 
 ## Installation
 ### npm
