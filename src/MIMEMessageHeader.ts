@@ -220,18 +220,14 @@ export class MIMEMessageHeader {
     }
 
     isObject(v: unknown): v is object {
-        return !!v && v.constructor === Object;
+        return !!v && typeof v === "object" && Object.prototype.toString.call(v) === "[object Object]";
     }
 
     isArrayOfMailboxes(v: unknown): v is Mailbox[] {
         return (
-            this.isArray(v) &&
+            Array.isArray(v) &&
             v.every((item: unknown) => item instanceof Mailbox)
         );
-    }
-
-    isArray(v: unknown): v is never[] {
-        return !!v && v.constructor === Array;
     }
 }
 

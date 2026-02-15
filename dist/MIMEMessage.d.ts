@@ -38,7 +38,6 @@ export declare class MIMEMessage {
     toBase64(v: string): string;
     toBase64WebSafe(v: string): string;
     generateBoundaries(): void;
-    isArray(v: unknown): v is unknown[];
     isObject(v: unknown): v is object;
 }
 export interface EnvironmentContext {

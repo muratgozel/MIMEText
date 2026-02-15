@@ -16,7 +16,6 @@ export declare class MIMEMessageHeader {
     isHeaderField(v: unknown): v is HeaderField;
     isObject(v: unknown): v is object;
     isArrayOfMailboxes(v: unknown): v is Mailbox[];
-    isArray(v: unknown): v is never[];
 }
 export declare class MIMEMessageContentHeader extends MIMEMessageHeader {
     fields: {

@@ -236,7 +236,7 @@ export class MIMEMessage {
     }
 
     setRecipients (input: MailboxAddrObject | string | MailboxAddrObject[] | string[], config: MailboxConfig = { type: 'To' }): Mailbox[] {
-        const arr = !this.isArray(input) ? [input] : input
+        const arr = !Array.isArray(input) ? [input] : input
         const recs = arr.map((_input) => new Mailbox(_input, config))
         this.setHeader(config.type, recs)
         return recs
@@ -304,12 +304,8 @@ export class MIMEMessage {
         }
     }
 
-    isArray (v: unknown): v is unknown[] {
-        return (!!v) && (v.constructor === Array)
-    }
-
     isObject (v: unknown): v is object {
-        return (!!v) && (v.constructor === Object)
+        return !!v && typeof v === 'object' && Object.prototype.toString.call(v) === '[object Object]'
     }
 }
 

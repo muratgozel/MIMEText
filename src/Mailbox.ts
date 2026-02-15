@@ -64,7 +64,7 @@ export class Mailbox {
     }
 
     isObject (v: unknown): v is object {
-        return (!!v) && (v.constructor === Object)
+        return !!v && typeof v === 'object' && Object.prototype.toString.call(v) === '[object Object]'
     }
 }
 
