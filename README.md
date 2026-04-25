@@ -37,9 +37,9 @@ import { createMimeMessage } from 'mimetext'
 ```
 They all have the same API but minor internal differences. Apart from environment, it can be imported as commonjs module too:
 ```ts
-const { createMimeMessage } = require('mimetext')
-const { createMimeMessage } = require('mimetext')
-const { createMimeMessage } = require('mimetext')
+const { createMimeMessage } = require('mimetext/node')
+const { createMimeMessage } = require('mimetext/browser')
+const { createMimeMessage } = require('mimetext/gas')
 // defaults to node export
 const { createMimeMessage } = require('mimetext')
 ```
